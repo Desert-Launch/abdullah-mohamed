@@ -1,5 +1,6 @@
 import type { Dictionary, Social } from "../data/types";
 import { bookingHref } from "../data/shared";
+import { asset } from "../lib/asset";
 import { SocialLinks } from "./SocialLinks";
 
 export function Hero({ t, socials }: { t: Dictionary; socials: Social[] }) {
@@ -18,7 +19,7 @@ export function Hero({ t, socials }: { t: Dictionary; socials: Social[] }) {
           </a>
           <a
             className="button ghost"
-            href="/Abdullah_Mohamed_Abdullah_CV.pdf"
+            href={asset("/Abdullah_Mohamed_Abdullah_CV.pdf")}
             target="_blank"
             rel="noreferrer"
           >
@@ -38,8 +39,8 @@ export function Hero({ t, socials }: { t: Dictionary; socials: Social[] }) {
         </div>
 
         <div className="device-stack">
-          <img className="phone phone-main" src="/images/jaweb1.webp" alt="Jaweb mobile screen" />
-          <img className="phone phone-side" src="/images/fastab1.webp" alt="FasTap mobile screen" />
+          <img className="phone phone-main" src={asset("/images/jaweb1.webp")} alt="Jaweb mobile screen" />
+          <img className="phone phone-side" src={asset("/images/fastab1.webp")} alt="FasTap mobile screen" />
           <div className="system-card">
             <span>{t.hero.stackLabel}</span>
             <strong>{t.hero.stack}</strong>

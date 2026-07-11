@@ -1,4 +1,5 @@
 import type { CaseStudy, Dictionary } from "../data/types";
+import { asset } from "../lib/asset";
 
 function CaseStudyCard({ study, labels }: { study: CaseStudy; labels: Dictionary["caseLabels"] }) {
   const gallery = study.shots?.slice(0, 3) ?? [];
@@ -7,7 +8,7 @@ function CaseStudyCard({ study, labels }: { study: CaseStudy; labels: Dictionary
     <article className="case-card" id={`case-${study.slug}`}>
       <header className="case-header">
         {study.image ? (
-          <img className="case-avatar" src={study.image} alt={`${study.title} app icon`} loading="lazy" />
+          <img className="case-avatar" src={asset(study.image)} alt={`${study.title} app icon`} loading="lazy" />
         ) : (
           <span className="case-avatar">{study.title.slice(0, 1)}</span>
         )}
@@ -62,7 +63,7 @@ function CaseStudyCard({ study, labels }: { study: CaseStudy; labels: Dictionary
       {gallery.length > 0 ? (
         <div className="case-shots">
           {gallery.map((shot) => (
-            <img key={shot} src={shot} alt={`${study.title} screenshot`} loading="lazy" />
+            <img key={shot} src={asset(shot)} alt={`${study.title} screenshot`} loading="lazy" />
           ))}
         </div>
       ) : null}

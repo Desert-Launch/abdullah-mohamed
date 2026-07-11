@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { copy } from "../data/copy";
 import { shared, bookingHref, profilePhoto } from "../data/shared";
+import { asset } from "../lib/asset";
 import type { Lang, Palette, Theme } from "../data/types";
 import { TopBar } from "./TopBar";
 import { Hero } from "./Hero";
@@ -83,7 +84,7 @@ export function Portfolio() {
           <div className="logo-rail">
             {shared.companyLogos.map((logo) => (
               <span className="logo-chip" key={logo.src}>
-                <img src={logo.src} alt={logo.name} loading="lazy" />
+                <img src={asset(logo.src)} alt={logo.name} loading="lazy" />
               </span>
             ))}
           </div>
@@ -121,7 +122,7 @@ export function Portfolio() {
             {profilePhoto ? (
               <img
                 className="about-photo"
-                src={profilePhoto}
+                src={asset(profilePhoto)}
                 alt="Abdullah Mohamed"
                 loading="lazy"
               />

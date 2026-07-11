@@ -1,4 +1,5 @@
 import type { Social } from "../data/types";
+import { asset } from "../lib/asset";
 
 export function SocialLinks({ socials, size = 24 }: { socials: Social[]; size?: number }) {
   return (
@@ -14,7 +15,7 @@ export function SocialLinks({ socials, size = 24 }: { socials: Social[]; size?: 
             target={external ? "_blank" : undefined}
             rel={external ? "noreferrer" : undefined}
           >
-            <img src={social.icon} alt="" width={size} height={size} loading="lazy" />
+            <img src={asset(social.icon)} alt="" width={size} height={size} loading="lazy" />
           </a>
         );
       })}
