@@ -3,16 +3,21 @@ import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL(".", import.meta.url));
 
 // GitHub Pages *project* site: served from https://<user>.github.io/<repo>/,
-// so the app lives under a subpath. basePath/assetPrefix make Next emit its
-// own links/bundles under that prefix; the `asset()` helper (app/lib/asset.ts)
+// so the app lives under a subpath. basePath makes Next emit its own
+// links/bundles under that prefix; the `asset()` helper (app/lib/asset.ts)
 // covers raw <img>/<a> paths, which Next does not rewrite.
 //
-// Only applied for the production build (`next build`), so `npm run dev` stays
-// at the root. Override the repo name via the PAGES_BASE_PATH env var if needed.
+// OPT-IN — deliberately NOT tied to NODE_ENV. The subpath is applied only when
+// explicitly requested:
+//   • PAGES_BASE_PATH="/foo"  → use that exact path (CI passes "/<repo>")
+//   • PAGES=1                 → use "/<repo>" from the constant below
+//   • neither set             → "" (root build)
+// So a plain `next build` stays at root and its `out/` previews correctly with
+// `serve out`. The previous NODE_ENV coupling silently baked the subpath into
+// every production build, which 404'd assets when served locally at root.
 const repo = "abdullah-mohamed-portofolio";
 const basePath =
-  process.env.PAGES_BASE_PATH ??
-  (process.env.NODE_ENV === "production" ? `/${repo}` : "");
+  process.env.PAGES_BASE_PATH ?? (process.env.PAGES ? `/${repo}` : "");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
