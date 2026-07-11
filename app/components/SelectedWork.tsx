@@ -1,5 +1,6 @@
 import type { Dictionary } from "../data/types";
 import { storeLinks } from "../data/shared";
+import { asset } from "../lib/asset";
 
 const isRealUrl = (url?: string): url is string => !!url && url.startsWith("http");
 
@@ -22,7 +23,7 @@ export function SelectedWork({ t }: { t: Dictionary }) {
             <article className="work-card" key={app.key}>
               <div className="work-card-head">
                 {app.image ? (
-                  <img src={app.image} alt={`${app.title} logo`} loading="lazy" />
+                  <img src={asset(app.image)} alt={`${app.title} logo`} loading="lazy" />
                 ) : (
                   <span className="work-card-fallback" aria-hidden="true">
                     {app.title.slice(0, 1)}
