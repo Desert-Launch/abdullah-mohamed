@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="230" viewBox="0 0 1000 230" role="img" aria-label="Abdullah Mohamed — Senior Software Engineer">
+  <defs>
+    <linearGradient id="panel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="55%" stop-color="#0f0d0a"/>
+      <stop offset="100%" stop-color="#171208"/>
+    </linearGradient>
+
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FBE6A1">
+        <animate attributeName="stop-color" values="#FBE6A1;#F5C518;#C9971E;#FBE6A1" dur="8s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" stop-color="#F5C518">
+        <animate attributeName="stop-color" values="#F5C518;#C9971E;#FBE6A1;#F5C518" dur="8s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" stop-color="#C9971E">
+        <animate attributeName="stop-color" values="#C9971E;#FBE6A1;#F5C518;#C9971E" dur="8s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+
+    <!-- moving highlight band for the name shine sweep -->
+    <linearGradient id="shine" gradientUnits="userSpaceOnUse" x1="-170" y1="0" x2="30" y2="0">
+      <stop offset="0"   stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#fffbe6" stop-opacity="0.92"/>
+      <stop offset="1"   stop-color="#ffffff" stop-opacity="0"/>
+      <animateTransform attributeName="gradientTransform" type="translate"
+        values="0 0; 1040 0; 1040 0" keyTimes="0;0.32;1" dur="5s" begin="1.6s" repeatCount="indefinite"/>
+    </linearGradient>
+
+    <radialGradient id="cornerGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#F5C518" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#F5C518" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="topSheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- mask = the name shape, used to clip the shine sweep -->
+    <mask id="nameMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="230">
+      <text x="500" y="108" text-anchor="middle" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="62" font-weight="800" fill="#ffffff">Abdullah Mohamed</text>
+    </mask>
+
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <filter id="softglow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2.2"/>
+    </filter>
+
+    <filter id="bigglow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+  </defs>
+
+  <!-- panel -->
+  <rect x="2" y="2" width="996" height="226" rx="18" fill="url(#panel)" stroke="#3a2f13" stroke-width="1.5"/>
+  <!-- glassy top sheen -->
+  <rect x="3" y="3" width="994" height="90" rx="17" fill="url(#topSheen)"/>
+
+  <!-- corner ambient glows that gently breathe -->
+  <ellipse cx="103" cy="115" rx="150" ry="120" fill="url(#cornerGlow)">
+    <animate attributeName="opacity" values="0.55;1;0.55" dur="5.5s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="897" cy="115" rx="150" ry="120" fill="url(#cornerGlow)">
+    <animate attributeName="opacity" values="0.55;1;0.55" dur="5.5s" begin="2s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- faint drifting stardust -->
+  <g fill="#FFE9A8">
+    <circle cx="225" cy="200" r="1.4" opacity="0"><animate attributeName="opacity" values="0;0.6;0" dur="4s" begin="0.5s" repeatCount="indefinite"/><animate attributeName="cy" values="200;188;200" dur="8s" repeatCount="indefinite"/></circle>
+    <circle cx="778" cy="34" r="1.4" opacity="0"><animate attributeName="opacity" values="0;0.6;0" dur="4.5s" begin="1.6s" repeatCount="indefinite"/><animate attributeName="cy" values="34;46;34" dur="9s" repeatCount="indefinite"/></circle>
+    <circle cx="500" cy="206" r="1.2" opacity="0"><animate attributeName="opacity" values="0;0.45;0" dur="5s" begin="2.4s" repeatCount="indefinite"/></circle>
+  </g>
+
+  <!-- ============ LEFT ORBIT SYSTEM ============ -->
+  <g>
+    <!-- core -->
+    <circle cx="103" cy="115" r="11" fill="#F5C518" opacity="0.18" filter="url(#softglow)"/>
+    <circle cx="103" cy="115" r="4" fill="#FFF3C4" filter="url(#softglow)">
+      <animate attributeName="r" values="3.2;5;3.2" dur="2.6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;1;0.8" dur="2.6s" repeatCount="indefinite"/>
+    </circle>
+    <!-- ring A (precessing) -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0 103 115" to="360 103 115" dur="26s" repeatCount="indefinite"/>
+      <ellipse cx="103" cy="115" rx="60" ry="20" fill="none" stroke="url(#gold)" stroke-width="1" opacity="0.28"/>
+      <circle r="3" fill="#FFF3C4" filter="url(#softglow)">
+        <animateMotion dur="6s" repeatCount="indefinite" path="M 43,115 a 60,20 0 1,0 120,0 a 60,20 0 1,0 -120,0"/>
+      </circle>
+    </g>
+    <!-- ring B (counter-precessing) -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="360 103 115" to="0 103 115" dur="32s" repeatCount="indefinite"/>
+      <ellipse cx="103" cy="115" rx="52" ry="34" fill="none" stroke="url(#gold)" stroke-width="1" opacity="0.24"/>
+      <circle r="3" fill="#FFE9A8" filter="url(#softglow)">
+        <animateMotion dur="7.5s" begin="1s" repeatCount="indefinite" path="M 51,115 a 52,34 0 1,0 104,0 a 52,34 0 1,0 -104,0"/>
+      </circle>
+    </g>
+    <!-- ring C (circular) -->
+    <g>
+      <ellipse cx="103" cy="115" rx="40" ry="40" fill="none" stroke="url(#gold)" stroke-width="1" opacity="0.18"/>
+      <circle r="2.6" fill="#FFF3C4" filter="url(#softglow)">
+        <animateMotion dur="5s" begin="0.5s" repeatCount="indefinite" path="M 63,115 a 40,40 0 1,0 80,0 a 40,40 0 1,0 -80,0"/>
+      </circle>
+    </g>
+  </g>
+
+  <!-- ============ RIGHT ORBIT SYSTEM ============ -->
+  <g>
+    <!-- core -->
+    <circle cx="897" cy="115" r="11" fill="#F5C518" opacity="0.18" filter="url(#softglow)"/>
+    <circle cx="897" cy="115" r="4" fill="#FFF3C4" filter="url(#softglow)">
+      <animate attributeName="r" values="3.2;5;3.2" dur="2.9s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;1;0.8" dur="2.9s" repeatCount="indefinite"/>
+    </circle>
+    <!-- ring A (precessing) -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="360 897 115" to="0 897 115" dur="28s" repeatCount="indefinite"/>
+      <ellipse cx="897" cy="115" rx="60" ry="20" fill="none" stroke="url(#gold)" stroke-width="1" opacity="0.28"/>
+      <circle r="3" fill="#FFF3C4" filter="url(#softglow)">
+        <animateMotion dur="6.4s" begin="0.6s" repeatCount="indefinite" path="M 837,115 a 60,20 0 1,0 120,0 a 60,20 0 1,0 -120,0"/>
+      </circle>
+    </g>
+    <!-- ring B (counter-precessing) -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0 897 115" to="360 897 115" dur="34s" repeatCount="indefinite"/>
+      <ellipse cx="897" cy="115" rx="52" ry="34" fill="none" stroke="url(#gold)" stroke-width="1" opacity="0.24"/>
+      <circle r="3" fill="#FFE9A8" filter="url(#softglow)">
+        <animateMotion dur="7.9s" begin="1.4s" repeatCount="indefinite" path="M 845,115 a 52,34 0 1,0 104,0 a 52,34 0 1,0 -104,0"/>
+      </circle>
+    </g>
+    <!-- ring C (circular) -->
+    <g>
+      <ellipse cx="897" cy="115" rx="40" ry="40" fill="none" stroke="url(#gold)" stroke-width="1" opacity="0.18"/>
+      <circle r="2.6" fill="#FFF3C4" filter="url(#softglow)">
+        <animateMotion dur="5.3s" begin="0.9s" repeatCount="indefinite" path="M 857,115 a 40,40 0 1,0 80,0 a 40,40 0 1,0 -80,0"/>
+      </circle>
+    </g>
+  </g>
+
+  <!-- ============ TITLE ============ -->
+  <!-- top accent bar grows from center -->
+  <rect x="500" y="3" width="0" height="4" rx="2" fill="url(#gold)">
+    <animate attributeName="x" values="500;230" dur="1s" begin="0.2s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/>
+    <animate attributeName="width" values="0;540" dur="1s" begin="0.2s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/>
+  </rect>
+  <!-- light trace running along the accent bar -->
+  <circle r="2.6" fill="#FFF7D6" filter="url(#softglow)" opacity="0">
+    <animateMotion dur="4s" begin="1.4s" repeatCount="indefinite" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.4;1" path="M230,5 H770"/>
+    <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.05;0.35;0.4;1" dur="4s" begin="1.4s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- breathing halo behind the name -->
+  <text x="500" y="108" text-anchor="middle" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="62" font-weight="800" fill="#F5C518" filter="url(#bigglow)" opacity="0.16">Abdullah Mohamed
+    <animate attributeName="opacity" values="0.16;0.42;0.16" dur="4.5s" begin="0.3s" repeatCount="indefinite"/>
+  </text>
+
+  <!-- name -->
+  <g opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="0.3s" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" values="0 14;0 0" dur="0.9s" begin="0.3s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/>
+    <text x="500" y="108" text-anchor="middle" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="62" font-weight="800" fill="url(#gold)" filter="url(#glow)">Abdullah Mohamed</text>
+  </g>
+
+  <!-- shine sweep across the name (clipped to the letters) -->
+  <rect x="0" y="50" width="1000" height="82" fill="url(#shine)" mask="url(#nameMask)"/>
+
+  <!-- animated underline -->
+  <rect x="500" y="126" width="0" height="3" rx="1.5" fill="url(#gold)">
+    <animate attributeName="x" values="500;420" dur="0.7s" begin="1s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/>
+    <animate attributeName="width" values="0;160" dur="0.7s" begin="1s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/>
+  </rect>
+
+  <!-- subtitle -->
+  <text x="500" y="162" text-anchor="middle" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="21" font-weight="600" letter-spacing="4" fill="#E8D6A8" opacity="0">SENIOR SOFTWARE ENGINEER
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="0.8s" fill="freeze"/>
+  </text>
+
+  <!-- tagline -->
+  <text x="500" y="192" text-anchor="middle" font-family="'Fira Code', 'Courier New', monospace" font-size="15" fill="#9c8a5e" opacity="0">Mobile &#160;&#8226;&#160; Full-Stack &#160;&#8226;&#160; AI Products
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="1.1s" fill="freeze"/>
+  </text>
+</svg>
