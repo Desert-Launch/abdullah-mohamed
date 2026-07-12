@@ -30,7 +30,6 @@ export function TopBar({
   return (
     <header className="topbar">
       <a className="brand" href="#home" aria-label="Abdullah Mohamed home">
-        <span className="brand-mark">AM</span>
         <span>
           <strong>{lang === "ar" ? "عبدالله محمد" : "Abdullah Mohamed"}</strong>
           <small>{t.role}</small>

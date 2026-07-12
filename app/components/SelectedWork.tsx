@@ -9,7 +9,7 @@ export function SelectedWork({ t }: { t: Dictionary }) {
 
   return (
     <section id="work" className="section">
-      <div className="section-heading">
+      <div className="section-heading" data-reveal>
         <p className="eyebrow">{t.selectedWorkHeading.eyebrow}</p>
         <h2>{t.selectedWorkHeading.title}</h2>
         {t.selectedWorkHeading.body ? <p>{t.selectedWorkHeading.body}</p> : null}
@@ -20,7 +20,7 @@ export function SelectedWork({ t }: { t: Dictionary }) {
           const links = storeLinks[app.key] ?? {};
           const hasStore = isRealUrl(links.appStore) || isRealUrl(links.play);
           return (
-            <article className="work-card" key={app.key}>
+            <article className="work-card" key={app.key} data-reveal>
               <div className="work-card-head">
                 {app.image ? (
                   <img src={asset(app.image)} alt={`${app.title} logo`} loading="lazy" />

@@ -8,14 +8,22 @@ export function Hero({ t, socials }: { t: Dictionary; socials: Social[] }) {
     <section className="hero">
       <div className="hero-copy">
         <p className="eyebrow">{t.hero.eyebrow}</p>
-        <h1>{t.hero.title}</h1>
-        <p className="hero-role">{t.hero.roleLine}</p>
-        <p className="hero-tagline">{t.hero.tagline}</p>
-        <p className="hero-lead">{t.hero.lead}</p>
+        <h1>
+          {t.hero.title} <span className="hero-accent">{t.hero.titleAccent}</span>
+        </h1>
+        <p className="hero-lead">
+          {t.hero.lead} <em className="hero-em">{t.hero.leadEmphasis}</em>
+        </p>
 
         <div className="hero-actions">
           <a className="button primary" href={bookingHref}>
             {t.hero.primary}
+            <span className="button-icon button-icon--go" aria-hidden="true">
+              →
+            </span>
+          </a>
+          <a className="button ghost" href="#work">
+            {t.hero.work}
           </a>
           <a
             className="button ghost"
@@ -24,6 +32,9 @@ export function Hero({ t, socials }: { t: Dictionary; socials: Social[] }) {
             rel="noreferrer"
           >
             {t.hero.cv}
+            <span className="button-icon button-icon--down" aria-hidden="true">
+              ↓
+            </span>
           </a>
         </div>
 
@@ -32,21 +43,6 @@ export function Hero({ t, socials }: { t: Dictionary; socials: Social[] }) {
         </div>
       </div>
 
-      <aside className="hero-board" aria-label="Portfolio highlights">
-        <div className="availability-card">
-          <span className="status-dot" />
-          <p>{t.hero.availability}</p>
-        </div>
-
-        <div className="device-stack">
-          <img className="phone phone-main" src={asset("/images/jaweb1.webp")} alt="Jaweb mobile screen" />
-          <img className="phone phone-side" src={asset("/images/fastab1.webp")} alt="FasTap mobile screen" />
-          <div className="system-card">
-            <span>{t.hero.stackLabel}</span>
-            <strong>{t.hero.stack}</strong>
-          </div>
-        </div>
-      </aside>
     </section>
   );
 }

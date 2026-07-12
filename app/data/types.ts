@@ -105,12 +105,19 @@ export interface Heading {
 
 export interface HeroCopy {
   eyebrow: string;
+  /** Headline lead-in, rendered in default ink. */
   title: string;
+  /** Tail of the headline, rendered in the accent color (gold). */
+  titleAccent: string;
   roleLine: string;
   tagline: string;
   lead: string;
+  /** Italic emphasis phrase appended to the end of `lead`. */
+  leadEmphasis: string;
   primary: string;
   secondary: string;
+  /** Label for the "see selected work" hero button. */
+  work: string;
   cv: string;
   availability: string;
   stackLabel: string;

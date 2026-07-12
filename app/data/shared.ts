@@ -16,10 +16,26 @@ export const shared: {
     { src: "/images/apps_logos/fastap.webp", name: "FasTap" },
   ],
   socials: [
-    { label: "Email", href: "mailto:abdullah.mohamed102001@gmail.com", icon: "/icons/social/gmail.svg" },
-    { label: "WhatsApp", href: "https://wa.me/201111852544", icon: "/icons/social/whatsapp.svg" },
-    { label: "LinkedIn", href: "https://linkedin.com/in/abdullah-mohamed-3010", icon: "/icons/social/linkedin.svg" },
-    { label: "GitHub", href: "https://github.com/Abdullah3010", icon: "/icons/social/github.svg" },
+    {
+      label: "Email",
+      href: "mailto:abdullah.mohamed102001@gmail.com",
+      icon: "/icons/social/gmail.svg",
+    },
+    {
+      label: "WhatsApp",
+      href: "https://wa.me/201111852544",
+      icon: "/icons/social/whatsapp.svg",
+    },
+    {
+      label: "LinkedIn",
+      href: "https://linkedin.com/in/abdullah-mohamed-3010",
+      icon: "/icons/social/linkedin.svg",
+    },
+    {
+      label: "GitHub",
+      href: "https://github.com/Abdullah3010",
+      icon: "/icons/social/github.svg",
+    },
   ],
   stackGroups: [
     {
@@ -35,7 +51,8 @@ export const shared: {
     {
       file: "ai",
       label: { en: "AI & Real-Time", ar: "الذكاء الاصطناعي والفوري" },
-      names: "Azure OpenAI, Claude, ChatGPT, Cursor, GitHub Copilot, WebSocket, Socket.IO",
+      names:
+        "Azure OpenAI, Claude, ChatGPT, Cursor, GitHub Copilot, WebSocket, Socket.IO",
     },
     {
       file: "databases",
@@ -50,7 +67,8 @@ export const shared: {
     {
       file: "tools",
       label: { en: "Tools", ar: "الأدوات" },
-      names: "Git, GitHub, Bitbucket, Postman, Jira, Swagger, Confluence, Azure DevOps",
+      names:
+        "Git, GitHub, Bitbucket, Postman, Jira, Swagger, Confluence, Azure DevOps",
     },
     {
       file: "analytics",
@@ -66,7 +84,8 @@ export const shared: {
 
 /** Your Calendly / Cal.com booking link. Until this is a real https URL, the
  *  "Work with me" / "Book a call" buttons safely fall back to email. */
-export const bookingUrl = "https://calendly.com/abdullah-mohamed102001/book-a-call";
+export const bookingUrl =
+  "https://calendly.com/abdullah-mohamed102001/book-a-call";
 
 /** Headshot for the About section. Drop the file in `public/images/` and set
  *  the path here (e.g. "/images/abdullah.jpg"). Leave `null` to hide the photo
@@ -75,14 +94,16 @@ export const profilePhoto: string | null = "/images/abdullah.jpg";
 
 /** Per-app store links for the "Selected work" grid. Paste real URLs; empty
  *  strings render no button (so we never ship a dead link). */
-export const storeLinks: Record<string, { appStore?: string; play?: string }> = {
-  imox: { appStore: "", play: "" },
-  yolo: { appStore: "", play: "" },
-  fastap: { appStore: "", play: "" },
-  btc: { appStore: "", play: "" },
-  qfight: { appStore: "", play: "" },
-  almuslim: { appStore: "", play: "" },
-};
+export const storeLinks: Record<string, { appStore?: string; play?: string }> =
+  {
+    voicers: { appStore: "", play: "" },
+    imox: { appStore: "", play: "" },
+    yolo: { appStore: "", play: "" },
+    fastap: { appStore: "", play: "" },
+    btc: { appStore: "", play: "" },
+    qfight: { appStore: "", play: "" },
+    almuslim: { appStore: "", play: "" },
+  };
 
 /** Primary contact address, reused by the mailto fallbacks. */
 export const contactEmail = "abdullah.mohamed102001@gmail.com";
@@ -95,6 +116,7 @@ export const bookingHref = bookingUrl.startsWith("http")
 
 export const appImages = {
   faheem: "/images/apps_logos/faheem_ai.webp",
+  voicers: "/images/apps_logos/voicers.webp",
   imox: "/images/apps_logos/imox.webp",
   yolo: "/images/apps_logos/yolo.webp",
   revealsite: "/images/company_logos/revearsite.webp",
@@ -112,5 +134,5 @@ export const appImages = {
   almuslim: "/images/apps_logos/al_muslim.png",
   ezhal: "/images/apps_logos/ezhal.webp",
   ezhalShot: "/images/ezhal_shot1.webp",
-  xera: "/images/header.svg",
+  xera: "/images/apps_logos/xera.webp",
 };
