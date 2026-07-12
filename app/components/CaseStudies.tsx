@@ -5,7 +5,7 @@ function CaseStudyCard({ study, labels }: { study: CaseStudy; labels: Dictionary
   const gallery = study.shots?.slice(0, 3) ?? [];
 
   return (
-    <article className="case-card" id={`case-${study.slug}`}>
+    <article className="case-card" id={`case-${study.slug}`} data-reveal>
       <header className="case-header">
         {study.image ? (
           <img className="case-avatar" src={asset(study.image)} alt={`${study.title} app icon`} loading="lazy" />
@@ -86,7 +86,7 @@ export function CaseStudies({ t }: { t: Dictionary }) {
 
   return (
     <section id="cases" className="section">
-      <div className="section-heading">
+      <div className="section-heading" data-reveal>
         <p className="eyebrow">{t.caseStudiesHeading.eyebrow}</p>
         <h2>{t.caseStudiesHeading.title}</h2>
         {t.caseStudiesHeading.body ? <p>{t.caseStudiesHeading.body}</p> : null}

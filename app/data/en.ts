@@ -24,13 +24,16 @@ export const en: Dictionary = {
       },
     },
     hero: {
-      eyebrow: "Available for freelance builds and senior product roles",
-      title: "Abdullah Mohamed",
+      eyebrow: "Senior Software Engineer · Cairo, Egypt 🇪🇬 · Open to relocation 🌍",
+      title: "I build products that ship —",
+      titleAccent: "and survive production.",
       roleLine: "Senior Software Engineer · AI, Mobile & Full-Stack Products",
       tagline: "The engineer teams bring in when the product actually has to ship — and survive production.",
-      lead: "I turn unclear product ideas into shipped systems: AI features, Flutter apps, backend APIs, and the deployment pipelines that keep them running. 10+ apps in stores across 4 regions — not just screens.",
-      primary: "Work with me",
+      lead: "Cairo-based senior engineer, 3+ years shipping production apps end to end. Right now I'm building Faheem — Egypt's Ministry of Education AI platform with real-time voice-to-voice tutoring and AI-generated lessons. 7+ apps live across Egypt, Germany, the UAE, and the US. Flutter, Node.js, AWS — and comfortable adapting to",
+      leadEmphasis: "whatever the product needs.",
+      primary: "Start a project",
       secondary: "Start a project",
+      work: "See selected work",
       cv: "Download CV",
       availability: "Open to freelance, contracts, and product partnerships",
       stackLabel: "Core stack",
@@ -50,8 +53,8 @@ export const en: Dictionary = {
     },
     selectedWorkHeading: {
       eyebrow: "Selected work",
-      title: "More apps, shipped to stores.",
-      body: "A few of the other products I've built end-to-end — tap through to the stores.",
+      title: "More apps and product work.",
+      body: "A few of the other products I've built or materially contributed to, including shipped apps and private builds.",
     },
     caseLabels: {
       challenge: "The challenge",
@@ -136,6 +139,12 @@ export const en: Dictionary = {
     ],
     selectedWork: [
       {
+        key: "voicers",
+        title: "Voicers",
+        tagline: "Unpublished bilingual social audio platform for creators, VNotes, playlists, competitions, and audience engagement.",
+        image: appImages.voicers,
+      },
+      {
         key: "imox",
         title: "IMOX",
         tagline: "Video-first social shopping — sellers post reels, buyers check out in-feed.",
@@ -151,6 +160,7 @@ export const en: Dictionary = {
         key: "xera",
         title: "Xera Lab",
         tagline: "Full-stack dental case management platform — customer portal, admin dashboard, and Node.js API. Built and delivered to the client.",
+        image: appImages.xera,
       },
       {
         key: "fastap",
