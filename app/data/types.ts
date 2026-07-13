@@ -1,6 +1,6 @@
 export type Lang = "en" | "ar";
 export type Theme = "dark" | "light";
-export type Palette = "current" | "terracotta" | "teal";
+export type Palette = "current" | "terracotta" | "teal" | "gold";
 
 export type NavItem = [label: string, href: string];
 export type Proof = [value: string, label: string];

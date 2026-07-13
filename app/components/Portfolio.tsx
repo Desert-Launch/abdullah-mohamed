@@ -35,7 +35,7 @@ export function Portfolio() {
     if (el.dataset.theme === "light" || el.dataset.theme === "dark") setTheme(el.dataset.theme);
     if (el.lang === "ar" || el.lang === "en") setLang(el.lang);
     const p = el.dataset.palette;
-    if (p === "current" || p === "terracotta" || p === "teal") setPalette(p);
+    if (p === "current" || p === "terracotta" || p === "teal" || p === "gold") setPalette(p);
     setMounted(true);
   }, []);
 
@@ -201,6 +201,14 @@ export function Portfolio() {
 
   return (
     <div className="site-shell" data-theme={theme} data-palette={palette} data-lang={lang} dir={t.dir}>
+      {/* Living aurora — three blurred orbs drifting at glacial speed over the
+          static gradient wash. Pure transform animation on pre-painted layers
+          (compositor work, not repaints); static under reduced motion. */}
+      <div className="aurora-field" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
       <div className="scroll-progress" ref={progressRef} aria-hidden="true" />
       <TopBar
         t={t}

@@ -34,6 +34,7 @@
   --swatch-current: #8b7cf0;
   --swatch-terracotta: #ea580c;
   --swatch-teal: #14b8a6;
+  --swatch-gold: #d9b26a;
 }
 
 :root[data-theme="light"] {
@@ -224,6 +225,80 @@
   --accent-fg: #f8fafc;
 }
 
+/* --- Gold: warm obsidian + champagne gold (the "Elegant & High-End" model:
+   near-black warm base, one restrained metallic accent). Dark gold #d9b26a
+   is 9.4:1 on the paper; light bronze #7a5a14 is 5.9:1 on ivory — both pass
+   WCAG AA for the small eyebrow/label text the accent is used for. --- */
+:root[data-palette="gold"] {
+  color-scheme: dark;
+  --ink: #f5f1e6;
+  --ink-soft: #d9d2c0;
+  --muted: #a39274;
+  --paper: #14110c;
+  --surface: rgba(26, 22, 15, 0.86);
+  --surface-solid: #1a160f;
+  --surface-soft: #201a12;
+  --line: rgba(245, 241, 230, 0.12);
+  --gold: #d9b26a;
+  --gold-soft: rgba(217, 178, 106, 0.15);
+  --teal: #f5f1e6;
+  --teal-soft: rgba(245, 241, 230, 0.06);
+  --coral: #d9b26a;
+  --button-ink: #14110c;
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+  --topbar-bg: rgba(20, 17, 12, 0.55);
+  --hero-bg: #14110c;
+  --glass: rgba(26, 22, 15, 0.66);
+  --glass-strong: rgba(26, 22, 15, 0.78);
+  --glass-border: rgba(245, 241, 230, 0.14);
+  --glass-blur: 22px;
+  --aurora-1: rgba(217, 178, 106, 0.24);
+  --aurora-2: rgba(190, 120, 60, 0.13);
+  --aurora-3: rgba(217, 178, 106, 0.13);
+  --aurora-4: rgba(120, 190, 200, 0.07);
+  /* contract tokens */
+  --bg: #14110c;
+  --text: #f5f1e6;
+  --border: #3d3627;
+  --accent: #d9b26a;
+  --accent-fg: #14110c;
+}
+
+:root[data-palette="gold"][data-theme="light"] {
+  color-scheme: light;
+  --ink: #1b160d;
+  --ink-soft: #3c3423;
+  --muted: #6f6552;
+  --paper: #faf7ef;
+  --surface: rgba(255, 253, 246, 0.94);
+  --surface-solid: #fffdf6;
+  --surface-soft: #f1ead9;
+  --line: rgba(27, 22, 13, 0.12);
+  --gold: #7a5a14;
+  --gold-soft: rgba(122, 90, 20, 0.1);
+  --teal: #1b160d;
+  --teal-soft: rgba(27, 22, 13, 0.045);
+  --coral: #7a5a14;
+  --button-ink: #faf7ef;
+  --shadow: 0 24px 70px rgba(70, 50, 10, 0.1);
+  --topbar-bg: rgba(250, 247, 239, 0.7);
+  --hero-bg: #faf7ef;
+  --glass: rgba(255, 253, 246, 0.72);
+  --glass-strong: rgba(255, 253, 246, 0.82);
+  --glass-border: rgba(27, 22, 13, 0.1);
+  --glass-blur: 22px;
+  --aurora-1: rgba(122, 90, 20, 0.14);
+  --aurora-2: rgba(190, 120, 60, 0.1);
+  --aurora-3: rgba(122, 90, 20, 0.08);
+  --aurora-4: rgba(70, 150, 160, 0.06);
+  /* contract tokens */
+  --bg: #faf7ef;
+  --text: #1b160d;
+  --border: #e5dcc6;
+  --accent: #7a5a14;
+  --accent-fg: #faf7ef;
+}
+
 /* Expose the seven contract tokens on the current palette too, so every
    palette answers the same interface (values mapped from existing tokens). */
 :root {
@@ -279,6 +354,78 @@ body::after {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* ------------------------------------------------------------------------
+   LIVING AURORA
+   Three big blurred orbs drift very slowly over the body's static aurora
+   wash. Each orb is painted once (radial gradient + blur) and then only
+   transformed — compositor-friendly. Movement is deliberately below the
+   threshold of conscious tracking (~45–70s loops): the page feels alive
+   without the motion ever competing with content.
+   ------------------------------------------------------------------------ */
+.aurora-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.aurora-field span {
+  position: absolute;
+  width: 58vmax;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(64px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.aurora-field span:nth-child(1) {
+  top: -20vmax;
+  inset-inline-start: -14vmax;
+  background: radial-gradient(circle, var(--aurora-1), transparent 62%);
+  animation: auroraDriftA 46s ease-in-out infinite alternate;
+}
+
+.aurora-field span:nth-child(2) {
+  bottom: -22vmax;
+  inset-inline-end: -16vmax;
+  background: radial-gradient(circle, var(--aurora-3), transparent 60%);
+  animation: auroraDriftB 58s ease-in-out infinite alternate;
+}
+
+.aurora-field span:nth-child(3) {
+  top: 8vh;
+  inset-inline-end: -20vmax;
+  width: 44vmax;
+  background: radial-gradient(circle, var(--aurora-2), transparent 58%);
+  animation: auroraDriftC 70s ease-in-out infinite alternate;
+}
+
+@keyframes auroraDriftA {
+  to {
+    transform: translate3d(8vw, 7vh, 0) scale(1.12);
+  }
+}
+
+@keyframes auroraDriftB {
+  to {
+    transform: translate3d(-7vw, -6vh, 0) scale(1.16);
+  }
+}
+
+@keyframes auroraDriftC {
+  to {
+    transform: translate3d(-9vw, 9vh, 0) scale(0.92);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-field span {
+    animation: none;
+  }
 }
 
 img {
@@ -447,6 +594,9 @@ img {
 .palette-swatch--teal {
   --swatch: var(--swatch-teal);
 }
+.palette-swatch--gold {
+  --swatch: var(--swatch-gold);
+}
 
 .palette-swatch span {
   transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -559,11 +709,34 @@ img {
 }
 
 .hero {
+  position: relative;
   min-height: auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
   padding: 18px 0 22px;
+}
+
+/* Faint dot grid behind the hero copy, masked so it dissolves before it can
+   compete with the headline — a quiet engineering-blueprint texture. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -18px -8vw -10px;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--ink) 17%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 26px 26px;
+  mask-image: radial-gradient(62% 78% at 28% 22%, #000, transparent 78%);
+  -webkit-mask-image: radial-gradient(62% 78% at 28% 22%, #000, transparent 78%);
+}
+
+.site-shell[dir="rtl"] .hero::before {
+  mask-image: radial-gradient(62% 78% at 72% 22%, #000, transparent 78%);
+  -webkit-mask-image: radial-gradient(62% 78% at 72% 22%, #000, transparent 78%);
 }
 
 .hero-copy {

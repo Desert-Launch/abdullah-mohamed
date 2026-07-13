@@ -23,6 +23,7 @@ export const ar: Dictionary = {
       current: "افتراضي",
       terracotta: "تراكوتا",
       teal: "تركوازي",
+      gold: "ذهبي",
     },
   },
   hero: {

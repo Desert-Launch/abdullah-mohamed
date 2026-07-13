@@ -23,6 +23,7 @@ export const en: Dictionary = {
       current: "Default",
       terracotta: "Terracotta",
       teal: "Teal",
+      gold: "Gold",
     },
   },
   hero: {

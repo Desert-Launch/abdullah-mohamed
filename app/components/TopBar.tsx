@@ -1,6 +1,6 @@
 import type { Dictionary, Lang, Palette, Theme } from "../data/types";
 
-const PALETTES: Palette[] = ["current", "terracotta", "teal"];
+const PALETTES: Palette[] = ["current", "terracotta", "teal", "gold"];
 
 interface TopBarProps {
   t: Dictionary;

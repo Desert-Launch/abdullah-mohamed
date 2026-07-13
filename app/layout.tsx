@@ -102,7 +102,7 @@ const personJsonLd = {
 
 // Runs before paint to apply the saved theme/language and avoid a flash of the
 // default theme (FOUC) on load, especially the LTR->RTL flip for Arabic visitors.
-const noFlashScript = `(function(){try{var d=document.documentElement;d.dataset.revealReady='1';var t=localStorage.getItem('portfolio-theme');d.dataset.theme=(t==='light'||t==='dark')?t:'dark';var p=localStorage.getItem('portfolio-palette');d.dataset.palette=(p==='terracotta'||p==='teal')?p:'current';var l=localStorage.getItem('portfolio-lang');if(l==='ar'||l==='en'){d.lang=l;d.dir=l==='ar'?'rtl':'ltr';}}catch(e){d.dataset.theme='dark';d.dataset.palette='current';}})();`;
+const noFlashScript = `(function(){try{var d=document.documentElement;d.dataset.revealReady='1';var t=localStorage.getItem('portfolio-theme');d.dataset.theme=(t==='light'||t==='dark')?t:'dark';var p=localStorage.getItem('portfolio-palette');d.dataset.palette=(p==='terracotta'||p==='teal'||p==='gold')?p:'current';var l=localStorage.getItem('portfolio-lang');if(l==='ar'||l==='en'){d.lang=l;d.dir=l==='ar'?'rtl':'ltr';}}catch(e){d.dataset.theme='dark';d.dataset.palette='current';}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
