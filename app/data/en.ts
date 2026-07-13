@@ -13,6 +13,7 @@ export const en: Dictionary = {
   ],
   role: "Senior Software Engineer",
   menuLabel: "Toggle menu",
+  backToTop: "Back to top",
   themeToggle: "Light",
   darkToggle: "Dark",
   langToggle: "عربي",

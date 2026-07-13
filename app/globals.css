@@ -261,6 +261,21 @@ body {
   min-height: 100vh;
 }
 
+/* Film grain — a barely-there noise texture over everything, the premium
+   finish used across award-winning portfolio sites. Static (not animated),
+   pointer-transparent, and cheap: one small tiled SVG. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -870,6 +885,25 @@ p {
     0 0 0 1px color-mix(in srgb, var(--gold) 28%, transparent);
 }
 
+/* Magnetic CTAs — --tx/--ty are written by a pointermove handler in
+   Portfolio.tsx; the button drifts toward the cursor and springs back. */
+.button[data-magnetic] {
+  transition:
+    transform 260ms cubic-bezier(0.34, 1.3, 0.5, 1),
+    box-shadow 200ms ease,
+    background 200ms ease,
+    border-color 200ms ease;
+}
+
+.button[data-magnetic]:hover {
+  transform: translate(var(--tx, 0px), calc(var(--ty, 0px) - 2px));
+}
+
+.button[data-magnetic]:active {
+  transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(0.97);
+  transition-duration: 70ms;
+}
+
 .button.ghost {
   border-color: var(--glass-border);
   background: var(--glass);
@@ -917,7 +951,19 @@ p {
   transition:
     transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 280ms ease,
-    box-shadow 280ms ease;
+    box-shadow 280ms ease,
+    opacity 280ms ease,
+    filter 280ms ease;
+}
+
+/* Focus the hovered card by quieting its siblings — the rest of the grid
+   dims and desaturates slightly. Pointer devices only. */
+@media (hover: hover) {
+  :is(.work-grid, .service-grid, .nested-app-grid):hover
+    > :is(.work-card, .service-card, .app-card):not(:hover) {
+    opacity: 0.55;
+    filter: saturate(0.8);
+  }
 }
 
 .proof-grid article:hover,
@@ -1113,18 +1159,71 @@ p {
   font-weight: 800;
 }
 
-.company-logo-grid,
-.product-logo-grid {
+.company-logo-grid {
   display: grid;
   gap: 12px;
-}
-
-.company-logo-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.product-logo-grid {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+/* Product logo marquee — one seamless auto-scrolling loop (two identical
+   groups, track slides half its width). Linear easing is correct here: it's
+   a continuous loop, not a UI transition. Pauses on hover and keyboard
+   focus; the reduced-motion fallback below turns it into a static row. */
+.logo-marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.logo-marquee-track {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  animation: marqueeScroll 52s linear infinite;
+}
+
+.logo-marquee:hover .logo-marquee-track,
+.logo-marquee:focus-within .logo-marquee-track {
+  animation-play-state: paused;
+}
+
+.logo-marquee-group {
+  display: flex;
+  gap: 12px;
+}
+
+.logo-marquee .product-brand-card {
+  width: 148px;
+  flex: 0 0 auto;
+}
+
+@keyframes marqueeScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - 6px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .logo-marquee-track {
+    animation: none;
+    width: auto;
+  }
+
+  .logo-marquee-group {
+    flex-wrap: wrap;
+  }
+
+  .logo-marquee-group[aria-hidden="true"] {
+    display: none;
+  }
 }
 
 .brand-card {
@@ -1744,7 +1843,9 @@ span.case-avatar {
   transition:
     transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
     background 0.3s ease,
-    box-shadow 0.3s ease;
+    box-shadow 0.3s ease,
+    opacity 0.3s ease,
+    filter 0.3s ease;
 }
 
 /* Soft specular sheen catching light in the top-left corner. */
@@ -2197,7 +2298,9 @@ span.case-avatar {
     transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 280ms ease,
     box-shadow 280ms ease,
-    background 280ms ease;
+    background 280ms ease,
+    opacity 280ms ease,
+    filter 280ms ease;
 }
 
 .work-card::after {
@@ -2213,6 +2316,13 @@ span.case-avatar {
   opacity: 0;
   transform: scale(0.7);
   transition: opacity 280ms ease, transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 3D lean toward the cursor — --rx/--ry come from the same pointermove
+   listener that drives the glow. Falls back to the plain lift when the JS
+   hasn't set the vars (touch, reduced motion). */
+.work-card[data-tilt]:hover {
+  transform: perspective(760px) translateY(-6px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
 }
 
 .work-card:hover {
@@ -2614,6 +2724,48 @@ span.case-avatar {
   margin-top: 24px;
 }
 
+/* Floating back-to-top — fades in after the first screenful (toggled by the
+   scroll handler in Portfolio.tsx). */
+.back-to-top {
+  position: fixed;
+  bottom: 22px;
+  inset-inline-end: 22px;
+  z-index: 55;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  background: var(--glass-strong);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  color: var(--ink);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition:
+    opacity 220ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 180ms ease;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  border-color: color-mix(in srgb, var(--gold) 48%, var(--glass-border));
+  transform: translateY(-2px);
+}
+
+.back-to-top:active {
+  transform: translateY(0) scale(0.94);
+}
+
 .site-footer {
   position: relative;
   width: 100vw;
@@ -2819,10 +2971,6 @@ span.case-avatar {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .product-logo-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
   .footer-main {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -3017,8 +3165,7 @@ span.case-avatar {
     min-height: 240px;
   }
 
-  .company-logo-grid,
-  .product-logo-grid {
+  .company-logo-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 

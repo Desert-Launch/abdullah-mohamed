@@ -13,6 +13,7 @@ export const ar: Dictionary = {
   ],
   role: "مهندس برمجيات أول",
   menuLabel: "فتح القائمة",
+  backToTop: "العودة إلى الأعلى",
   themeToggle: "فاتح",
   darkToggle: "داكن",
   langToggle: "EN",

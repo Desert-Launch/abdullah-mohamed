@@ -51,7 +51,7 @@ export function ContactForm({ form, socials }: { form: ContactFormCopy; socials:
           onChange={(event) => setMessage(event.target.value)}
         />
       </label>
-      <button className="button secondary" type="submit">
+      <button className="button secondary" type="submit" data-magnetic>
         {form.send}
       </button>
 

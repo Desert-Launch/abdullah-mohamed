@@ -16,7 +16,7 @@ export function Hero({ t, socials }: { t: Dictionary; socials: Social[] }) {
         </p>
 
         <div className="hero-actions">
-          <a className="button primary" href={bookingHref}>
+          <a className="button primary" href={bookingHref} data-magnetic>
             {t.hero.primary}
             <span className="button-icon button-icon--go" aria-hidden="true">
               →

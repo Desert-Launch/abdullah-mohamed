@@ -27,6 +27,7 @@ export function Portfolio() {
   const [palette, setPalette] = useState<Palette>("current");
   const [activeSection, setActiveSection] = useState("");
   const progressRef = useRef<HTMLDivElement>(null);
+  const backToTopRef = useRef<HTMLAnchorElement>(null);
   const t = copy[lang];
 
   useEffect(() => {
@@ -107,10 +108,50 @@ export function Portfolio() {
       const rect = card.getBoundingClientRect();
       card.style.setProperty("--mx", `${event.clientX - rect.left}px`);
       card.style.setProperty("--my", `${event.clientY - rect.top}px`);
+      // Cards that opt into [data-tilt] also lean toward the cursor (subtle
+      // 3D tilt, max ±4deg — clamped by the 0.5 range of px/py).
+      if (card.hasAttribute("data-tilt")) {
+        const px = (event.clientX - rect.left) / rect.width - 0.5;
+        const py = (event.clientY - rect.top) / rect.height - 0.5;
+        card.style.setProperty("--rx", `${(-py * 8).toFixed(2)}deg`);
+        card.style.setProperty("--ry", `${(px * 8).toFixed(2)}deg`);
+      }
     };
     document.addEventListener("pointermove", onMove, { passive: true });
     return () => document.removeEventListener("pointermove", onMove);
   }, []);
+
+  // Magnetic CTAs: buttons with [data-magnetic] drift a few pixels toward the
+  // cursor while hovered and spring back on leave. Pointer devices only.
+  useEffect(() => {
+    if (!window.matchMedia("(hover: hover)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const els = Array.from(document.querySelectorAll<HTMLElement>("[data-magnetic]"));
+    if (els.length === 0) return;
+    const pull = 0.22;
+    const onMove = (event: PointerEvent) => {
+      const el = event.currentTarget as HTMLElement;
+      const rect = el.getBoundingClientRect();
+      const dx = event.clientX - (rect.left + rect.width / 2);
+      const dy = event.clientY - (rect.top + rect.height / 2);
+      el.style.setProperty("--tx", `${(dx * pull).toFixed(1)}px`);
+      el.style.setProperty("--ty", `${(dy * pull).toFixed(1)}px`);
+    };
+    const onLeave = (event: PointerEvent) => {
+      const el = event.currentTarget as HTMLElement;
+      el.style.setProperty("--tx", "0px");
+      el.style.setProperty("--ty", "0px");
+    };
+    els.forEach((el) => {
+      el.addEventListener("pointermove", onMove);
+      el.addEventListener("pointerleave", onLeave);
+    });
+    return () =>
+      els.forEach((el) => {
+        el.removeEventListener("pointermove", onMove);
+        el.removeEventListener("pointerleave", onLeave);
+      });
+  }, [lang]);
 
   // Reading progress: scale the fixed top bar with scroll position. Direct
   // transform writes (rAF-throttled), so no layout/transition cost.
@@ -124,6 +165,7 @@ export function Portfolio() {
       const max = doc.scrollHeight - window.innerHeight;
       const progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
       el.style.setProperty("--progress", String(progress));
+      backToTopRef.current?.classList.toggle("is-visible", window.scrollY > 600);
     };
     const request = () => {
       if (!raf) raf = requestAnimationFrame(update);
@@ -217,17 +259,30 @@ export function Portfolio() {
               <h3>{t.appsLabel}</h3>
               <span>{shared.products.length}</span>
             </div>
-            <div className="product-logo-grid">
-              {shared.products.map((item) => (
-                <article className="brand-card product-brand-card" key={item.name}>
-                  {item.src ? (
-                    <img src={asset(item.src)} alt="" loading="lazy" />
-                  ) : (
-                    <span className="brand-fallback" aria-hidden="true">{item.name.charAt(0)}</span>
-                  )}
-                  <strong>{item.name}</strong>
-                </article>
-              ))}
+            {/* Auto-scrolling marquee (paused on hover/focus; falls back to a
+                wrapped static row for reduced-motion users). dir=ltr keeps the
+                loop math identical in Arabic — brand names are not translated. */}
+            <div className="logo-marquee" dir="ltr">
+              <div className="logo-marquee-track">
+                {[false, true].map((isDuplicate) => (
+                  <div
+                    className="logo-marquee-group"
+                    key={isDuplicate ? "dup" : "main"}
+                    aria-hidden={isDuplicate || undefined}
+                  >
+                    {shared.products.map((item) => (
+                      <article className="brand-card product-brand-card" key={item.name}>
+                        {item.src ? (
+                          <img src={asset(item.src)} alt="" loading="lazy" />
+                        ) : (
+                          <span className="brand-fallback" aria-hidden="true">{item.name.charAt(0)}</span>
+                        )}
+                        <strong>{item.name}</strong>
+                      </article>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -285,7 +340,7 @@ export function Portfolio() {
             <p className="eyebrow">{t.contact.eyebrow}</p>
             <h2>{t.contact.title}</h2>
             <p>{t.contact.body}</p>
-            <a className="button primary contact-book" href={bookingHref}>
+            <a className="button primary contact-book" href={bookingHref} data-magnetic>
               {t.contact.book}
             </a>
           </div>
@@ -293,6 +348,10 @@ export function Portfolio() {
           <ContactForm form={t.contact.form} socials={shared.socials} />
         </section>
       </main>
+
+      <a className="back-to-top" href="#home" ref={backToTopRef} aria-label={t.backToTop}>
+        <span aria-hidden="true">↑</span>
+      </a>
 
       <Footer t={t} lang={lang} socials={shared.socials} />
     </div>

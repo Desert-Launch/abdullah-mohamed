@@ -147,6 +147,8 @@ export interface Dictionary {
   nav: NavItem[];
   role: string;
   menuLabel: string;
+  /** aria-label for the floating back-to-top button. */
+  backToTop: string;
   themeToggle: string;
   darkToggle: string;
   langToggle: string;
