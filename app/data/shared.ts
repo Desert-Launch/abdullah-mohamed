@@ -1,19 +1,37 @@
 import type { Social, StackGroup } from "./types";
 
 export const shared: {
-  companyLogos: { src: string; name: string }[];
+  companies: { src: string; name: string }[];
+  products: { src?: string; name: string }[];
   socials: Social[];
   stackGroups: StackGroup[];
 } = {
-  companyLogos: [
+  companies: [
     { src: "/images/company_logos/appenza.webp", name: "Appenza Studio" },
     { src: "/images/company_logos/dibhoalding.webp", name: "Dibho Holding" },
     { src: "/images/company_logos/revearsite.webp", name: "RevealSite" },
     { src: "/images/company_logos/zeyada.webp", name: "Zeyada" },
+  ],
+  products: [
     { src: "/images/apps_logos/faheem_ai.webp", name: "Faheem" },
+    { src: "/images/apps_logos/voicers.webp", name: "Voicers" },
     { src: "/images/apps_logos/imox.webp", name: "imox" },
+    { src: "/images/apps_logos/yolo.webp", name: "YOLO" },
+    { src: "/images/apps_logos/yolo_patient.webp", name: "YOLO Patient" },
     { src: "/images/apps_logos/jaweb.webp", name: "Jaweb" },
     { src: "/images/apps_logos/fastap.webp", name: "FasTap" },
+    { src: "/images/apps_logos/btc.webp", name: "BTC" },
+    { src: "/images/apps_logos/xera.webp", name: "Xera Lab" },
+    { src: "/images/apps_logos/ezhal.webp", name: "Ezhal" },
+    { src: "/images/company_logos/zeyada.webp", name: "Zeyada School" },
+    { src: "/images/apps_logos/jd.webp", name: "J&D Pharmacy" },
+    { src: "/images/apps_logos/medical_center.webp", name: "Medical Center" },
+    { src: "/images/apps_logos/quickrx.webp", name: "QuickRX" },
+    { src: "/images/apps_logos/holland.webp", name: "Holland Pharmacy" },
+    { src: "/images/apps_logos/q_fight_gym.png", name: "Q-Fight Gym" },
+    { src: "/images/apps_logos/al_muslim.png", name: "Al-Muslim" },
+    { src: "/images/apps_logos/talia.png", name: "Talia" },
+    { name: "Ofoq" },
   ],
   socials: [
     {
@@ -132,6 +150,7 @@ export const appImages = {
   btc: "/images/apps_logos/btc.webp",
   qfight: "/images/apps_logos/q_fight_gym.png",
   almuslim: "/images/apps_logos/al_muslim.png",
+  talia: "/images/apps_logos/talia.png",
   ezhal: "/images/apps_logos/ezhal.webp",
   ezhalShot: "/images/ezhal_shot1.webp",
   xera: "/images/apps_logos/xera.webp",

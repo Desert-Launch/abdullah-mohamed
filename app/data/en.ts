@@ -5,6 +5,7 @@ export const en: Dictionary = {
   dir: "ltr",
   nav: [
     ["Case studies", "#cases"],
+    ["Experience", "#experience"],
     ["What I do", "#services"],
     ["Selected work", "#work"],
     ["About", "#about"],
@@ -47,7 +48,10 @@ export const en: Dictionary = {
     ["4 regions", "Egypt, Gulf, Europe, US"],
   ],
   proofNote: "Live on the App Store & Google Play.",
-  logosLabel: "Products and teams I have worked with",
+  logosLabel: "Built with teams. Shipped for real users.",
+  logosIntro: "Companies I have partnered with and products I have helped take from an idea to production.",
+  companiesLabel: "Companies",
+  appsLabel: "Apps & products",
   caseStudiesHeading: {
     eyebrow: "Selected case studies",
     title: "Two products, from unclear problem to production.",
@@ -57,6 +61,12 @@ export const en: Dictionary = {
     eyebrow: "Selected work",
     title: "More apps and product work.",
     body: "A few of the other products I've built or materially contributed to, including shipped apps and private builds.",
+  },
+  selectedWorkLabels: {
+    products: "products",
+    productBuild: "Product build",
+    appStore: "App Store",
+    googlePlay: "Google Play",
   },
   caseLabels: {
     challenge: "The challenge",
@@ -245,6 +255,7 @@ export const en: Dictionary = {
         {
           title: "Talia",
           type: "Multi-tenant school platform",
+          image: appImages.talia,
           body: "Multi-tenant K-12 school management platform for national education ministries. Building the React/SvelteKit web client with client-side role-based access across school, multi-school, and ministry scopes; under evaluation by the education ministries of Egypt, Qatar, and Libya.",
           stack: ["React", "SvelteKit", "TypeScript", "Tailwind CSS", "RBAC"],
         },
@@ -373,6 +384,20 @@ export const en: Dictionary = {
     },
   ],
   freelanceProjects: [
+    {
+      title: "Al-Muslim",
+      type: "Islamic daily companion",
+      image: appImages.almuslim,
+      body: "A daily Muslim companion for reading the Quran, adhkar, and duas, with accurate prayer times, qibla direction, and smart reminders.",
+      stack: ["Flutter", "REST API", "Notifications", "Geolocation"],
+    },
+    {
+      title: "Q-Fight Gym",
+      type: "Muay Thai gym app",
+      image: appImages.qfight,
+      body: "The official app for a professional Muay Thai gym in Qatar, connecting members with a training program led by Thai world-title fighters.",
+      stack: ["Flutter", "Clean Architecture", "Firebase", "Payments"],
+    },
     {
       title: "Jaweb",
       type: "Interactive quiz game",

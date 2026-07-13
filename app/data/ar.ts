@@ -5,6 +5,7 @@ export const ar: Dictionary = {
   dir: "rtl",
   nav: [
     ["دراسات حالة", "#cases"],
+    ["الخبرات", "#experience"],
     ["ماذا أقدّم", "#services"],
     ["أعمال مختارة", "#work"],
     ["نبذة", "#about"],
@@ -46,7 +47,10 @@ export const ar: Dictionary = {
     ["4 مناطق", "مصر، الخليج، أوروبا، أمريكا"],
   ],
   proofNote: "متاح على App Store و Google Play.",
-  logosLabel: "منتجات وفرق عملت معها",
+  logosLabel: "بُنيت مع فرق. وأُطلقت لمستخدمين حقيقيين.",
+  logosIntro: "شركات تعاونت معها ومنتجات ساهمت في تحويلها من فكرة إلى منتج فعلي.",
+  companiesLabel: "الشركات",
+  appsLabel: "التطبيقات والمنتجات",
   caseStudiesHeading: {
     eyebrow: "دراسات حالة مختارة",
     title: "منتجان، من مشكلة غير واضحة إلى الإنتاج.",
@@ -56,6 +60,12 @@ export const ar: Dictionary = {
     eyebrow: "أعمال مختارة",
     title: "تطبيقات ومنتجات أخرى.",
     body: "بعض المنتجات التي بنيتها أو ساهمت فيها بشكل فعلي، بين تطبيقات منشورة ومشاريع خاصة.",
+  },
+  selectedWorkLabels: {
+    products: "منتجات",
+    productBuild: "منتج رقمي",
+    appStore: "App Store",
+    googlePlay: "Google Play",
   },
   caseLabels: {
     challenge: "التحدي",
@@ -241,6 +251,7 @@ export const ar: Dictionary = {
         {
           title: "Talia",
           type: "منصة إدارة مدارس متعددة المستأجرين",
+          image: appImages.talia,
           body: "منصة إدارة مدارس K-12 متعددة المستأجرين لوزارات التعليم. بناء واجهة الويب بـ React/SvelteKit مع صلاحيات وصول حسب الدور على مستوى المدرسة، مجموعة المدارس، والوزارة؛ تحت التقييم من وزارات التعليم في مصر، قطر، وليبيا.",
           stack: ["React", "SvelteKit", "TypeScript", "Tailwind CSS", "RBAC"],
         },
@@ -369,6 +380,20 @@ export const ar: Dictionary = {
     },
   ],
   freelanceProjects: [
+    {
+      title: "المسلم",
+      type: "رفيق إسلامي يومي",
+      image: appImages.almuslim,
+      body: "رفيق يومي لقراءة القرآن الكريم والأذكار والأدعية، مع مواقيت صلاة دقيقة، اتجاه القبلة، وتذكيرات ذكية.",
+      stack: ["Flutter", "REST API", "Notifications", "Geolocation"],
+    },
+    {
+      title: "Q-Fight Gym",
+      type: "تطبيق صالة مواي تاي",
+      image: appImages.qfight,
+      body: "التطبيق الرسمي لصالة مواي تاي احترافية في قطر، يربط الأعضاء ببرنامج تدريبي يقوده أبطال تايلانديون حاصلون على ألقاب عالمية.",
+      stack: ["Flutter", "Clean Architecture", "Firebase", "Payments"],
+    },
     {
       title: "Jaweb",
       type: "لعبة مسابقات تفاعلية",

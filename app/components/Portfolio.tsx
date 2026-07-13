@@ -8,6 +8,7 @@ import type { Lang, Palette, Theme } from "../data/types";
 import { TopBar } from "./TopBar";
 import { Hero } from "./Hero";
 import { CaseStudies } from "./CaseStudies";
+import { ExperienceTimeline } from "./ExperienceTimeline";
 import { SelectedWork } from "./SelectedWork";
 import { ContactForm } from "./ContactForm";
 import { Footer } from "./Footer";
@@ -115,17 +116,52 @@ export function Portfolio() {
         </section>
 
         <section className="logo-section" aria-label="Brands and products" data-reveal>
-          <p>{t.logosLabel}</p>
-          <div className="logo-rail">
-            {shared.companyLogos.map((logo) => (
-              <span className="logo-chip" key={logo.src}>
-                <img src={asset(logo.src)} alt={logo.name} loading="lazy" />
-              </span>
-            ))}
+          <div className="logo-section-heading">
+            <div>
+              <span className="eyebrow">{t.companiesLabel} + {t.appsLabel}</span>
+              <h2>{t.logosLabel}</h2>
+            </div>
+            <p>{t.logosIntro}</p>
+          </div>
+
+          <div className="logo-group">
+            <div className="logo-group-heading">
+              <h3>{t.companiesLabel}</h3>
+              <span>{shared.companies.length}</span>
+            </div>
+            <div className="company-logo-grid">
+              {shared.companies.map((item) => (
+                <article className="brand-card company-brand-card" key={item.name}>
+                  <img src={asset(item.src)} alt="" loading="lazy" />
+                  <strong>{item.name}</strong>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="logo-group">
+            <div className="logo-group-heading">
+              <h3>{t.appsLabel}</h3>
+              <span>{shared.products.length}</span>
+            </div>
+            <div className="product-logo-grid">
+              {shared.products.map((item) => (
+                <article className="brand-card product-brand-card" key={item.name}>
+                  {item.src ? (
+                    <img src={asset(item.src)} alt="" loading="lazy" />
+                  ) : (
+                    <span className="brand-fallback" aria-hidden="true">{item.name.charAt(0)}</span>
+                  )}
+                  <strong>{item.name}</strong>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
         <CaseStudies t={t} />
+
+        <ExperienceTimeline t={t} />
 
         <section id="services" className="section split-section">
           <div className="section-heading sticky-heading" data-reveal>

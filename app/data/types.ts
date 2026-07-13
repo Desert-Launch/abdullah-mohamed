@@ -159,8 +159,17 @@ export interface Dictionary {
   /** Store-availability line under the proof strip, e.g. "Live on the App Store & Google Play". */
   proofNote: string;
   logosLabel: string;
+  logosIntro: string;
+  companiesLabel: string;
+  appsLabel: string;
   caseStudiesHeading: Heading;
   selectedWorkHeading: Heading;
+  selectedWorkLabels: {
+    products: string;
+    productBuild: string;
+    appStore: string;
+    googlePlay: string;
+  };
   workHeading: Heading;
   freelanceHeading: Heading;
   servicesHeading: Heading;
