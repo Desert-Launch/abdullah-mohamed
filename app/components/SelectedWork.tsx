@@ -26,7 +26,9 @@ export function SelectedWork({ t }: { t: Dictionary }) {
           const links = storeLinks[app.key] ?? {};
           const hasStore = isRealUrl(links.appStore) || isRealUrl(links.play);
           return (
-            <article className="work-card" key={app.key} data-reveal>
+            <article className="work-card" key={app.key} data-reveal data-glow>
+              <span className="card-spotlight" aria-hidden="true" />
+              <span className="card-edge" aria-hidden="true" />
               <span className="work-card-number" aria-hidden="true">
                 {String(index + 1).padStart(2, "0")}
               </span>

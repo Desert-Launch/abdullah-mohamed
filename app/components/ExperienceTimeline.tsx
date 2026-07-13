@@ -5,7 +5,9 @@ function ProductGrid({ products }: { products: Product[] }) {
   return (
     <div className="nested-app-grid">
       {products.map((app) => (
-        <article className="app-card" key={app.title}>
+        <article className="app-card" key={app.title} data-glow>
+          <span className="card-spotlight" aria-hidden="true" />
+          <span className="card-edge" aria-hidden="true" />
           <div className="app-card-head">
             {app.image ? (
               <img src={asset(app.image)} alt="" loading="lazy" />

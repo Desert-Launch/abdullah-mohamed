@@ -281,6 +281,34 @@ img {
   font-family: var(--font-cairo), "Tahoma", system-ui, sans-serif;
 }
 
+/* Reading progress — a thin accent line pinned above the topbar. --progress
+   is written by a rAF-throttled scroll listener in Portfolio.tsx. */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  height: 3px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--gold) 55%, transparent),
+    var(--gold)
+  );
+  transform: scaleX(var(--progress, 0));
+  transform-origin: 0 50%;
+}
+
+.site-shell[dir="rtl"] .scroll-progress {
+  transform-origin: 100% 50%;
+  background: linear-gradient(
+    270deg,
+    color-mix(in srgb, var(--gold) 55%, transparent),
+    var(--gold)
+  );
+}
+
 .topbar {
   position: sticky;
   top: 0;
@@ -347,6 +375,16 @@ img {
   font-size: 0.84rem;
   font-weight: 500;
   cursor: pointer;
+  transition: border-color 180ms ease, transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.switch-button:hover {
+  border-color: color-mix(in srgb, var(--gold) 48%, var(--glass-border));
+  transform: translateY(-1px);
+}
+
+.switch-button:active {
+  transform: translateY(0) scale(0.96);
 }
 
 /* Palette selector — a segmented control of preview swatches. The swatch fill
@@ -395,8 +433,16 @@ img {
   --swatch: var(--swatch-teal);
 }
 
+.palette-swatch span {
+  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 .palette-swatch:hover span {
-  transform: scale(1.08);
+  transform: scale(1.18);
+}
+
+.palette-swatch:active span {
+  transform: scale(0.92);
 }
 
 .palette-swatch.is-active {
@@ -411,13 +457,35 @@ img {
 }
 
 .site-nav a {
+  position: relative;
   color: var(--ink-soft);
   font-size: 0.92rem;
   font-weight: 500;
+  transition: color 180ms ease;
 }
 
-.site-nav a:hover {
+/* Underline indicator — grows from the center on hover and on the section
+   currently in view (scrollspy in Portfolio.tsx sets .is-active). */
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -6px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-nav a:hover,
+.site-nav a.is-active {
   color: var(--gold);
+}
+
+.site-nav a:hover::after,
+.site-nav a.is-active::after {
+  transform: scaleX(1);
 }
 
 .menu-toggle {
@@ -780,7 +848,7 @@ p {
 }
 
 .button:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.97);
   transition-duration: 70ms;
 }
 
@@ -796,11 +864,22 @@ p {
   box-shadow: 0 14px 34px color-mix(in srgb, var(--gold) 24%, transparent);
 }
 
+.button.primary:hover {
+  box-shadow:
+    0 18px 42px color-mix(in srgb, var(--ink) 22%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--gold) 28%, transparent);
+}
+
 .button.ghost {
   border-color: var(--glass-border);
   background: var(--glass);
   backdrop-filter: blur(12px) saturate(140%);
   -webkit-backdrop-filter: blur(12px) saturate(140%);
+}
+
+.button.ghost:hover {
+  border-color: color-mix(in srgb, var(--gold) 48%, var(--glass-border));
+  color: var(--ink);
 }
 
 .hero-board {
@@ -961,9 +1040,12 @@ p {
   font-family: var(--font-sans), var(--font-cairo), system-ui, sans-serif;
   font-size: 2rem;
   line-height: 1;
+  /* Fixed-width digits so the CountUp animation doesn't jitter. */
+  font-variant-numeric: tabular-nums;
 }
 
-.proof-grid span {
+/* Direct child only — the stat inside <strong> holds the CountUp span. */
+.proof-grid article > span {
   display: block;
   margin-top: 10px;
   color: var(--muted);
@@ -1217,6 +1299,16 @@ span.case-avatar {
   border-radius: var(--radius);
   border: 1px solid var(--line);
   background: var(--surface-soft);
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 280ms ease,
+    box-shadow 280ms ease;
+}
+
+.case-shots img:hover {
+  transform: translateY(-4px) scale(1.03);
+  border-color: color-mix(in srgb, var(--gold) 45%, var(--line));
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
 }
 
 /* Impact metrics on product cards */
@@ -1425,6 +1517,12 @@ span.case-avatar {
   color: var(--ink-soft);
   font-size: 0.84rem;
   font-weight: 600;
+  transition: border-color 180ms ease, color 180ms ease;
+}
+
+.tag-row span:hover {
+  border-color: color-mix(in srgb, var(--gold) 42%, var(--line));
+  color: var(--ink);
 }
 
 .tag-row.compact span {
@@ -1611,9 +1709,17 @@ span.case-avatar {
 
 /* Liquid glass: frosted backdrop blur over the page aurora, a bright specular
    top rim + faint perimeter rim (no hard border), and a soft corner sheen. */
-.app-card {
+/* Cards that host the cursor-tracking glow layers. --mx/--my are written by a
+   delegated pointermove listener in Portfolio.tsx. */
+[data-glow] {
   --mx: 50%;
   --my: 50%;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.app-card {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -1688,8 +1794,10 @@ span.case-avatar {
   opacity: 1;
 }
 
-/* Keep real content above the mouse-tracking glow layers. */
-.app-card > *:not(.card-spotlight):not(.card-edge) {
+/* Keep real content above the mouse-tracking glow layers. :where() keeps the
+   specificity at the bare attribute selector so later rules (e.g. the
+   absolutely-positioned .work-card-number) can still override position. */
+[data-glow] > :where(*:not(.card-spotlight):not(.card-edge)) {
   position: relative;
   z-index: 1;
 }
@@ -1736,11 +1844,19 @@ span.case-avatar {
   mask-composite: exclude;
 }
 
-.app-card:hover .card-spotlight,
-.app-card:focus-within .card-spotlight,
-.app-card:hover .card-edge,
-.app-card:focus-within .card-edge {
+[data-glow]:hover .card-spotlight,
+[data-glow]:focus-within .card-spotlight,
+[data-glow]:hover .card-edge,
+[data-glow]:focus-within .card-edge {
   opacity: 1;
+}
+
+/* Glow only makes sense with a real pointer — keep it off for touch. */
+@media (hover: none) {
+  .card-spotlight,
+  .card-edge {
+    display: none;
+  }
 }
 
 /* Pin the technology tags to the bottom of the card. */
@@ -1910,11 +2026,16 @@ span.case-avatar {
   padding: 22px;
 }
 
-.service-card span {
+.service-card .service-card-number {
   display: inline-flex;
   margin-bottom: 18px;
   color: var(--gold);
   font-weight: 600;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), color 240ms ease;
+}
+
+.service-card:hover .service-card-number {
+  transform: translateY(-2px) scale(1.12);
 }
 
 .service-card p {
@@ -2814,6 +2935,16 @@ span.case-avatar {
     padding: 12px;
     border-radius: var(--radius);
     background: var(--surface-soft);
+  }
+
+  /* In the dropdown menu the underline indicator reads wrong — mark the
+     active section with a tinted row instead. */
+  .site-nav a::after {
+    display: none;
+  }
+
+  .site-nav a.is-active {
+    background: var(--gold-soft);
   }
 
   h1 {
