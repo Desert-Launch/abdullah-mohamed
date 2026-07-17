@@ -35,6 +35,9 @@
   --swatch-terracotta: #ea580c;
   --swatch-teal: #14b8a6;
   --swatch-gold: #d9b26a;
+  /* Form feedback (contact form success/error lines) */
+  --success: #6ee7a0;
+  --danger: #f8867f;
 }
 
 :root[data-theme="light"] {
@@ -50,6 +53,8 @@
   --line: rgba(26, 23, 18, 0.12);
   --gold: #5b4bc4;
   --gold-soft: rgba(91, 75, 196, 0.1);
+  --success: #15803d;
+  --danger: #b3261e;
   --teal: #1a1712;
   --teal-soft: rgba(26, 23, 18, 0.045);
   --coral: #5b4bc4;
@@ -1244,7 +1249,7 @@ p {
 
 .proof-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   margin: 70px 0 30px 0;
 }
@@ -1344,6 +1349,11 @@ p {
    focus; the reduced-motion fallback below turns it into a static row. */
 .logo-marquee {
   overflow: hidden;
+  /* Vertical breathing room inside the clip box, cancelled by the negative
+     margin, so the hover lift (translateY(-3px) + glow) isn't cut off at the
+     top while the horizontal loop stays clipped. */
+  padding-block: 10px;
+  margin-block: -10px;
   mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
 }
@@ -1583,6 +1593,33 @@ span.case-avatar {
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
 }
 
+/* Orientation-aware variants (classes set by ShotGallery.tsx once images
+   load). Landscape shots keep their natural ratio and stack under each
+   other instead of being letterboxed into portrait cells. */
+.case-shots.shots-mixed {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* height: 0 + min-height: 100% stops the tall portrait from driving the row
+   heights — the stacked landscape shots size the rows, and the portrait
+   fills whatever the two rows add up to. */
+.case-shots.shots-mixed img:not(.is-landscape) {
+  grid-row: 1 / span 2;
+  height: 0;
+  min-height: 100%;
+  aspect-ratio: auto;
+}
+
+.case-shots.shots-mixed img.is-landscape,
+.case-shots.shots-landscape img {
+  aspect-ratio: auto;
+  height: auto;
+}
+
+.case-shots.shots-landscape {
+  grid-template-columns: 1fr;
+}
+
 /* Impact metrics on product cards */
 .card-metrics {
   display: flex;
@@ -1751,8 +1788,23 @@ span.case-avatar {
 }
 
 .testimonial-card figcaption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.testimonial-card figcaption > div {
   display: grid;
   gap: 2px;
+}
+
+.testimonial-avatar {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--line);
 }
 
 .testimonial-card figcaption strong {
@@ -2871,6 +2923,8 @@ span.case-avatar {
 
 .contact-direct-icons {
   display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -3379,6 +3433,242 @@ span.case-avatar {
 
   .footer-bottom {
     display: grid;
+  }
+}
+
+/* ── Hero availability line ─────────────────────────────────────────────── */
+
+.hero-currently {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.pulse-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+  55% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+/* Reduced motion kills the animation (global rule above); keep a static ring
+   so the dot still reads as a highlight rather than a stray pixel. */
+@media (prefers-reduced-motion: reduce) {
+  .pulse-dot {
+    box-shadow: 0 0 0 4px var(--gold-soft);
+  }
+}
+
+/* ── Selected-work status badges (retired / unreleased apps) ────────────── */
+
+.work-status.is-muted {
+  color: var(--muted);
+}
+
+.work-status.is-muted span {
+  background: var(--muted);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--muted) 16%, transparent);
+}
+
+/* ── Engagement plan cards ──────────────────────────────────────────────── */
+
+.plan-card h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.plan-card ul li::marker {
+  color: var(--gold);
+}
+
+.plan-cta {
+  margin-top: 22px;
+  width: fit-content;
+}
+
+/* ── Process strip ("How working with me looks") ────────────────────────── */
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.process-step {
+  padding: 22px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: var(--glass);
+  box-shadow: var(--shadow), inset 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+}
+
+.process-number {
+  display: inline-flex;
+  margin-bottom: 14px;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.process-step h3 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.process-step p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* ── FAQ (native details/summary — zero-JS accordions) ──────────────────── */
+
+.faq-list {
+  display: grid;
+  gap: 12px;
+  max-width: 860px;
+}
+
+.faq-item {
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: var(--glass);
+  box-shadow: var(--shadow), inset 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+}
+
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--ink);
+  font-weight: 500;
+  line-height: 1.5;
+  border-radius: var(--radius);
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+}
+
+.faq-chevron {
+  flex: none;
+  color: var(--gold);
+  font-size: 1.15rem;
+  font-weight: 500;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faq-item[open] .faq-chevron {
+  transform: rotate(45deg);
+}
+
+.faq-item > p {
+  margin: 0;
+  padding: 0 22px 20px;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+
+/* ── Contact form feedback + copy-email ─────────────────────────────────── */
+
+/* Honeypot — never shown to people; bots that fill it are dropped client-side. */
+.contact-botcheck {
+  display: none;
+}
+
+.contact-form .button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.contact-status {
+  margin: 0;
+  min-height: 1.4em;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.contact-status .is-success {
+  color: var(--success);
+}
+
+.contact-status .is-error {
+  color: var(--danger);
+}
+
+.copy-email {
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.copy-email:hover,
+.copy-email:focus-visible {
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+/* ── Responsive for the new sections ────────────────────────────────────── */
+
+@media (max-width: 1023px) {
+  .process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .process-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

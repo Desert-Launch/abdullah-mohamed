@@ -110,18 +110,58 @@ export const bookingUrl =
  *  — About stays text-only, no broken image. */
 export const profilePhoto: string | null = "/images/abdullah.jpg";
 
-/** Per-app store links for the "Selected work" grid. Paste real URLs; empty
- *  strings render no button (so we never ship a dead link). */
-export const storeLinks: Record<string, { appStore?: string; play?: string }> =
-  {
-    voicers: { appStore: "", play: "" },
-    imox: { appStore: "", play: "" },
-    yolo: { appStore: "", play: "" },
-    fastap: { appStore: "", play: "" },
-    btc: { appStore: "", play: "" },
-    qfight: { appStore: "", play: "" },
-    almuslim: { appStore: "", play: "" },
-  };
+/** Lifecycle of a shipped app. Clients retiring an app (business ended,
+ *  taken off the stores) is normal — we label it honestly instead of showing
+ *  a dead link or claiming "live". */
+export type AppStatus = "live" | "retired" | "private" | "unreleased";
+
+/** Per-app status + store links for the "Selected work" grid. Only real
+ *  https URLs render buttons (so we never ship a dead link); non-live apps
+ *  get a status badge instead. `year` feeds the "Shipped {year} · Retired"
+ *  badge when known. */
+export const storeLinks: Record<
+  string,
+  { status: AppStatus; year?: string; appStore?: string; play?: string }
+> = {
+  faheem: {
+    status: "live",
+    appStore: "https://apps.apple.com/us/app/faheem-ai/id6743378136",
+    play: "https://play.google.com/store/apps/details?id=com.moe.fahem",
+  },
+  voicers: { status: "unreleased" },
+  imox: { status: "retired" },
+  yolo: {
+    status: "live",
+    appStore: "https://apps.apple.com/us/developer/yolo-gmbh-germany/id1644853629",
+    play: "https://play.google.com/store/apps/developer?id=Dib+GmbH",
+  },
+  fastap: { status: "retired", year: "2023" },
+  btc: {
+    status: "live",
+    appStore: "https://apps.apple.com/us/app/btc-e-shop/id6757194529",
+    play: "https://play.google.com/store/apps/details?id=com.bulliontradingcenter.btc.eshop",
+  },
+  // Google Play build is still under review — the Play button appears when
+  // the listing goes live and the URL lands here.
+  qfight: {
+    status: "live",
+    year: "2026",
+    appStore: "https://apps.apple.com/us/app/q-fight-gym/id6759147399",
+  },
+  almuslim: {
+    status: "live",
+    year: "2026",
+    appStore:
+      "https://apps.apple.com/us/app/al-muslim-%D8%A7%D9%84%D9%85%D8%B3%D9%84%D9%85/id6757352101",
+    play: "https://play.google.com/store/apps/details?id=com.elmuslim.app",
+  },
+  xera: { status: "private", year: "2024" },
+};
+
+/** Web3Forms access key for the contact form (designed to be public — it only
+ *  routes submissions to the owner's inbox). When empty, the form falls back
+ *  to the mailto: flow. */
+export const web3formsKey = "5b4a9d2c-da3d-47d3-b267-a5ab12484b18";
 
 /** Primary contact address, reused by the mailto fallbacks. */
 export const contactEmail = "abdullah.mohamed102001@gmail.com";
@@ -131,6 +171,13 @@ export const contactEmail = "abdullah.mohamed102001@gmail.com";
 export const bookingHref = bookingUrl.startsWith("http")
   ? bookingUrl
   : `mailto:${contactEmail}`;
+
+/** Headshots for the testimonials section (from LinkedIn recommendations). */
+export const testimonialImages = {
+  ahmedFarid: "/images/testimonials/ahmed-farid.webp",
+  mohamadZakaria: "/images/testimonials/mohamad-zakaria.webp",
+  mohamedSayed: "/images/testimonials/mohamed-sayed.webp",
+};
 
 export const appImages = {
   faheem: "/images/apps_logos/faheem_ai.webp",

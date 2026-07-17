@@ -1,4 +1,4 @@
-import { appImages } from "./shared";
+import { appImages, testimonialImages } from "./shared";
 import type { Dictionary } from "./types";
 
 export const en: Dictionary = {
@@ -34,22 +34,26 @@ export const en: Dictionary = {
     roleLine: "Senior Software Engineer · AI, Mobile & Full-Stack Products",
     tagline:
       "The engineer teams bring in when the product actually has to ship — and survive production.",
-    lead: "Cairo-based senior engineer, 5+ years shipping production apps end to end. Right now I'm building Faheem — Egypt's Ministry of Education AI platform with real-time voice-to-voice tutoring and AI-generated lessons. 10+ apps live across Egypt, Germany, the UAE, and the US. Flutter, Node.js, AWS — and comfortable adapting to",
+    lead: "Cairo-based senior engineer, 5+ years shipping production apps end to end. Right now I'm building Faheem — Egypt's Ministry of Education AI platform with real-time voice-to-voice tutoring and AI-generated lessons. 10+ apps shipped across Egypt, Germany, the UAE, and the US. Flutter, Node.js, AWS — and comfortable adapting to",
     leadEmphasis: "whatever the product needs.",
     primary: "Start a project",
     secondary: "Start a project",
     work: "See selected work",
     cv: "Download CV",
     availability: "Open to freelance, contracts, and product partnerships",
+    currently:
+      "Currently building Faheem & Talia at Appenza, shipping Zikr in late July — taking new projects from August 2026",
     stackLabel: "Core stack",
     stack: "Flutter + Node.js + PostgreSQL + AWS",
     socialLabel: "Find me on",
   },
   proof: [
     ["10+", "apps shipped to stores"],
+    ["20,000+", "students on Faheem"],
+    ["5+", "years shipping production"],
     ["4 regions", "Egypt, Gulf, Europe, US"],
   ],
-  proofNote: "Live on the App Store & Google Play.",
+  proofNote: "Shipped to the App Store & Google Play.",
   logosLabel: "Built with teams. Shipped for real users.",
   logosIntro: "Companies I have partnered with and products I have helped take from an idea to production.",
   companiesLabel: "Companies",
@@ -69,6 +73,9 @@ export const en: Dictionary = {
     productBuild: "Product build",
     appStore: "App Store",
     googlePlay: "Google Play",
+    shipped: "Shipped",
+    retired: "Retired",
+    unreleased: "Unreleased",
   },
   caseLabels: {
     challenge: "The challenge",
@@ -98,7 +105,58 @@ export const en: Dictionary = {
   plansHeading: {
     eyebrow: "Engagement plans",
     title: "Simple offers for different stages.",
+    body: "Every engagement starts with a free intro call and a written scope — you know the price before any code is written.",
   },
+  plansCta: "Let's talk",
+  processHeading: {
+    eyebrow: "Process",
+    title: "How working with me looks.",
+    body: "From first call to handoff — built so you always know what's happening and what it costs.",
+  },
+  process: [
+    {
+      title: "Intro call",
+      body: "A free 30-minute call. You describe the product and what's blocking you; I tell you honestly whether and how I can help.",
+    },
+    {
+      title: "Scoped plan",
+      body: "You get a written scope with milestones, a timeline, and a price — no open-ended hourly mystery.",
+    },
+    {
+      title: "Weekly slices",
+      body: "I ship a testable slice every week, so you watch the product grow instead of waiting for a big reveal.",
+    },
+    {
+      title: "Handoff",
+      body: "Deployment, documentation, and a codebase the next engineer can maintain. The code is yours.",
+    },
+  ],
+  faqHeading: {
+    eyebrow: "FAQ",
+    title: "Questions clients usually ask.",
+  },
+  faq: [
+    {
+      q: "Where are you based — does the timezone work for US, Europe, or Gulf teams?",
+      a: "I'm in Cairo (GMT+2/+3): one to two hours from Europe, the same workday as the Gulf, and a solid morning overlap with the US East Coast. My clients so far have been in Germany, the US, Qatar, and Kuwait.",
+    },
+    {
+      q: "How do we communicate during a project?",
+      a: "A shared channel (Slack or WhatsApp), a demo of what shipped every week, and a written summary at every milestone. You never have to ask what the status is.",
+    },
+    {
+      q: "Who owns the code?",
+      a: "You do. Everything is delivered in your repositories with documentation and deployment access. Handoff quality is part of the service — no lock-in.",
+    },
+    {
+      q: "Do you work in English or Arabic?",
+      a: "Both, fluently — including building fully bilingual, RTL-ready products. This site is one.",
+    },
+    {
+      q: "How does pricing work?",
+      a: "Fixed price for scoped builds (see the engagement plans), or a monthly rate for ongoing partner work. Every engagement starts with a free intro call and a written quote.",
+    },
+  ],
   testimonialsHeading: {
     eyebrow: "What people say",
     title: "Feedback from teams and clients.",
@@ -111,6 +169,11 @@ export const en: Dictionary = {
       type: "Arabic AI tutoring platform",
       context: "Appenza Studio · product team",
       image: appImages.faheem,
+      shots: [
+        "/images/shots/faheem1.webp",
+        "/images/shots/faheem2.webp",
+        "/images/shots/faheem3.webp",
+      ],
       summary:
         "The core of an Arabic-first AI tutor now used by 20,000+ K-12 students.",
       challenge:
@@ -133,12 +196,22 @@ export const en: Dictionary = {
         "Firebase",
         "Clean Architecture",
       ],
+      links: [
+        {
+          label: "App Store",
+          href: "https://apps.apple.com/us/app/faheem-ai/id6743378136",
+        },
+        {
+          label: "Google Play",
+          href: "https://play.google.com/store/apps/details?id=com.moe.fahem",
+        },
+      ],
     },
     {
       slug: "jaweb",
       title: "Jaweb",
       type: "Competitive trivia game",
-      context: "Independent build · sole engineer",
+      context: "Independent build · shipped 2025 · retired",
       image: appImages.jaweb,
       shots: [
         "/images/jaweb1.webp",
@@ -265,6 +338,11 @@ export const en: Dictionary = {
           title: "BTC",
           type: "Gold & jewelry commerce app",
           image: appImages.btc,
+          shots: [
+            "/images/shots/btc1.webp",
+            "/images/shots/btc2.webp",
+            "/images/shots/btc3.webp",
+          ],
           body: "Commerce app for one of Egypt's largest gold and jewelry houses. Built the customer storefront and B2B merchant wholesale-ordering apps from a single shared Flutter codebase over a GraphQL API.",
           stack: [
             "Flutter",
@@ -301,6 +379,11 @@ export const en: Dictionary = {
           title: "YOLO",
           type: "Clinic management system",
           image: appImages.yolo,
+          shots: [
+            "/images/shots/yolo1.webp",
+            "/images/shots/yolo2.webp",
+            "/images/shots/yolo3.webp",
+          ],
           body: "Clinic operations product covering HR, doctors, patients, appointments, inventory, billing, and multi-region feature delivery.",
           stack: ["Flutter", "Healthcare", "Optimization", "Multi-region"],
           metrics: [
@@ -513,20 +596,28 @@ export const en: Dictionary = {
       ],
     },
   ],
+  // Excerpts from LinkedIn recommendations (full texts in assets/linkedin.json).
   testimonials: [
     {
-      sample: true,
       quote:
-        "Replace this with a real quote from a client or teammate — one or two sentences on what you shipped and the result. Ask them to name a concrete outcome.",
-      name: "Client or teammate name",
-      role: "Role · Company",
+        "Abdullah demonstrated an impressive aptitude for grasping complex technical concepts swiftly. His analytical skills and thoughtful approach to problem-solving make him a key contributor to our team's success.",
+      name: "Mohamed Sayed",
+      role: "AI Lead · Appenza",
+      image: testimonialImages.mohamedSayed,
     },
     {
-      sample: true,
       quote:
-        "A second short quote works well here. Specifics beat praise: “cut our release time in half”, “app finally stable in production”, “handled the whole build solo.”",
-      name: "Client or teammate name",
-      role: "Role · Company",
+        "Abdullah combines deep technical expertise with a clear, approachable leadership style. He has contributed significantly to our projects with his ability to solve complex problems efficiently and his commitment to quality.",
+      name: "Ahmed Farid",
+      role: "Senior Software Engineer · Recovery Advisers",
+      image: testimonialImages.ahmedFarid,
+    },
+    {
+      quote:
+        "Abdullah is an exceptional Flutter developer whose talent and enthusiasm make him an asset to any team. During our year working together, his problem-solving skills and ability to overcome challenges consistently impressed me.",
+      name: "Mohamad Zakaria",
+      role: "Senior Software QA Engineer · Yassir",
+      image: testimonialImages.mohamadZakaria,
     },
   ],
   about: {
@@ -547,6 +638,11 @@ export const en: Dictionary = {
       email: "Your email",
       message: "What do you need built, fixed, or launched?",
       send: "Send message",
+      sending: "Sending…",
+      success: "Message sent — I'll reply within 24 hours.",
+      error: "Couldn't send right now — please reach me directly below.",
+      copyEmail: "Copy email",
+      copied: "Copied!",
       directLabel: "Or reach me directly",
     },
   },

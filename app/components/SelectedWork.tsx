@@ -23,8 +23,19 @@ export function SelectedWork({ t }: { t: Dictionary }) {
 
       <div className="work-grid">
         {t.selectedWork.map((app, index) => {
-          const links = storeLinks[app.key] ?? {};
-          const hasStore = isRealUrl(links.appStore) || isRealUrl(links.play);
+          const links = storeLinks[app.key];
+          const hasStore = isRealUrl(links?.appStore) || isRealUrl(links?.play);
+          // Honest lifecycle badge for apps without live store links: clients
+          // retiring an app is normal — say so instead of implying "live".
+          const labels = t.selectedWorkLabels;
+          const status =
+            links?.status === "retired"
+              ? links.year
+                ? `${labels.shipped} ${links.year} · ${labels.retired}`
+                : labels.retired
+              : links?.status === "unreleased"
+                ? labels.unreleased
+                : labels.productBuild;
           return (
             <article className="work-card" key={app.key} data-reveal data-glow data-tilt>
               <span className="card-spotlight" aria-hidden="true" />
@@ -47,21 +58,23 @@ export function SelectedWork({ t }: { t: Dictionary }) {
               <p className="work-card-tagline">{app.tagline}</p>
               {hasStore ? (
                 <div className="work-stores">
-                  {isRealUrl(links.appStore) ? (
+                  {isRealUrl(links?.appStore) ? (
                     <a className="store-pill" href={links.appStore} target="_blank" rel="noreferrer">
-                      {t.selectedWorkLabels.appStore}<span aria-hidden="true">↗</span>
+                      {labels.appStore}<span aria-hidden="true">↗</span>
                     </a>
                   ) : null}
-                  {isRealUrl(links.play) ? (
+                  {isRealUrl(links?.play) ? (
                     <a className="store-pill" href={links.play} target="_blank" rel="noreferrer">
-                      {t.selectedWorkLabels.googlePlay}<span aria-hidden="true">↗</span>
+                      {labels.googlePlay}<span aria-hidden="true">↗</span>
                     </a>
                   ) : null}
                 </div>
               ) : (
-                <div className="work-status">
+                <div
+                  className={`work-status${links?.status === "retired" || links?.status === "unreleased" ? " is-muted" : ""}`}
+                >
                   <span aria-hidden="true" />
-                  {t.selectedWorkLabels.productBuild}
+                  {status}
                 </div>
               )}
             </article>

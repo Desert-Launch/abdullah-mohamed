@@ -38,6 +38,11 @@ export function Hero({ t, socials }: { t: Dictionary; socials: Social[] }) {
           </a>
         </div>
 
+        <p className="hero-currently">
+          <span className="pulse-dot" aria-hidden="true" />
+          {t.hero.currently}
+        </p>
+
         <div className="hero-social" aria-label={t.hero.socialLabel}>
           <SocialLinks socials={socials} size={26} />
         </div>

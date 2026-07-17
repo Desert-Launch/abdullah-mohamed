@@ -69,8 +69,23 @@ export interface Testimonial {
   quote: string;
   name: string;
   role: string;
-  /** Marks placeholder content to be swapped for a real client quote. */
+  /** Optional headshot shown next to the attribution. */
+  image?: string;
+  /** Marks placeholder content to be swapped for a real client quote.
+   *  Sample testimonials are never rendered — the section hides itself
+   *  until at least one real quote exists. */
   sample?: boolean;
+}
+
+/** One step in the "How working with me looks" strip. */
+export interface ProcessStep {
+  title: string;
+  body: string;
+}
+
+export interface FaqItem {
+  q: string;
+  a: string;
 }
 
 export interface Experience {
@@ -120,6 +135,9 @@ export interface HeroCopy {
   work: string;
   cv: string;
   availability: string;
+  /** Live status line ("Currently: … — taking new projects from …"),
+   *  rendered with a pulsing dot under the hero actions. */
+  currently: string;
   stackLabel: string;
   stack: string;
   socialLabel: string;
@@ -130,6 +148,15 @@ export interface ContactFormCopy {
   email: string;
   message: string;
   send: string;
+  /** Submit button label while the request is in flight. */
+  sending: string;
+  /** Status line after a successful submit. */
+  success: string;
+  /** Status line when the submit fails (points at the direct links below). */
+  error: string;
+  /** "Copy email" button label and its transient copied-state label. */
+  copyEmail: string;
+  copied: string;
   directLabel: string;
 }
 
@@ -171,12 +198,23 @@ export interface Dictionary {
     productBuild: string;
     appStore: string;
     googlePlay: string;
+    /** Status badges for apps without live store links. `shipped` prefixes
+     *  the year on retired apps: "Shipped 2023 · Retired". */
+    shipped: string;
+    retired: string;
+    unreleased: string;
   };
   workHeading: Heading;
   freelanceHeading: Heading;
   servicesHeading: Heading;
   stackHeading: Heading;
   plansHeading: Heading;
+  /** CTA label at the bottom of each plan card (links to #contact). */
+  plansCta: string;
+  processHeading: Heading;
+  process: ProcessStep[];
+  faqHeading: Heading;
+  faq: FaqItem[];
   testimonialsHeading: Heading;
   about: {
     eyebrow: string;

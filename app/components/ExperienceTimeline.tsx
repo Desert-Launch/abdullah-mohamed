@@ -1,5 +1,6 @@
 import type { Dictionary, Product } from "../data/types";
 import { asset } from "../lib/asset";
+import { ShotGallery } from "./ShotGallery";
 
 function ProductGrid({ products }: { products: Product[] }) {
   return (
@@ -34,6 +35,8 @@ function ProductGrid({ products }: { products: Product[] }) {
               ))}
             </div>
           ) : null}
+
+          {app.shots?.length ? <ShotGallery shots={app.shots.slice(0, 3)} title={app.title} /> : null}
 
           <div className="tag-row compact">
             {app.stack.map((item) => (

@@ -29,6 +29,9 @@ export function Portfolio() {
   const progressRef = useRef<HTMLDivElement>(null);
   const backToTopRef = useRef<HTMLAnchorElement>(null);
   const t = copy[lang];
+  // Placeholder quotes never render — the section only appears once at least
+  // one real (non-sample) testimonial exists in the dictionaries.
+  const testimonials = t.testimonials.filter((item) => !item.sample);
 
   useEffect(() => {
     const el = document.documentElement;
@@ -319,6 +322,57 @@ export function Portfolio() {
           </div>
         </section>
 
+        <section id="plans" className="section">
+          <div className="section-heading" data-reveal>
+            <p className="eyebrow">{t.plansHeading.eyebrow}</p>
+            <h2>{t.plansHeading.title}</h2>
+            {t.plansHeading.body ? <p>{t.plansHeading.body}</p> : null}
+          </div>
+          <div className="plans-grid">
+            {t.plans.map((plan) => (
+              <article
+                className={`plan-card${plan.featured ? " featured" : ""}`}
+                key={plan.name}
+                data-reveal
+                data-glow
+              >
+                <span className="card-spotlight" aria-hidden="true" />
+                <span className="card-edge" aria-hidden="true" />
+                <p>{plan.fit}</p>
+                <h3>{plan.name}</h3>
+                <span>{plan.body}</span>
+                <ul>
+                  {plan.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <a className="button ghost plan-cta" href="#contact">
+                  {t.plansCta}
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="process" className="section">
+          <div className="section-heading" data-reveal>
+            <p className="eyebrow">{t.processHeading.eyebrow}</p>
+            <h2>{t.processHeading.title}</h2>
+            {t.processHeading.body ? <p>{t.processHeading.body}</p> : null}
+          </div>
+          <ol className="process-grid">
+            {t.process.map((step, index) => (
+              <li className="process-step" key={step.title} data-reveal>
+                <span className="process-number" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
         <SelectedWork t={t} />
 
         <section id="about" className="section about-section">
@@ -340,6 +394,58 @@ export function Portfolio() {
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
+          </div>
+        </section>
+
+        {testimonials.length > 0 ? (
+          <section id="testimonials" className="section">
+            <div className="section-heading" data-reveal>
+              <p className="eyebrow">{t.testimonialsHeading.eyebrow}</p>
+              <h2>{t.testimonialsHeading.title}</h2>
+              {t.testimonialsHeading.body ? <p>{t.testimonialsHeading.body}</p> : null}
+            </div>
+            <div className="testimonial-grid">
+              {testimonials.map((item) => (
+                <figure className="testimonial-card" key={item.name} data-reveal>
+                  <blockquote>{item.quote}</blockquote>
+                  <figcaption>
+                    {item.image ? (
+                      <img
+                        className="testimonial-avatar"
+                        src={asset(item.image)}
+                        alt=""
+                        loading="lazy"
+                      />
+                    ) : null}
+                    <div>
+                      <strong>{item.name}</strong>
+                      <span>{item.role}</span>
+                    </div>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        <section id="faq" className="section">
+          <div className="section-heading" data-reveal>
+            <p className="eyebrow">{t.faqHeading.eyebrow}</p>
+            <h2>{t.faqHeading.title}</h2>
+            {t.faqHeading.body ? <p>{t.faqHeading.body}</p> : null}
+          </div>
+          <div className="faq-list" data-reveal>
+            {t.faq.map((item) => (
+              <details className="faq-item" key={item.q}>
+                <summary>
+                  {item.q}
+                  <span className="faq-chevron" aria-hidden="true">
+                    +
+                  </span>
+                </summary>
+                <p>{item.a}</p>
+              </details>
+            ))}
           </div>
         </section>
 
