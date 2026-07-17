@@ -110,13 +110,22 @@ The codebase already follows good a11y practice; keep it that way:
 
 ## Notable specifics
 
-- The **contact form is `mailto:`-based** (`ContactForm.tsx`) — it opens the
-  user's mail client; there is no backend or form API.
+- The **contact form submits via Web3Forms** (`ContactForm.tsx`, key in
+  `shared.ts`) — client-side POST, no backend. If the key is emptied it falls
+  back to the original `mailto:` flow. There's a honeypot field and
+  success/error strings in the dictionaries.
 - The `--gold` token currently resolves to a purple (`#8b7cf0`); the comments
   still describe an "Obsidian & Gold" palette. Treat the token as the source
   of truth, not the comment, and change the token if adjusting the accent.
-- `Testimonials` may include `sample: true` placeholder quotes (see the
-  `Testimonial` type) — swap these for real client quotes when available.
+- Testimonials are real quotes (LinkedIn recommendations, excerpted; full
+  texts in `assets/linkedin.json`). Any testimonial marked `sample: true` is
+  filtered out at render time — the section hides itself if none are real.
+- **App lifecycle honesty**: `storeLinks` in `shared.ts` carries a `status`
+  (`live | retired | private | unreleased`) per app. Only real https URLs
+  render store buttons; non-live apps get a status badge. Never claim "live"
+  in copy for the aggregate numbers — say "shipped".
+- Analytics is opt-in via `NEXT_PUBLIC_ANALYTICS_SRC` / `_ID` env vars at
+  build time (see `layout.tsx`); unset means no script is emitted.
 
 ## Design skills
 

@@ -34,6 +34,10 @@
   --swatch-current: #8b7cf0;
   --swatch-terracotta: #ea580c;
   --swatch-teal: #14b8a6;
+  --swatch-gold: #d9b26a;
+  /* Form feedback (contact form success/error lines) */
+  --success: #6ee7a0;
+  --danger: #f8867f;
 }
 
 :root[data-theme="light"] {
@@ -49,6 +53,8 @@
   --line: rgba(26, 23, 18, 0.12);
   --gold: #5b4bc4;
   --gold-soft: rgba(91, 75, 196, 0.1);
+  --success: #15803d;
+  --danger: #b3261e;
   --teal: #1a1712;
   --teal-soft: rgba(26, 23, 18, 0.045);
   --coral: #5b4bc4;
@@ -224,6 +230,80 @@
   --accent-fg: #f8fafc;
 }
 
+/* --- Gold: warm obsidian + champagne gold (the "Elegant & High-End" model:
+   near-black warm base, one restrained metallic accent). Dark gold #d9b26a
+   is 9.4:1 on the paper; light bronze #7a5a14 is 5.9:1 on ivory — both pass
+   WCAG AA for the small eyebrow/label text the accent is used for. --- */
+:root[data-palette="gold"] {
+  color-scheme: dark;
+  --ink: #f5f1e6;
+  --ink-soft: #d9d2c0;
+  --muted: #a39274;
+  --paper: #14110c;
+  --surface: rgba(26, 22, 15, 0.86);
+  --surface-solid: #1a160f;
+  --surface-soft: #201a12;
+  --line: rgba(245, 241, 230, 0.12);
+  --gold: #d9b26a;
+  --gold-soft: rgba(217, 178, 106, 0.15);
+  --teal: #f5f1e6;
+  --teal-soft: rgba(245, 241, 230, 0.06);
+  --coral: #d9b26a;
+  --button-ink: #14110c;
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+  --topbar-bg: rgba(20, 17, 12, 0.55);
+  --hero-bg: #14110c;
+  --glass: rgba(26, 22, 15, 0.66);
+  --glass-strong: rgba(26, 22, 15, 0.78);
+  --glass-border: rgba(245, 241, 230, 0.14);
+  --glass-blur: 22px;
+  --aurora-1: rgba(217, 178, 106, 0.24);
+  --aurora-2: rgba(190, 120, 60, 0.13);
+  --aurora-3: rgba(217, 178, 106, 0.13);
+  --aurora-4: rgba(120, 190, 200, 0.07);
+  /* contract tokens */
+  --bg: #14110c;
+  --text: #f5f1e6;
+  --border: #3d3627;
+  --accent: #d9b26a;
+  --accent-fg: #14110c;
+}
+
+:root[data-palette="gold"][data-theme="light"] {
+  color-scheme: light;
+  --ink: #1b160d;
+  --ink-soft: #3c3423;
+  --muted: #6f6552;
+  --paper: #faf7ef;
+  --surface: rgba(255, 253, 246, 0.94);
+  --surface-solid: #fffdf6;
+  --surface-soft: #f1ead9;
+  --line: rgba(27, 22, 13, 0.12);
+  --gold: #7a5a14;
+  --gold-soft: rgba(122, 90, 20, 0.1);
+  --teal: #1b160d;
+  --teal-soft: rgba(27, 22, 13, 0.045);
+  --coral: #7a5a14;
+  --button-ink: #faf7ef;
+  --shadow: 0 24px 70px rgba(70, 50, 10, 0.1);
+  --topbar-bg: rgba(250, 247, 239, 0.7);
+  --hero-bg: #faf7ef;
+  --glass: rgba(255, 253, 246, 0.72);
+  --glass-strong: rgba(255, 253, 246, 0.82);
+  --glass-border: rgba(27, 22, 13, 0.1);
+  --glass-blur: 22px;
+  --aurora-1: rgba(122, 90, 20, 0.14);
+  --aurora-2: rgba(190, 120, 60, 0.1);
+  --aurora-3: rgba(122, 90, 20, 0.08);
+  --aurora-4: rgba(70, 150, 160, 0.06);
+  /* contract tokens */
+  --bg: #faf7ef;
+  --text: #1b160d;
+  --border: #e5dcc6;
+  --accent: #7a5a14;
+  --accent-fg: #faf7ef;
+}
+
 /* Expose the seven contract tokens on the current palette too, so every
    palette answers the same interface (values mapped from existing tokens). */
 :root {
@@ -261,9 +341,96 @@ body {
   min-height: 100vh;
 }
 
+/* Film grain — a barely-there noise texture over everything, the premium
+   finish used across award-winning portfolio sites. Static (not animated),
+   pointer-transparent, and cheap: one small tiled SVG. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+}
+
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* ------------------------------------------------------------------------
+   LIVING AURORA
+   Three big blurred orbs drift very slowly over the body's static aurora
+   wash. Each orb is painted once (radial gradient + blur) and then only
+   transformed — compositor-friendly. Movement is deliberately below the
+   threshold of conscious tracking (~45–70s loops): the page feels alive
+   without the motion ever competing with content.
+   ------------------------------------------------------------------------ */
+.aurora-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.aurora-field span {
+  position: absolute;
+  width: 58vmax;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(64px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.aurora-field span:nth-child(1) {
+  top: -20vmax;
+  inset-inline-start: -14vmax;
+  background: radial-gradient(circle, var(--aurora-1), transparent 62%);
+  animation: auroraDriftA 46s ease-in-out infinite alternate;
+}
+
+.aurora-field span:nth-child(2) {
+  bottom: -22vmax;
+  inset-inline-end: -16vmax;
+  background: radial-gradient(circle, var(--aurora-3), transparent 60%);
+  animation: auroraDriftB 58s ease-in-out infinite alternate;
+}
+
+.aurora-field span:nth-child(3) {
+  top: 8vh;
+  inset-inline-end: -20vmax;
+  width: 44vmax;
+  background: radial-gradient(circle, var(--aurora-2), transparent 58%);
+  animation: auroraDriftC 70s ease-in-out infinite alternate;
+}
+
+@keyframes auroraDriftA {
+  to {
+    transform: translate3d(8vw, 7vh, 0) scale(1.12);
+  }
+}
+
+@keyframes auroraDriftB {
+  to {
+    transform: translate3d(-7vw, -6vh, 0) scale(1.16);
+  }
+}
+
+@keyframes auroraDriftC {
+  to {
+    transform: translate3d(-9vw, 9vh, 0) scale(0.92);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-field span {
+    animation: none;
+  }
 }
 
 img {
@@ -279,6 +446,34 @@ img {
 
 .site-shell[dir="rtl"] {
   font-family: var(--font-cairo), "Tahoma", system-ui, sans-serif;
+}
+
+/* Reading progress — a thin accent line pinned above the topbar. --progress
+   is written by a rAF-throttled scroll listener in Portfolio.tsx. */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  height: 3px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--gold) 55%, transparent),
+    var(--gold)
+  );
+  transform: scaleX(var(--progress, 0));
+  transform-origin: 0 50%;
+}
+
+.site-shell[dir="rtl"] .scroll-progress {
+  transform-origin: 100% 50%;
+  background: linear-gradient(
+    270deg,
+    color-mix(in srgb, var(--gold) 55%, transparent),
+    var(--gold)
+  );
 }
 
 .topbar {
@@ -347,6 +542,16 @@ img {
   font-size: 0.84rem;
   font-weight: 500;
   cursor: pointer;
+  transition: border-color 180ms ease, transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.switch-button:hover {
+  border-color: color-mix(in srgb, var(--gold) 48%, var(--glass-border));
+  transform: translateY(-1px);
+}
+
+.switch-button:active {
+  transform: translateY(0) scale(0.96);
 }
 
 /* Palette selector — a segmented control of preview swatches. The swatch fill
@@ -394,9 +599,20 @@ img {
 .palette-swatch--teal {
   --swatch: var(--swatch-teal);
 }
+.palette-swatch--gold {
+  --swatch: var(--swatch-gold);
+}
+
+.palette-swatch span {
+  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 
 .palette-swatch:hover span {
-  transform: scale(1.08);
+  transform: scale(1.18);
+}
+
+.palette-swatch:active span {
+  transform: scale(0.92);
 }
 
 .palette-swatch.is-active {
@@ -411,13 +627,35 @@ img {
 }
 
 .site-nav a {
+  position: relative;
   color: var(--ink-soft);
   font-size: 0.92rem;
   font-weight: 500;
+  transition: color 180ms ease;
 }
 
-.site-nav a:hover {
+/* Underline indicator — grows from the center on hover and on the section
+   currently in view (scrollspy in Portfolio.tsx sets .is-active). */
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -6px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-nav a:hover,
+.site-nav a.is-active {
   color: var(--gold);
+}
+
+.site-nav a:hover::after,
+.site-nav a.is-active::after {
+  transform: scaleX(1);
 }
 
 .menu-toggle {
@@ -476,11 +714,34 @@ img {
 }
 
 .hero {
+  position: relative;
   min-height: auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
   padding: 18px 0 22px;
+}
+
+/* Faint dot grid behind the hero copy, masked so it dissolves before it can
+   compete with the headline — a quiet engineering-blueprint texture. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -18px -8vw -10px;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--ink) 17%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 26px 26px;
+  mask-image: radial-gradient(62% 78% at 28% 22%, #000, transparent 78%);
+  -webkit-mask-image: radial-gradient(62% 78% at 28% 22%, #000, transparent 78%);
+}
+
+.site-shell[dir="rtl"] .hero::before {
+  mask-image: radial-gradient(62% 78% at 72% 22%, #000, transparent 78%);
+  -webkit-mask-image: radial-gradient(62% 78% at 72% 22%, #000, transparent 78%);
 }
 
 .hero-copy {
@@ -780,7 +1041,7 @@ p {
 }
 
 .button:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.97);
   transition-duration: 70ms;
 }
 
@@ -796,11 +1057,41 @@ p {
   box-shadow: 0 14px 34px color-mix(in srgb, var(--gold) 24%, transparent);
 }
 
+.button.primary:hover {
+  box-shadow:
+    0 18px 42px color-mix(in srgb, var(--ink) 22%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--gold) 28%, transparent);
+}
+
+/* Magnetic CTAs — --tx/--ty are written by a pointermove handler in
+   Portfolio.tsx; the button drifts toward the cursor and springs back. */
+.button[data-magnetic] {
+  transition:
+    transform 260ms cubic-bezier(0.34, 1.3, 0.5, 1),
+    box-shadow 200ms ease,
+    background 200ms ease,
+    border-color 200ms ease;
+}
+
+.button[data-magnetic]:hover {
+  transform: translate(var(--tx, 0px), calc(var(--ty, 0px) - 2px));
+}
+
+.button[data-magnetic]:active {
+  transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(0.97);
+  transition-duration: 70ms;
+}
+
 .button.ghost {
   border-color: var(--glass-border);
   background: var(--glass);
   backdrop-filter: blur(12px) saturate(140%);
   -webkit-backdrop-filter: blur(12px) saturate(140%);
+}
+
+.button.ghost:hover {
+  border-color: color-mix(in srgb, var(--gold) 48%, var(--glass-border));
+  color: var(--ink);
 }
 
 .hero-board {
@@ -838,7 +1129,19 @@ p {
   transition:
     transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 280ms ease,
-    box-shadow 280ms ease;
+    box-shadow 280ms ease,
+    opacity 280ms ease,
+    filter 280ms ease;
+}
+
+/* Focus the hovered card by quieting its siblings — the rest of the grid
+   dims and desaturates slightly. Pointer devices only. */
+@media (hover: hover) {
+  :is(.work-grid, .service-grid, .nested-app-grid):hover
+    > :is(.work-card, .service-card, .app-card):not(:hover) {
+    opacity: 0.55;
+    filter: saturate(0.8);
+  }
 }
 
 .proof-grid article:hover,
@@ -946,7 +1249,7 @@ p {
 
 .proof-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   margin: 70px 0 30px 0;
 }
@@ -961,9 +1264,12 @@ p {
   font-family: var(--font-sans), var(--font-cairo), system-ui, sans-serif;
   font-size: 2rem;
   line-height: 1;
+  /* Fixed-width digits so the CountUp animation doesn't jitter. */
+  font-variant-numeric: tabular-nums;
 }
 
-.proof-grid span {
+/* Direct child only — the stat inside <strong> holds the CountUp span. */
+.proof-grid article > span {
   display: block;
   margin-top: 10px;
   color: var(--muted);
@@ -972,50 +1278,207 @@ p {
 
 .logo-section {
   margin-top: 14px;
-  padding: 18px 0 20px;
+  padding: 30px 32px 34px;
 }
 
-.logo-section p {
-  margin: 0 24px 16px;
+.logo-section-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
+  align-items: end;
+  gap: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.logo-section-heading .eyebrow {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.logo-section-heading h2 {
+  max-width: 620px;
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2.45rem);
+  line-height: 1.12;
+}
+
+.logo-section-heading p {
+  margin: 0;
   color: var(--muted);
-  font-size: 0.9rem;
-  font-weight: 600;
+  line-height: 1.7;
 }
 
-.logo-rail {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  padding-inline: 24px;
+.logo-group {
+  margin-top: 26px;
 }
 
-.logo-chip {
-  display: grid;
+.logo-group-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.logo-group-heading h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.logo-group-heading span {
+  display: inline-grid;
   place-items: center;
-  height: 100px;
-  border-radius: var(--radius);
+  min-width: 26px;
+  height: 22px;
+  padding-inline: 7px;
+  border-radius: 999px;
+  color: var(--gold);
+  background: var(--gold-soft);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.company-logo-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Product logo marquee — one seamless auto-scrolling loop (two identical
+   groups, track slides half its width). Linear easing is correct here: it's
+   a continuous loop, not a UI transition. Pauses on hover and keyboard
+   focus; the reduced-motion fallback below turns it into a static row. */
+.logo-marquee {
+  overflow: hidden;
+  /* Vertical breathing room inside the clip box, cancelled by the negative
+     margin, so the hover lift (translateY(-3px) + glow) isn't cut off at the
+     top while the horizontal loop stays clipped. */
+  padding-block: 10px;
+  margin-block: -10px;
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.logo-marquee-track {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  animation: marqueeScroll 52s linear infinite;
+}
+
+.logo-marquee:hover .logo-marquee-track,
+.logo-marquee:focus-within .logo-marquee-track {
+  animation-play-state: paused;
+}
+
+.logo-marquee-group {
+  display: flex;
+  gap: 12px;
+}
+
+.logo-marquee .product-brand-card {
+  width: 148px;
+  flex: 0 0 auto;
+}
+
+@keyframes marqueeScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - 6px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .logo-marquee-track {
+    animation: none;
+    width: auto;
+  }
+
+  .logo-marquee-group {
+    flex-wrap: wrap;
+  }
+
+  .logo-marquee-group[aria-hidden="true"] {
+    display: none;
+  }
+}
+
+.brand-card {
+  display: flex;
+  align-items: center;
+  min-width: 0;
   border: 1px solid var(--line);
-  background: var(--surface-solid);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface-solid) 82%, transparent);
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.logo-chip:hover {
+.brand-card:hover {
+  transform: translateY(-3px);
   border-color: var(--gold);
-  box-shadow: var(--shadow);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--paper) 70%, transparent);
 }
 
-.logo-chip img {
+.brand-card img,
+.brand-fallback {
+  flex: 0 0 auto;
   width: 50px;
   height: 50px;
   object-fit: cover;
-  border-radius: 10px;
-  filter: grayscale(1);
+  border-radius: 12px;
+}
+
+.brand-card img {
+  filter: saturate(0.72);
   transition: filter 0.3s ease, transform 0.3s ease;
 }
 
-.logo-chip:hover img {
-  filter: grayscale(0);
-  transform: scale(1.18);
+.brand-card:hover img {
+  filter: saturate(1);
+  transform: scale(1.05);
+}
+
+.brand-card strong {
+  min-width: 0;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.company-brand-card {
+  gap: 14px;
+  min-height: 86px;
+  padding: 16px;
+}
+
+.company-brand-card strong {
+  color: var(--ink);
+  font-size: 0.94rem;
+}
+
+.product-brand-card {
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  min-height: 112px;
+  padding: 14px 10px;
+  text-align: center;
+}
+
+.brand-fallback {
+  display: grid;
+  place-items: center;
+  color: var(--button-ink);
+  background: var(--gold);
+  font-size: 1.2rem;
+  font-weight: 850;
 }
 
 .section {
@@ -1118,6 +1581,43 @@ span.case-avatar {
   border-radius: var(--radius);
   border: 1px solid var(--line);
   background: var(--surface-soft);
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 280ms ease,
+    box-shadow 280ms ease;
+}
+
+.case-shots img:hover {
+  transform: translateY(-4px) scale(1.03);
+  border-color: color-mix(in srgb, var(--gold) 45%, var(--line));
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+}
+
+/* Orientation-aware variants (classes set by ShotGallery.tsx once images
+   load). Landscape shots keep their natural ratio and stack under each
+   other instead of being letterboxed into portrait cells. */
+.case-shots.shots-mixed {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* height: 0 + min-height: 100% stops the tall portrait from driving the row
+   heights — the stacked landscape shots size the rows, and the portrait
+   fills whatever the two rows add up to. */
+.case-shots.shots-mixed img:not(.is-landscape) {
+  grid-row: 1 / span 2;
+  height: 0;
+  min-height: 100%;
+  aspect-ratio: auto;
+}
+
+.case-shots.shots-mixed img.is-landscape,
+.case-shots.shots-landscape img {
+  aspect-ratio: auto;
+  height: auto;
+}
+
+.case-shots.shots-landscape {
+  grid-template-columns: 1fr;
 }
 
 /* Impact metrics on product cards */
@@ -1288,8 +1788,23 @@ span.case-avatar {
 }
 
 .testimonial-card figcaption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.testimonial-card figcaption > div {
   display: grid;
   gap: 2px;
+}
+
+.testimonial-avatar {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--line);
 }
 
 .testimonial-card figcaption strong {
@@ -1326,6 +1841,12 @@ span.case-avatar {
   color: var(--ink-soft);
   font-size: 0.84rem;
   font-weight: 600;
+  transition: border-color 180ms ease, color 180ms ease;
+}
+
+.tag-row span:hover {
+  border-color: color-mix(in srgb, var(--gold) 42%, var(--line));
+  color: var(--ink);
 }
 
 .tag-row.compact span {
@@ -1429,6 +1950,28 @@ span.case-avatar {
   background: color-mix(in srgb, var(--ink) 7%, transparent);
 }
 
+.experience-company .experience-freelance-mark {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  width: 60px;
+  height: 60px;
+  flex: 0 0 auto;
+  border-radius: 16px;
+  color: var(--gold);
+  background: var(--gold-soft);
+}
+
+.experience-freelance-mark svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .experience-company .eyebrow {
   margin-bottom: 8px;
 }
@@ -1490,9 +2033,17 @@ span.case-avatar {
 
 /* Liquid glass: frosted backdrop blur over the page aurora, a bright specular
    top rim + faint perimeter rim (no hard border), and a soft corner sheen. */
-.app-card {
+/* Cards that host the cursor-tracking glow layers. --mx/--my are written by a
+   delegated pointermove listener in Portfolio.tsx. */
+[data-glow] {
   --mx: 50%;
   --my: 50%;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.app-card {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -1517,7 +2068,9 @@ span.case-avatar {
   transition:
     transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
     background 0.3s ease,
-    box-shadow 0.3s ease;
+    box-shadow 0.3s ease,
+    opacity 0.3s ease,
+    filter 0.3s ease;
 }
 
 /* Soft specular sheen catching light in the top-left corner. */
@@ -1567,8 +2120,10 @@ span.case-avatar {
   opacity: 1;
 }
 
-/* Keep real content above the mouse-tracking glow layers. */
-.app-card > *:not(.card-spotlight):not(.card-edge) {
+/* Keep real content above the mouse-tracking glow layers. :where() keeps the
+   specificity at the bare attribute selector so later rules (e.g. the
+   absolutely-positioned .work-card-number) can still override position. */
+[data-glow] > :where(*:not(.card-spotlight):not(.card-edge)) {
   position: relative;
   z-index: 1;
 }
@@ -1615,11 +2170,19 @@ span.case-avatar {
   mask-composite: exclude;
 }
 
-.app-card:hover .card-spotlight,
-.app-card:focus-within .card-spotlight,
-.app-card:hover .card-edge,
-.app-card:focus-within .card-edge {
+[data-glow]:hover .card-spotlight,
+[data-glow]:focus-within .card-spotlight,
+[data-glow]:hover .card-edge,
+[data-glow]:focus-within .card-edge {
   opacity: 1;
+}
+
+/* Glow only makes sense with a real pointer — keep it off for touch. */
+@media (hover: none) {
+  .card-spotlight,
+  .card-edge {
+    display: none;
+  }
 }
 
 /* Pin the technology tags to the bottom of the card. */
@@ -1789,11 +2352,16 @@ span.case-avatar {
   padding: 22px;
 }
 
-.service-card span {
+.service-card .service-card-number {
   display: inline-flex;
   margin-bottom: 18px;
   color: var(--gold);
   font-weight: 600;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), color 240ms ease;
+}
+
+.service-card:hover .service-card-number {
+  transform: translateY(-2px) scale(1.12);
 }
 
 .service-card p {
@@ -1861,48 +2429,187 @@ span.case-avatar {
 }
 
 
-/* Selected work — thumbnail grid with store links */
+/* Selected work — a compact product gallery with clear availability states */
+.selected-work-section {
+  position: relative;
+  isolation: isolate;
+  padding-top: clamp(28px, 4vw, 52px);
+  border-top: 1px solid var(--line);
+}
+
+.selected-work-section::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -80px;
+  inset-inline-end: -8%;
+  width: min(420px, 48vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold-soft), transparent 68%);
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+.selected-work-heading {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 32px;
+  margin-bottom: clamp(28px, 4vw, 44px);
+}
+
+.selected-work-heading .eyebrow {
+  margin-top: 0;
+}
+
+.selected-work-heading h2 {
+  max-width: 11ch;
+}
+
+.selected-work-heading p:not(.eyebrow, .work-count) {
+  margin-top: 18px;
+}
+
+.work-count {
+  display: grid;
+  justify-items: end;
+  min-width: 96px;
+  padding-inline-start: 24px;
+  border-inline-start: 1px solid var(--line);
+  color: var(--muted);
+  line-height: 1;
+}
+
+.work-count strong {
+  color: var(--ink);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+}
+
+.work-count span {
+  margin-top: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .work-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(248px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .work-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: grid;
-  align-content: start;
-  gap: 12px;
-  padding: 20px;
+  grid-template-rows: auto 1fr auto;
+  align-content: stretch;
+  gap: 20px;
+  min-height: 270px;
+  padding: 22px;
   border: 1px solid var(--glass-border);
   border-radius: var(--radius);
-  background: var(--glass);
-  box-shadow: var(--shadow), inset 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent);
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--ink) 5%, transparent), transparent 44%),
+    var(--glass);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--ink) 9%, transparent);
   backdrop-filter: blur(var(--glass-blur)) saturate(150%);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
   transition:
-    transform 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 280ms ease,
+    box-shadow 280ms ease,
+    background 280ms ease,
+    opacity 280ms ease,
+    filter 280ms ease;
+}
+
+.work-card::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: auto -46px -70px auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: var(--gold-soft);
+  filter: blur(24px);
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 280ms ease, transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 3D lean toward the cursor — --rx/--ry come from the same pointermove
+   listener that drives the glow. Falls back to the plain lift when the JS
+   hasn't set the vars (touch, reduced motion). */
+.work-card[data-tilt]:hover {
+  transform: perspective(760px) translateY(-6px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
 }
 
 .work-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--gold);
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--gold) 55%, var(--glass-border));
+  box-shadow:
+    0 22px 52px color-mix(in srgb, var(--paper) 72%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--gold) 12%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+.work-card:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.work-card-number {
+  position: absolute;
+  top: 20px;
+  inset-inline-end: 20px;
+  color: color-mix(in srgb, var(--muted) 72%, transparent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
 }
 
 .work-card-head {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  padding-inline-end: 36px;
 }
 
-.work-card-head img,
-.work-card-fallback {
-  width: 44px;
-  height: 44px;
-  object-fit: cover;
-  border-radius: 12px;
+.work-card-logo {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  padding: 5px;
+  flex: 0 0 auto;
   border: 1px solid var(--line);
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--surface-solid) 78%, transparent);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), border-color 280ms ease;
+}
+
+.work-card:hover .work-card-logo {
+  transform: scale(1.06) rotate(-2deg);
+  border-color: color-mix(in srgb, var(--gold) 44%, var(--line));
+}
+
+.site-shell[dir="rtl"] .work-card:hover .work-card-logo {
+  transform: scale(1.06) rotate(2deg);
+}
+
+.work-card-logo img,
+.work-card-fallback {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
 .work-card-fallback {
@@ -1917,29 +2624,31 @@ span.case-avatar {
 
 .work-card-head h3 {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 600;
+  letter-spacing: -0.025em;
 }
 
 .work-card-tagline {
   margin: 0;
-  color: var(--muted);
-  font-size: 0.95rem;
-  line-height: 1.6;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.68;
 }
 
 .work-stores {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 2px;
+  margin-top: auto;
 }
 
 .store-pill {
   display: inline-flex;
   align-items: center;
-  min-height: 34px;
-  padding: 0 14px;
+  min-height: 32px;
+  gap: 7px;
+  padding: 0 12px;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--surface-soft);
@@ -1952,10 +2661,43 @@ span.case-avatar {
     color 0.2s ease;
 }
 
+.store-pill span {
+  color: var(--gold);
+  transition: transform 0.2s ease;
+}
+
 .store-pill:hover {
   transform: translateY(-1px);
   border-color: var(--gold);
   color: var(--ink);
+}
+
+.store-pill:hover span {
+  transform: translate(2px, -2px);
+}
+
+.site-shell[dir="rtl"] .store-pill:hover span {
+  transform: translate(-2px, -2px);
+}
+
+.work-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.work-status span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 4px var(--gold-soft);
 }
 
 /* About — optional headshot beside the copy */
@@ -2181,6 +2923,8 @@ span.case-avatar {
 
 .contact-direct-icons {
   display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -2205,6 +2949,48 @@ span.case-avatar {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 24px;
+}
+
+/* Floating back-to-top — fades in after the first screenful (toggled by the
+   scroll handler in Portfolio.tsx). */
+.back-to-top {
+  position: fixed;
+  bottom: 22px;
+  inset-inline-end: 22px;
+  z-index: 55;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  background: var(--glass-strong);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  color: var(--ink);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition:
+    opacity 220ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 180ms ease;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  border-color: color-mix(in srgb, var(--gold) 48%, var(--glass-border));
+  transform: translateY(-2px);
+}
+
+.back-to-top:active {
+  transform: translateY(0) scale(0.94);
 }
 
 .site-footer {
@@ -2407,7 +3193,8 @@ span.case-avatar {
   .proof-grid,
   .nested-app-grid,
   .project-catalog,
-  .plans-grid {
+  .plans-grid,
+  .work-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2436,6 +3223,15 @@ span.case-avatar {
     width: min(100% - 20px, var(--max));
   }
 
+  .logo-section {
+    padding: 24px 18px 26px;
+  }
+
+  .logo-section-heading {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
   .experience-groups {
     --rail-gutter: 24px;
     --rail-x: 4px;
@@ -2451,6 +3247,11 @@ span.case-avatar {
   }
 
   .experience-company img {
+    width: 52px;
+    height: 52px;
+  }
+
+  .experience-company .experience-freelance-mark {
     width: 52px;
     height: 52px;
   }
@@ -2511,6 +3312,16 @@ span.case-avatar {
     background: var(--surface-soft);
   }
 
+  /* In the dropdown menu the underline indicator reads wrong — mark the
+     active section with a tinted row instead. */
+  .site-nav a::after {
+    display: none;
+  }
+
+  .site-nav a.is-active {
+    background: var(--gold-soft);
+  }
+
   h1 {
     font-size: clamp(2.6rem, 13vw, 4rem);
   }
@@ -2523,6 +3334,34 @@ span.case-avatar {
 
   h2 {
     max-width: 100%;
+  }
+
+  .selected-work-heading {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 22px;
+  }
+
+  .selected-work-heading h2 {
+    max-width: 100%;
+  }
+
+  .work-count {
+    grid-auto-flow: column;
+    align-items: baseline;
+    justify-items: start;
+    gap: 9px;
+    min-width: 0;
+    padding-inline-start: 0;
+    border-inline-start: 0;
+  }
+
+  .work-count strong {
+    font-size: 1.5rem;
+  }
+
+  .work-count span {
+    margin-top: 0;
   }
 
   .hero-actions,
@@ -2544,11 +3383,16 @@ span.case-avatar {
   .project-catalog,
   .service-grid,
   .plans-grid,
-  .stack-groups {
+  .stack-groups,
+  .work-grid {
     grid-template-columns: 1fr;
   }
 
-  .logo-rail {
+  .work-card {
+    min-height: 240px;
+  }
+
+  .company-logo-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2589,6 +3433,242 @@ span.case-avatar {
 
   .footer-bottom {
     display: grid;
+  }
+}
+
+/* ── Hero availability line ─────────────────────────────────────────────── */
+
+.hero-currently {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.pulse-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+  55% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+/* Reduced motion kills the animation (global rule above); keep a static ring
+   so the dot still reads as a highlight rather than a stray pixel. */
+@media (prefers-reduced-motion: reduce) {
+  .pulse-dot {
+    box-shadow: 0 0 0 4px var(--gold-soft);
+  }
+}
+
+/* ── Selected-work status badges (retired / unreleased apps) ────────────── */
+
+.work-status.is-muted {
+  color: var(--muted);
+}
+
+.work-status.is-muted span {
+  background: var(--muted);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--muted) 16%, transparent);
+}
+
+/* ── Engagement plan cards ──────────────────────────────────────────────── */
+
+.plan-card h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.plan-card ul li::marker {
+  color: var(--gold);
+}
+
+.plan-cta {
+  margin-top: 22px;
+  width: fit-content;
+}
+
+/* ── Process strip ("How working with me looks") ────────────────────────── */
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.process-step {
+  padding: 22px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: var(--glass);
+  box-shadow: var(--shadow), inset 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+}
+
+.process-number {
+  display: inline-flex;
+  margin-bottom: 14px;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.process-step h3 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.process-step p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* ── FAQ (native details/summary — zero-JS accordions) ──────────────────── */
+
+.faq-list {
+  display: grid;
+  gap: 12px;
+  max-width: 860px;
+}
+
+.faq-item {
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: var(--glass);
+  box-shadow: var(--shadow), inset 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+}
+
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--ink);
+  font-weight: 500;
+  line-height: 1.5;
+  border-radius: var(--radius);
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+}
+
+.faq-chevron {
+  flex: none;
+  color: var(--gold);
+  font-size: 1.15rem;
+  font-weight: 500;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faq-item[open] .faq-chevron {
+  transform: rotate(45deg);
+}
+
+.faq-item > p {
+  margin: 0;
+  padding: 0 22px 20px;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+
+/* ── Contact form feedback + copy-email ─────────────────────────────────── */
+
+/* Honeypot — never shown to people; bots that fill it are dropped client-side. */
+.contact-botcheck {
+  display: none;
+}
+
+.contact-form .button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.contact-status {
+  margin: 0;
+  min-height: 1.4em;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.contact-status .is-success {
+  color: var(--success);
+}
+
+.contact-status .is-error {
+  color: var(--danger);
+}
+
+.copy-email {
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.copy-email:hover,
+.copy-email:focus-visible {
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+/* ── Responsive for the new sections ────────────────────────────────────── */
+
+@media (max-width: 1023px) {
+  .process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .process-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

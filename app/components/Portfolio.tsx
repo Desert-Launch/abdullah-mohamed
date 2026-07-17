@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { copy } from "../data/copy";
 import { shared, bookingHref, profilePhoto } from "../data/shared";
 import { asset } from "../lib/asset";
@@ -8,8 +8,10 @@ import type { Lang, Palette, Theme } from "../data/types";
 import { TopBar } from "./TopBar";
 import { Hero } from "./Hero";
 import { CaseStudies } from "./CaseStudies";
+import { ExperienceTimeline } from "./ExperienceTimeline";
 import { SelectedWork } from "./SelectedWork";
 import { ContactForm } from "./ContactForm";
+import { CountUp } from "./CountUp";
 import { Footer } from "./Footer";
 
 export function Portfolio() {
@@ -23,14 +25,20 @@ export function Portfolio() {
   const [theme, setTheme] = useState<Theme>("dark");
   const [lang, setLang] = useState<Lang>("en");
   const [palette, setPalette] = useState<Palette>("current");
+  const [activeSection, setActiveSection] = useState("");
+  const progressRef = useRef<HTMLDivElement>(null);
+  const backToTopRef = useRef<HTMLAnchorElement>(null);
   const t = copy[lang];
+  // Placeholder quotes never render — the section only appears once at least
+  // one real (non-sample) testimonial exists in the dictionaries.
+  const testimonials = t.testimonials.filter((item) => !item.sample);
 
   useEffect(() => {
     const el = document.documentElement;
     if (el.dataset.theme === "light" || el.dataset.theme === "dark") setTheme(el.dataset.theme);
     if (el.lang === "ar" || el.lang === "en") setLang(el.lang);
     const p = el.dataset.palette;
-    if (p === "current" || p === "terracotta" || p === "teal") setPalette(p);
+    if (p === "current" || p === "terracotta" || p === "teal" || p === "gold") setPalette(p);
     setMounted(true);
   }, []);
 
@@ -87,14 +95,131 @@ export function Portfolio() {
     return () => io.disconnect();
   }, [lang]);
 
+  // Cursor glow: cards with [data-glow] get --mx/--my custom properties that
+  // drive the .card-spotlight / .card-edge radial gradients. One delegated
+  // listener instead of per-card handlers; pointer devices only, and skipped
+  // entirely for reduced-motion users (the glow layers stay at opacity 0
+  // without hover anyway, this just avoids the per-frame style writes).
+  useEffect(() => {
+    if (!window.matchMedia("(hover: hover)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const onMove = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const card = target.closest<HTMLElement>("[data-glow]");
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty("--mx", `${event.clientX - rect.left}px`);
+      card.style.setProperty("--my", `${event.clientY - rect.top}px`);
+      // Cards that opt into [data-tilt] also lean toward the cursor (subtle
+      // 3D tilt, max ±4deg — clamped by the 0.5 range of px/py).
+      if (card.hasAttribute("data-tilt")) {
+        const px = (event.clientX - rect.left) / rect.width - 0.5;
+        const py = (event.clientY - rect.top) / rect.height - 0.5;
+        card.style.setProperty("--rx", `${(-py * 8).toFixed(2)}deg`);
+        card.style.setProperty("--ry", `${(px * 8).toFixed(2)}deg`);
+      }
+    };
+    document.addEventListener("pointermove", onMove, { passive: true });
+    return () => document.removeEventListener("pointermove", onMove);
+  }, []);
+
+  // Magnetic CTAs: buttons with [data-magnetic] drift a few pixels toward the
+  // cursor while hovered and spring back on leave. Pointer devices only.
+  useEffect(() => {
+    if (!window.matchMedia("(hover: hover)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const els = Array.from(document.querySelectorAll<HTMLElement>("[data-magnetic]"));
+    if (els.length === 0) return;
+    const pull = 0.22;
+    const onMove = (event: PointerEvent) => {
+      const el = event.currentTarget as HTMLElement;
+      const rect = el.getBoundingClientRect();
+      const dx = event.clientX - (rect.left + rect.width / 2);
+      const dy = event.clientY - (rect.top + rect.height / 2);
+      el.style.setProperty("--tx", `${(dx * pull).toFixed(1)}px`);
+      el.style.setProperty("--ty", `${(dy * pull).toFixed(1)}px`);
+    };
+    const onLeave = (event: PointerEvent) => {
+      const el = event.currentTarget as HTMLElement;
+      el.style.setProperty("--tx", "0px");
+      el.style.setProperty("--ty", "0px");
+    };
+    els.forEach((el) => {
+      el.addEventListener("pointermove", onMove);
+      el.addEventListener("pointerleave", onLeave);
+    });
+    return () =>
+      els.forEach((el) => {
+        el.removeEventListener("pointermove", onMove);
+        el.removeEventListener("pointerleave", onLeave);
+      });
+  }, [lang]);
+
+  // Reading progress: scale the fixed top bar with scroll position. Direct
+  // transform writes (rAF-throttled), so no layout/transition cost.
+  useEffect(() => {
+    const el = progressRef.current;
+    if (!el) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      el.style.setProperty("--progress", String(progress));
+      backToTopRef.current?.classList.toggle("is-visible", window.scrollY > 600);
+    };
+    const request = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", request, { passive: true });
+    window.addEventListener("resize", request, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", request);
+      window.removeEventListener("resize", request);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  // Scrollspy: highlight the nav link for the section currently in the band
+  // around the top third of the viewport.
+  useEffect(() => {
+    if (!("IntersectionObserver" in window)) return;
+    const sections = t.nav
+      .map(([, href]) => document.getElementById(href.slice(1)))
+      .filter((el): el is HTMLElement => el !== null);
+    if (sections.length === 0) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.find((entry) => entry.isIntersecting);
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: "-30% 0px -60% 0px" },
+    );
+    sections.forEach((section) => io.observe(section));
+    return () => io.disconnect();
+  }, [t.nav]);
+
   return (
     <div className="site-shell" data-theme={theme} data-palette={palette} data-lang={lang} dir={t.dir}>
+      {/* Living aurora — three blurred orbs drifting at glacial speed over the
+          static gradient wash. Pure transform animation on pre-painted layers
+          (compositor work, not repaints); static under reduced motion. */}
+      <div className="aurora-field" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="scroll-progress" ref={progressRef} aria-hidden="true" />
       <TopBar
         t={t}
         lang={lang}
         theme={theme}
         palette={palette}
         menuOpen={menuOpen}
+        activeSection={activeSection}
         onToggleTheme={() => setTheme((value) => (value === "dark" ? "light" : "dark"))}
         onToggleLang={() => setLang((value) => (value === "en" ? "ar" : "en"))}
         onSelectPalette={setPalette}
@@ -108,24 +233,74 @@ export function Portfolio() {
         <section className="proof-grid" aria-label="Proof points">
           {t.proof.map(([value, label]) => (
             <article key={label} data-reveal>
-              <strong>{value}</strong>
+              <strong>
+                <CountUp value={value} />
+              </strong>
               <span>{label}</span>
             </article>
           ))}
         </section>
 
         <section className="logo-section" aria-label="Brands and products" data-reveal>
-          <p>{t.logosLabel}</p>
-          <div className="logo-rail">
-            {shared.companyLogos.map((logo) => (
-              <span className="logo-chip" key={logo.src}>
-                <img src={asset(logo.src)} alt={logo.name} loading="lazy" />
-              </span>
-            ))}
+          <div className="logo-section-heading">
+            <div>
+              <span className="eyebrow">{t.companiesLabel} + {t.appsLabel}</span>
+              <h2>{t.logosLabel}</h2>
+            </div>
+            <p>{t.logosIntro}</p>
+          </div>
+
+          <div className="logo-group">
+            <div className="logo-group-heading">
+              <h3>{t.companiesLabel}</h3>
+              <span>{shared.companies.length}</span>
+            </div>
+            <div className="company-logo-grid">
+              {shared.companies.map((item) => (
+                <article className="brand-card company-brand-card" key={item.name}>
+                  <img src={asset(item.src)} alt="" loading="lazy" />
+                  <strong>{item.name}</strong>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="logo-group">
+            <div className="logo-group-heading">
+              <h3>{t.appsLabel}</h3>
+              <span>{shared.products.length}</span>
+            </div>
+            {/* Auto-scrolling marquee (paused on hover/focus; falls back to a
+                wrapped static row for reduced-motion users). dir=ltr keeps the
+                loop math identical in Arabic — brand names are not translated. */}
+            <div className="logo-marquee" dir="ltr">
+              <div className="logo-marquee-track">
+                {[false, true].map((isDuplicate) => (
+                  <div
+                    className="logo-marquee-group"
+                    key={isDuplicate ? "dup" : "main"}
+                    aria-hidden={isDuplicate || undefined}
+                  >
+                    {shared.products.map((item) => (
+                      <article className="brand-card product-brand-card" key={item.name}>
+                        {item.src ? (
+                          <img src={asset(item.src)} alt="" loading="lazy" />
+                        ) : (
+                          <span className="brand-fallback" aria-hidden="true">{item.name.charAt(0)}</span>
+                        )}
+                        <strong>{item.name}</strong>
+                      </article>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
         <CaseStudies t={t} />
+
+        <ExperienceTimeline t={t} />
 
         <section id="services" className="section split-section">
           <div className="section-heading sticky-heading" data-reveal>
@@ -136,13 +311,66 @@ export function Portfolio() {
 
           <div className="service-grid">
             {t.services.map((service, index) => (
-              <article className="service-card" key={service.title} data-reveal>
-                <span>{String(index + 1).padStart(2, "0")}</span>
+              <article className="service-card" key={service.title} data-reveal data-glow>
+                <span className="card-spotlight" aria-hidden="true" />
+                <span className="card-edge" aria-hidden="true" />
+                <span className="service-card-number">{String(index + 1).padStart(2, "0")}</span>
                 <h3>{service.title}</h3>
                 <p>{service.body}</p>
               </article>
             ))}
           </div>
+        </section>
+
+        <section id="plans" className="section">
+          <div className="section-heading" data-reveal>
+            <p className="eyebrow">{t.plansHeading.eyebrow}</p>
+            <h2>{t.plansHeading.title}</h2>
+            {t.plansHeading.body ? <p>{t.plansHeading.body}</p> : null}
+          </div>
+          <div className="plans-grid">
+            {t.plans.map((plan) => (
+              <article
+                className={`plan-card${plan.featured ? " featured" : ""}`}
+                key={plan.name}
+                data-reveal
+                data-glow
+              >
+                <span className="card-spotlight" aria-hidden="true" />
+                <span className="card-edge" aria-hidden="true" />
+                <p>{plan.fit}</p>
+                <h3>{plan.name}</h3>
+                <span>{plan.body}</span>
+                <ul>
+                  {plan.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <a className="button ghost plan-cta" href="#contact">
+                  {t.plansCta}
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="process" className="section">
+          <div className="section-heading" data-reveal>
+            <p className="eyebrow">{t.processHeading.eyebrow}</p>
+            <h2>{t.processHeading.title}</h2>
+            {t.processHeading.body ? <p>{t.processHeading.body}</p> : null}
+          </div>
+          <ol className="process-grid">
+            {t.process.map((step, index) => (
+              <li className="process-step" key={step.title} data-reveal>
+                <span className="process-number" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </li>
+            ))}
+          </ol>
         </section>
 
         <SelectedWork t={t} />
@@ -169,12 +397,64 @@ export function Portfolio() {
           </div>
         </section>
 
+        {testimonials.length > 0 ? (
+          <section id="testimonials" className="section">
+            <div className="section-heading" data-reveal>
+              <p className="eyebrow">{t.testimonialsHeading.eyebrow}</p>
+              <h2>{t.testimonialsHeading.title}</h2>
+              {t.testimonialsHeading.body ? <p>{t.testimonialsHeading.body}</p> : null}
+            </div>
+            <div className="testimonial-grid">
+              {testimonials.map((item) => (
+                <figure className="testimonial-card" key={item.name} data-reveal>
+                  <blockquote>{item.quote}</blockquote>
+                  <figcaption>
+                    {item.image ? (
+                      <img
+                        className="testimonial-avatar"
+                        src={asset(item.image)}
+                        alt=""
+                        loading="lazy"
+                      />
+                    ) : null}
+                    <div>
+                      <strong>{item.name}</strong>
+                      <span>{item.role}</span>
+                    </div>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        <section id="faq" className="section">
+          <div className="section-heading" data-reveal>
+            <p className="eyebrow">{t.faqHeading.eyebrow}</p>
+            <h2>{t.faqHeading.title}</h2>
+            {t.faqHeading.body ? <p>{t.faqHeading.body}</p> : null}
+          </div>
+          <div className="faq-list" data-reveal>
+            {t.faq.map((item) => (
+              <details className="faq-item" key={item.q}>
+                <summary>
+                  {item.q}
+                  <span className="faq-chevron" aria-hidden="true">
+                    +
+                  </span>
+                </summary>
+                <p>{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
         <section id="contact" className="contact-section" data-reveal>
           <div>
             <p className="eyebrow">{t.contact.eyebrow}</p>
             <h2>{t.contact.title}</h2>
             <p>{t.contact.body}</p>
-            <a className="button primary contact-book" href={bookingHref}>
+            <a className="button primary contact-book" href={bookingHref} data-magnetic>
               {t.contact.book}
             </a>
           </div>
@@ -182,6 +462,10 @@ export function Portfolio() {
           <ContactForm form={t.contact.form} socials={shared.socials} />
         </section>
       </main>
+
+      <a className="back-to-top" href="#home" ref={backToTopRef} aria-label={t.backToTop}>
+        <span aria-hidden="true">↑</span>
+      </a>
 
       <Footer t={t} lang={lang} socials={shared.socials} />
     </div>

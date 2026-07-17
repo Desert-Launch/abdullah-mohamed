@@ -1,6 +1,6 @@
 import type { Dictionary, Lang, Palette, Theme } from "../data/types";
 
-const PALETTES: Palette[] = ["current", "terracotta", "teal"];
+const PALETTES: Palette[] = ["current", "terracotta", "teal", "gold"];
 
 interface TopBarProps {
   t: Dictionary;
@@ -8,6 +8,7 @@ interface TopBarProps {
   theme: Theme;
   palette: Palette;
   menuOpen: boolean;
+  activeSection: string;
   onToggleTheme: () => void;
   onToggleLang: () => void;
   onSelectPalette: (palette: Palette) => void;
@@ -21,6 +22,7 @@ export function TopBar({
   theme,
   palette,
   menuOpen,
+  activeSection,
   onToggleTheme,
   onToggleLang,
   onSelectPalette,
@@ -85,11 +87,20 @@ export function TopBar({
       </button>
 
       <nav id="site-nav" className={`site-nav ${menuOpen ? "is-open" : ""}`} aria-label="Primary">
-        {t.nav.map(([label, href]) => (
-          <a key={href} href={href} onClick={onNavClick}>
-            {label}
-          </a>
-        ))}
+        {t.nav.map(([label, href]) => {
+          const isActive = activeSection !== "" && href === `#${activeSection}`;
+          return (
+            <a
+              key={href}
+              href={href}
+              className={isActive ? "is-active" : undefined}
+              aria-current={isActive ? "true" : undefined}
+              onClick={onNavClick}
+            >
+              {label}
+            </a>
+          );
+        })}
       </nav>
     </header>
   );

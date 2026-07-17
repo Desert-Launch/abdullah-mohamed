@@ -16,7 +16,7 @@ export function Hero({ t, socials }: { t: Dictionary; socials: Social[] }) {
         </p>
 
         <div className="hero-actions">
-          <a className="button primary" href={bookingHref}>
+          <a className="button primary" href={bookingHref} data-magnetic>
             {t.hero.primary}
             <span className="button-icon button-icon--go" aria-hidden="true">
               →
@@ -37,6 +37,11 @@ export function Hero({ t, socials }: { t: Dictionary; socials: Social[] }) {
             </span>
           </a>
         </div>
+
+        <p className="hero-currently">
+          <span className="pulse-dot" aria-hidden="true" />
+          {t.hero.currently}
+        </p>
 
         <div className="hero-social" aria-label={t.hero.socialLabel}>
           <SocialLinks socials={socials} size={26} />

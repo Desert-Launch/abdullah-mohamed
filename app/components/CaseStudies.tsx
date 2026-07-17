@@ -1,5 +1,6 @@
 import type { CaseStudy, Dictionary } from "../data/types";
 import { asset } from "../lib/asset";
+import { ShotGallery } from "./ShotGallery";
 
 function CaseStudyCard({ study, labels }: { study: CaseStudy; labels: Dictionary["caseLabels"] }) {
   const gallery = study.shots?.slice(0, 3) ?? [];
@@ -60,13 +61,7 @@ function CaseStudyCard({ study, labels }: { study: CaseStudy; labels: Dictionary
         ))}
       </div>
 
-      {gallery.length > 0 ? (
-        <div className="case-shots">
-          {gallery.map((shot) => (
-            <img key={shot} src={asset(shot)} alt={`${study.title} screenshot`} loading="lazy" />
-          ))}
-        </div>
-      ) : null}
+      {gallery.length > 0 ? <ShotGallery shots={gallery} title={study.title} /> : null}
 
       {study.links && study.links.length > 0 ? (
         <div className="case-links">
