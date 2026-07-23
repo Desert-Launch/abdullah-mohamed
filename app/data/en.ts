@@ -49,7 +49,7 @@ export const en: Dictionary = {
   },
   proof: [
     ["10+", "apps shipped to stores"],
-    ["20,000+", "students on Faheem"],
+    ["30,000+", "students on Faheem"],
     ["5+", "years shipping production"],
     ["4 regions", "Egypt, Gulf, Europe, US"],
   ],
@@ -175,7 +175,7 @@ export const en: Dictionary = {
         "/images/shots/faheem3.webp",
       ],
       summary:
-        "The core of an Arabic-first AI tutor now used by 20,000+ K-12 students.",
+        "The core of an Arabic-first AI tutor now used by 30,000+ K-12 students.",
       challenge:
         "Students needed tutoring that felt live and trustworthy in Arabic — real-time answers, voice, and visuals — not a generic chatbot bolted onto a form.",
       role: "Core engineer on the realtime tutoring layer and the app architecture the rest of the product is built on.",
@@ -185,8 +185,8 @@ export const en: Dictionary = {
         "Structured 16 modules in clean architecture with localization, analytics, Crashlytics, FCM, and multi-environment builds.",
       ],
       results: [
-        { value: "20,000+", label: "K-12 students" },
-        { value: "16", label: "clean-architecture modules" },
+        { value: "30,000+", label: "K-12 students" },
+        { value: "8,500+", label: "monthly active users" },
         { value: "Realtime", label: "voice + chat tutoring" },
       ],
       stack: [
@@ -205,6 +205,37 @@ export const en: Dictionary = {
           label: "Google Play",
           href: "https://play.google.com/store/apps/details?id=com.moe.fahem",
         },
+      ],
+    },
+    {
+      slug: "talia",
+      title: "Talia",
+      type: "National LMS + SIS platform",
+      context: "Appenza Studio · frontend & integration",
+      image: appImages.talia,
+      summary:
+        "An Arabic-first, national-scale education platform (LMS + SIS) — the digital backbone a Ministry of Education, and every school under it, runs on.",
+      challenge:
+        "A ministry and every school beneath it needed one system for student records, learning, and operations — Arabic-first, RTL, and Hijri-aware — with confidential health, counseling, and special-needs data that not even school admins can override.",
+      role: "Frontend & integration engineer across the Talia 360 admin/ministry console and the Talia Learn app — wiring screens from mock data to a live Go/REST backend and verifying every one against the deployed environment.",
+      process: [
+        "Built and integrated screens for Talia 360 (ministry/admin console) and Talia Learn (learning app) as SvelteKit 5 + Tailwind CSS 4 SPAs over a typed Go/REST backend.",
+        "Wired product screens from mock/seed data to live API reads and writes with a layered datasource → repository → query architecture using TanStack Query.",
+        "Implemented RBAC-aware, role-based views (teacher / student / principal / admin) over a deny-by-default authorization model across a Ministry→School entity tree.",
+        "Ran live in-browser QA to confirm real-data rendering, close mock-vs-live gaps, and file backend contract issues — holding a no-dummy-data standard.",
+      ],
+      results: [
+        { value: "25", label: "functional modules" },
+        { value: "534", label: "requirements in scope" },
+        { value: "Multi-tenant", label: "Ministry → School" },
+      ],
+      stack: [
+        "SvelteKit 5",
+        "TypeScript",
+        "Tailwind CSS 4",
+        "TanStack Query",
+        "REST / JWT",
+        "RBAC",
       ],
     },
     {
@@ -302,7 +333,7 @@ export const en: Dictionary = {
       location: "Full-time · Egypt",
       logo: "/images/company_logos/appenza.webp",
       summary:
-        "Building the core of Faheem, an Arabic AI tutoring product used by 20,000+ K-12 students.",
+        "Building the core of Faheem, an Arabic AI tutoring product used by 30,000+ K-12 students.",
       achievements: [
         "Developed realtime AI tutoring over WebSocket with Azure OpenAI streaming.",
         "Built voice tutor flows with STT/TTS and an AI board for generated educational visuals.",
@@ -322,17 +353,17 @@ export const en: Dictionary = {
             "Clean Architecture",
           ],
           metrics: [
-            { value: "20,000+", label: "K-12 students" },
+            { value: "30,000+", label: "K-12 students" },
+            { value: "8,500+", label: "monthly active" },
             { value: "16", label: "modules shipped" },
-            { value: "Realtime", label: "voice + chat AI" },
           ],
         },
         {
           title: "Talia",
           type: "Multi-tenant school platform",
           image: appImages.talia,
-          body: "Multi-tenant K-12 school management platform for national education ministries. Building the React/SvelteKit web client with client-side role-based access across school, multi-school, and ministry scopes; under evaluation by the education ministries of Egypt, Qatar, and Libya.",
-          stack: ["React", "SvelteKit", "TypeScript", "Tailwind CSS", "RBAC"],
+          body: "Arabic-first, multi-tenant national LMS + SIS platform, with Qatar's Ministry of Education as the flagship customer. Building the SvelteKit web clients (Talia 360 admin console and Talia Learn) and integrating dozens of screens from mock data to a live Go/REST backend, with RBAC-aware role-based access across a Ministry→School entity tree.",
+          stack: ["SvelteKit 5", "TypeScript", "Tailwind CSS 4", "TanStack Query", "RBAC"],
         },
         {
           title: "BTC",
@@ -552,7 +583,7 @@ export const en: Dictionary = {
   services: [
     {
       title: "Real-time AI features",
-      body: "Streaming AI chat, voice tutors (STT/TTS), and generated content wired into your product over WebSocket — the way Faheem serves 20,000+ students live.",
+      body: "Streaming AI chat, voice tutors (STT/TTS), and generated content wired into your product over WebSocket — the way Faheem serves 30,000+ students live.",
     },
     {
       title: "Flutter apps, end-to-end",
