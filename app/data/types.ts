@@ -225,7 +225,8 @@ export interface Dictionary {
     appStore: string;
     googlePlay: string;
     /** Status badges for apps without live store links. `shipped` prefixes
-     *  the year on retired apps: "Shipped 2023 · Retired". */
+     *  the year on retired apps: "Shipped 2023 · Retired". Other statuses
+     *  carrying a `year` prefix it bare: "2022 · Product build". */
     shipped: string;
     retired: string;
     unreleased: string;

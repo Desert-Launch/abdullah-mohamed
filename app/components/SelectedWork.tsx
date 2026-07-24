@@ -35,7 +35,9 @@ export function SelectedWork({ t }: { t: Dictionary }) {
                 : labels.retired
               : links?.status === "unreleased"
                 ? labels.unreleased
-                : labels.productBuild;
+                : links?.year
+                  ? `${links.year} · ${labels.productBuild}`
+                  : labels.productBuild;
           return (
             <article className="work-card" key={app.key} data-reveal data-glow data-tilt>
               <span className="card-spotlight" aria-hidden="true" />
