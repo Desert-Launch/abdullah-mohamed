@@ -34,7 +34,7 @@ export const en: Dictionary = {
     roleLine: "Senior Software Engineer · AI, Mobile & Full-Stack Products",
     tagline:
       "The engineer teams bring in when the product actually has to ship — and survive production.",
-    lead: "Cairo-based senior engineer, 5+ years shipping production apps end to end. Right now I'm building Faheem — Egypt's Ministry of Education AI platform with real-time voice-to-voice tutoring and AI-generated lessons. 10+ apps shipped across Egypt, Germany, the UAE, and the US. Flutter, Node.js, AWS — and comfortable adapting to",
+    lead: "Cairo-based senior engineer, 4+ years shipping production apps end to end. Right now I'm building Faheem — Egypt's Ministry of Education AI platform with real-time voice-to-voice tutoring and AI-generated lessons. 10+ apps shipped across Egypt, Germany, the UAE, and the US. Flutter, Node.js, AWS — and comfortable adapting to",
     leadEmphasis: "whatever the product needs.",
     primary: "Start a project",
     secondary: "Start a project",
@@ -50,7 +50,7 @@ export const en: Dictionary = {
   proof: [
     ["10+", "apps shipped to stores"],
     ["30,000+", "students on Faheem"],
-    ["5+", "years shipping production"],
+    ["4+", "years shipping production"],
     ["4 regions", "Egypt, Gulf, Europe, US"],
   ],
   proofNote: "Shipped to the App Store & Google Play.",
@@ -217,7 +217,7 @@ export const en: Dictionary = {
       context: "Appenza Studio · frontend & integration",
       image: appImages.talia,
       summary:
-        "An Arabic-first, national-scale education platform (LMS + SIS) — the digital backbone a Ministry of Education, and every school under it, runs on.",
+        "An Arabic-first, multi-tenant education platform (LMS + SIS) built to run a whole ministry and every school under it. Live with its first school in Egypt, with further schools in rollout and a Qatar Ministry of Education deployment in requirements.",
       challenge:
         "A ministry and every school beneath it needed one system for student records, learning, and operations — Arabic-first, RTL, and Hijri-aware — with confidential health, counseling, and special-needs data that not even school admins can override.",
       role: "Frontend & integration engineer across the Talia 360 admin/ministry console and the Talia Learn app — wiring screens from mock data to a live Go/REST backend and verifying every one against the deployed environment.",
@@ -337,7 +337,7 @@ export const en: Dictionary = {
   ],
   experiences: [
     {
-      date: "Feb 2025 - Present",
+      date: "Jan 2026 - Present",
       role: "Senior Software Engineer",
       company: "Appenza Studio",
       location: "Full-time · Egypt",
@@ -372,7 +372,7 @@ export const en: Dictionary = {
           title: "Talia",
           type: "Multi-tenant school platform",
           image: appImages.talia,
-          body: "Arabic-first, multi-tenant national LMS + SIS platform, with Qatar's Ministry of Education as the flagship customer. Building the SvelteKit web clients (Talia 360 admin console and Talia Learn) and integrating dozens of screens from mock data to a live Go/REST backend, with RBAC-aware role-based access across a Ministry→School entity tree.",
+          body: "Arabic-first, multi-tenant national LMS + SIS platform. Live with its first school in Egypt, with additional schools in rollout and a Qatar Ministry of Education deployment in requirements. Building the SvelteKit web clients (Talia 360 admin console and Talia Learn) and integrating dozens of screens from mock data to a live Go/REST backend, with RBAC-aware role-based access across a Ministry→School entity tree.",
           stack: ["SvelteKit 5", "TypeScript", "Tailwind CSS 4", "TanStack Query", "RBAC"],
         },
         {
@@ -396,7 +396,7 @@ export const en: Dictionary = {
       ],
     },
     {
-      date: "Sep 2024 - Jan 2025",
+      date: "Sep 2024 - Jan 2026",
       role: "Software Engineer",
       company: "Dib GmbH",
       location: "Full-time · Germany remote",
