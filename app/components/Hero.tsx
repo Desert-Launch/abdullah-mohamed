@@ -27,7 +27,7 @@ export function Hero({ t, socials }: { t: Dictionary; socials: Social[] }) {
           </a>
           <a
             className="button ghost"
-            href={asset("/Abdullah_Mohamed_Abdullah_CV.pdf")}
+            href={asset("/Abdullah_Mohamed_CV.pdf")}
             target="_blank"
             rel="noreferrer"
           >

@@ -59,7 +59,7 @@ export function Footer({ t, lang, socials }: FooterProps) {
           >
             {lang === "ar" ? "احجز مكالمة" : "Book a call"}
           </a>
-          <a href="/Abdullah_Mohamed_Abdullah_CV.pdf" target="_blank" rel="noreferrer">
+          <a href="/Abdullah_Mohamed_CV.pdf" target="_blank" rel="noreferrer">
             {t.hero.cv}
           </a>
           <a className="footer-email" href={`mailto:${contactEmail}`}>

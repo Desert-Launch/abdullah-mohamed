@@ -160,7 +160,7 @@ export const storeLinks: Record<
     appStore: "https://apps.apple.com/eg/app/iccd-hub/id6756031833",
     play: "https://play.google.com/store/apps/details?id=com.iccdhub.app",
   },
-  xera: { status: "private", year: "2024" },
+  xera: { status: "private", year: "2022" },
 };
 
 /** Web3Forms access key for the contact form (designed to be public — it only
