@@ -71,6 +71,9 @@ export interface Testimonial {
   role: string;
   /** Optional headshot shown next to the attribution. */
   image?: string;
+  /** LinkedIn URL where the recommendation can be verified. When set, the
+   *  card shows a "Verified · LinkedIn" badge and links to the source. */
+  linkedin?: string;
   /** Marks placeholder content to be swapped for a real client quote.
    *  Sample testimonials are never rendered — the section hides itself
    *  until at least one real quote exists. */
@@ -104,12 +107,35 @@ export interface Service {
   body: string;
 }
 
+/** Glyph rendered in a plan card's header. */
+export type PlanIcon = "clock" | "diamond" | "infinity";
+
 export interface Plan {
   name: string;
-  fit: string;
+  /** One-line promise shown under the name, e.g. "One production-ready slice, shipped." */
   body: string;
+  /** Headline price, pre-formatted with symbol and grouping, e.g. "$1,200". USD in both languages. */
+  price: string;
+  /** Small print under the price, e.g. "flat · one system · 5 business days". */
+  priceNote: string;
+  /** Per-card CTA label, e.g. "Book a review". Links to #contact. */
+  cta: string;
+  /** Which glyph to show in the card header. */
+  icon: PlanIcon;
   featured?: boolean;
+  /** Badge above a featured card, e.g. "Most popular". */
+  badge?: string;
+  /** Optional lead-in above the feature list, e.g. "Everything in Architecture Clinic, plus:". */
+  itemsIntro?: string;
   items: string[];
+}
+
+/** A fixed-scope specialization sold alongside the core plans (the add-ons row). */
+export interface PlanAddOn {
+  name: string;
+  /** Headline price, pre-formatted, e.g. "$6,000". */
+  price: string;
+  body: string;
 }
 
 export interface Heading {
@@ -209,13 +235,17 @@ export interface Dictionary {
   servicesHeading: Heading;
   stackHeading: Heading;
   plansHeading: Heading;
-  /** CTA label at the bottom of each plan card (links to #contact). */
-  plansCta: string;
   processHeading: Heading;
   process: ProcessStep[];
   faqHeading: Heading;
   faq: FaqItem[];
   testimonialsHeading: Heading;
+  testimonialLabels: {
+    /** Trust badge shown on cards backed by a LinkedIn recommendation. */
+    verified: string;
+    /** Accessible label for the link to the recommendation on LinkedIn. */
+    view: string;
+  };
   about: {
     eyebrow: string;
     title: string;
@@ -233,6 +263,8 @@ export interface Dictionary {
   freelanceProjects: Product[];
   services: Service[];
   plans: Plan[];
+  /** Fixed-scope specializations shown as a compact row below the core plans. */
+  planAddOns: PlanAddOn[];
   testimonials: Testimonial[];
   contact: ContactCopy;
 }

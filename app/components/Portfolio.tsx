@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { copy } from "../data/copy";
 import { shared, bookingHref, profilePhoto } from "../data/shared";
 import { asset } from "../lib/asset";
-import type { Lang, Palette, Theme } from "../data/types";
+import type { Lang, Palette, PlanIcon, Theme } from "../data/types";
 import { TopBar } from "./TopBar";
 import { Hero } from "./Hero";
 import { CaseStudies } from "./CaseStudies";
@@ -13,6 +13,58 @@ import { SelectedWork } from "./SelectedWork";
 import { ContactForm } from "./ContactForm";
 import { CountUp } from "./CountUp";
 import { Footer } from "./Footer";
+
+/** Header glyph for each plan tier, keyed by `Plan.icon`. */
+function PlanGlyph({ icon }: { icon: PlanIcon }) {
+  const common = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.6,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true,
+  };
+  if (icon === "clock") {
+    return (
+      <svg {...common}>
+        <circle cx="12" cy="12" r="8.5" />
+        <path d="M12 7.5V12l3 1.8" />
+      </svg>
+    );
+  }
+  if (icon === "diamond") {
+    return (
+      <svg {...common}>
+        <path d="M12 3 21 12l-9 9-9-9 9-9Z" />
+      </svg>
+    );
+  }
+  // infinity
+  return (
+    <svg {...common}>
+      <path d="M7 8.5a3.5 3.5 0 1 0 0 7c2 0 3-1.75 5-3.5s3-3.5 5-3.5a3.5 3.5 0 1 1 0 7c-2 0-3-1.75-5-3.5S9 8.5 7 8.5Z" />
+    </svg>
+  );
+}
+
+/** Inline check mark reused across plan feature lists. */
+function PlanCheck() {
+  return (
+    <svg
+      className="plan-check"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
+}
 
 export function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -338,17 +390,44 @@ export function Portfolio() {
               >
                 <span className="card-spotlight" aria-hidden="true" />
                 <span className="card-edge" aria-hidden="true" />
-                <p>{plan.fit}</p>
-                <h3>{plan.name}</h3>
-                <span>{plan.body}</span>
-                <ul>
+                {plan.badge ? <span className="plan-badge">{plan.badge}</span> : null}
+                <span className="plan-icon" aria-hidden="true">
+                  <PlanGlyph icon={plan.icon} />
+                </span>
+                <h3 className="plan-name">{plan.name}</h3>
+                <p className="plan-lead">{plan.body}</p>
+                <p className="plan-price">{plan.price}</p>
+                <p className="plan-price-note">{plan.priceNote}</p>
+                <a
+                  className={`button ${plan.featured ? "primary" : "ghost"} plan-cta`}
+                  href="#contact"
+                >
+                  {plan.cta}
+                </a>
+                {plan.itemsIntro ? (
+                  <p className="plan-items-intro">{plan.itemsIntro}</p>
+                ) : null}
+                <ul className="plan-items">
                   {plan.items.map((item) => (
-                    <li key={item}>{item}</li>
+                    <li key={item}>
+                      <PlanCheck />
+                      <span>{item}</span>
+                    </li>
                   ))}
                 </ul>
-                <a className="button ghost plan-cta" href="#contact">
-                  {t.plansCta}
-                </a>
+              </article>
+            ))}
+          </div>
+          <div className="plan-addons">
+            {t.planAddOns.map((addon) => (
+              <article className="plan-addon" key={addon.name} data-reveal data-glow>
+                <span className="card-spotlight" aria-hidden="true" />
+                <span className="card-edge" aria-hidden="true" />
+                <div className="plan-addon-head">
+                  <h3>{addon.name}</h3>
+                  <span className="plan-addon-price">{addon.price}</span>
+                </div>
+                <p>{addon.body}</p>
               </article>
             ))}
           </div>
@@ -406,7 +485,26 @@ export function Portfolio() {
             </div>
             <div className="testimonial-grid">
               {testimonials.map((item) => (
-                <figure className="testimonial-card" key={item.name} data-reveal>
+                <figure className="testimonial-card" key={item.name} data-reveal data-glow>
+                  <span className="card-spotlight" aria-hidden="true" />
+                  <span className="card-edge" aria-hidden="true" />
+                  {item.linkedin ? (
+                    <span className="testimonial-verified">
+                      <svg
+                        className="testimonial-verified-check"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg>
+                      {t.testimonialLabels.verified}
+                    </span>
+                  ) : null}
                   <blockquote>{item.quote}</blockquote>
                   <figcaption>
                     {item.image ? (
@@ -421,6 +519,23 @@ export function Portfolio() {
                       <strong>{item.name}</strong>
                       <span>{item.role}</span>
                     </div>
+                    {item.linkedin ? (
+                      <a
+                        className="testimonial-linkedin"
+                        href={item.linkedin}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={t.testimonialLabels.view}
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 9.67H5.67V18h2.67V9.67zM7 5.67a1.55 1.55 0 1 0 0 3.1 1.55 1.55 0 0 0 0-3.1zM18.33 18v-4.57c0-2.45-1.31-3.59-3.06-3.59a2.64 2.64 0 0 0-2.39 1.31h-.03V9.67h-2.56V18h2.67v-4.12c0-1.09.2-2.14 1.55-2.14 1.33 0 1.35 1.24 1.35 2.22V18h2.75z" />
+                        </svg>
+                      </a>
+                    ) : null}
                   </figcaption>
                 </figure>
               ))}

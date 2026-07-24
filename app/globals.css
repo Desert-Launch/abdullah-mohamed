@@ -1740,7 +1740,7 @@ span.case-avatar {
 .testimonial-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  gap: 10px;
   align-items: stretch;
 }
 
@@ -1749,8 +1749,8 @@ span.case-avatar {
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  padding: clamp(24px, 3vw, 34px);
+  gap: 18px;
+  padding: clamp(18px, 2.2vw, 24px);
   overflow: hidden;
   border: 1px solid var(--glass-border);
   border-radius: var(--radius);
@@ -1764,23 +1764,8 @@ span.case-avatar {
     box-shadow 280ms ease;
 }
 
-/* Editorial watermark quote mark in the top corner, sitting behind the quote. */
-.testimonial-card::before {
-  content: "\201C";
-  position: absolute;
-  top: 0.06em;
-  inset-inline-end: 0.16em;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 5.5rem;
-  line-height: 1;
-  color: var(--gold);
-  opacity: 0.16;
-  pointer-events: none;
-  transition: opacity 280ms ease;
-}
-
-/* Match the page-wide card hover: a small lift, a warm border and accent ring,
-   with the quote mark warming up a touch. Pointer devices only. */
+/* Match the page-wide card hover: a small lift, a warm border and accent ring.
+   Pointer devices only. */
 @media (hover: hover) {
   .testimonial-card:hover {
     transform: translateY(-4px);
@@ -1789,10 +1774,6 @@ span.case-avatar {
       var(--shadow),
       0 0 0 1px color-mix(in srgb, var(--gold) 20%, transparent),
       inset 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent);
-  }
-
-  .testimonial-card:hover::before {
-    opacity: 0.24;
   }
 }
 
@@ -1815,44 +1796,91 @@ span.case-avatar {
   text-transform: uppercase;
 }
 
+/* "Verified · LinkedIn" trust badge — a monospace pill in the accent color,
+   sitting just below the quote mark. */
+.testimonial-verified {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px;
+  border: 1px solid color-mix(in srgb, var(--gold) 38%, transparent);
+  border-radius: 999px;
+  background: var(--gold-soft);
+  color: var(--gold);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.testimonial-verified-check {
+  flex: none;
+  width: 13px;
+  height: 13px;
+}
+
 .testimonial-card blockquote {
   margin: 0;
   position: relative;
   z-index: 1;
-  padding-inline-start: 20px;
   color: var(--ink);
   font-size: clamp(1rem, 1.7vw, 1.15rem);
   font-weight: 500;
   line-height: 1.7;
 }
 
-/* Accent bar that fades out toward the bottom of the quote. */
-.testimonial-card blockquote::before {
-  content: "";
-  position: absolute;
-  inset-block: 2px;
-  inset-inline-start: 0;
-  width: 3px;
-  border-radius: 3px;
-  background: linear-gradient(
-    180deg,
-    var(--gold),
-    color-mix(in srgb, var(--gold) 12%, transparent)
-  );
-}
-
 .testimonial-card figcaption {
-  margin-top: auto;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding-top: 20px;
+  padding-top: 18px;
   border-top: 1px solid var(--line);
 }
 
 .testimonial-card figcaption > div {
   display: grid;
   gap: 2px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* LinkedIn source link, pushed to the far end of the attribution row. */
+.testimonial-linkedin {
+  margin-inline-start: auto;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  border: 1px solid var(--glass-border);
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+  color: var(--muted);
+  transition:
+    color 200ms ease,
+    border-color 200ms ease,
+    background 200ms ease,
+    transform 200ms ease;
+}
+
+.testimonial-linkedin svg {
+  width: 18px;
+  height: 18px;
+}
+
+.testimonial-linkedin:hover {
+  color: var(--gold);
+  border-color: color-mix(in srgb, var(--gold) 45%, var(--glass-border));
+  background: var(--gold-soft);
+  transform: translateY(-1px);
+}
+
+.testimonial-linkedin:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
 
 .testimonial-avatar {
@@ -1868,6 +1896,7 @@ span.case-avatar {
 .testimonial-card figcaption strong {
   color: var(--ink);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .testimonial-card figcaption span {
@@ -2786,37 +2815,180 @@ span.case-avatar {
 }
 
 .plan-card {
-  padding: 24px;
-  display: grid;
-  align-content: start;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
 }
 
 .plan-card.featured {
+  overflow: visible; /* let the "Most popular" badge straddle the top edge */
   border-color: color-mix(in srgb, var(--gold) 45%, var(--line));
   background:
     linear-gradient(180deg, var(--gold-soft), transparent),
     var(--surface);
 }
 
-.plan-card p {
-  margin-bottom: 14px;
-  color: var(--gold);
-  font-size: 0.8rem;
+/* "Most popular" pill above the featured card */
+.plan-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--button-ink);
+  font-size: 0.64rem;
   font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
-.plan-card > span {
-  margin-top: 12px;
+/* Header glyph tile */
+.plan-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--gold) 10%, transparent);
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+.plan-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.plan-name {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.plan-lead {
+  margin: 8px 0 0;
   color: var(--muted);
-  line-height: 1.7;
+  line-height: 1.6;
+  font-size: 0.95rem;
 }
 
-.plan-card ul {
-  margin: 18px 0 0;
-  padding-inline-start: 18px;
+.plan-price {
+  margin: 24px 0 0;
+  font-size: 2.6rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.plan-price-note {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.plan-items-intro {
+  margin: 26px 0 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.plan-items {
+  margin: 24px 0 0;
+  padding: 22px 0 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+  display: grid;
+  gap: 13px;
+}
+
+/* When an intro precedes the list, it already carries the divider */
+.plan-items-intro + .plan-items {
+  margin-top: 14px;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.plan-items li {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
   color: var(--ink-soft);
-  line-height: 1.8;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.plan-check {
+  flex: none;
+  box-sizing: border-box;
+  width: 19px;
+  height: 19px;
+  margin-top: 2px;
+  padding: 3px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--gold) 35%, var(--line));
+  color: var(--gold);
+}
+
+/* Add-ons row below the three core plans */
+.plan-addons {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.plan-addon {
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: var(--glass);
+  box-shadow: var(--shadow), inset 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+}
+
+.plan-addon-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.plan-addon-head h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.plan-addon-price {
+  flex: none;
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.plan-addon p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 
 .experience-section {
@@ -3252,6 +3424,7 @@ span.case-avatar {
   .nested-app-grid,
   .project-catalog,
   .plans-grid,
+  .plan-addons,
   .work-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -3441,6 +3614,7 @@ span.case-avatar {
   .project-catalog,
   .service-grid,
   .plans-grid,
+  .plan-addons,
   .stack-groups,
   .work-grid {
     grid-template-columns: 1fr;
@@ -3546,20 +3720,9 @@ span.case-avatar {
 
 /* ── Engagement plan cards ──────────────────────────────────────────────── */
 
-.plan-card h3 {
-  margin: 0;
-  font-size: 1.35rem;
-  font-weight: 500;
-  color: var(--ink);
-}
-
-.plan-card ul li::marker {
-  color: var(--gold);
-}
-
 .plan-cta {
   margin-top: 22px;
-  width: fit-content;
+  width: 100%;
 }
 
 /* ── Process strip ("How working with me looks") ────────────────────────── */

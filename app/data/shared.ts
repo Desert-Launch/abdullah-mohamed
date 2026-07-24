@@ -28,10 +28,10 @@ export const shared: {
     { src: "/images/apps_logos/medical_center.webp", name: "Medical Center" },
     { src: "/images/apps_logos/quickrx.webp", name: "QuickRX" },
     { src: "/images/apps_logos/holland.webp", name: "Holland Pharmacy" },
-    { src: "/images/apps_logos/q_fight_gym.png", name: "Q-Fight Gym" },
-    { src: "/images/apps_logos/al_muslim.png", name: "Al-Muslim" },
-    { src: "/images/apps_logos/talia.png", name: "Talia" },
-    { name: "Ofoq" },
+    { src: "/images/apps_logos/q_fight_gym.webp", name: "Q-Fight Gym" },
+    { src: "/images/apps_logos/al_muslim.webp", name: "Al-Muslim" },
+    { src: "/images/apps_logos/iccd.webp", name: "ICCD Hub" },
+    { src: "/images/apps_logos/talia.webp", name: "Talia" },
   ],
   socials: [
     {
@@ -106,9 +106,9 @@ export const bookingUrl =
   "https://calendly.com/abdullah-mohamed102001/book-a-call";
 
 /** Headshot for the About section. Drop the file in `public/images/` and set
- *  the path here (e.g. "/images/abdullah.jpg"). Leave `null` to hide the photo
+ *  the path here (e.g. "/images/abdullah.webp"). Leave `null` to hide the photo
  *  — About stays text-only, no broken image. */
-export const profilePhoto: string | null = "/images/abdullah.jpg";
+export const profilePhoto: string | null = "/images/abdullah.webp";
 
 /** Lifecycle of a shipped app. Clients retiring an app (business ended,
  *  taken off the stores) is normal — we label it honestly instead of showing
@@ -155,6 +155,11 @@ export const storeLinks: Record<
       "https://apps.apple.com/us/app/al-muslim-%D8%A7%D9%84%D9%85%D8%B3%D9%84%D9%85/id6757352101",
     play: "https://play.google.com/store/apps/details?id=com.elmuslim.app",
   },
+  iccd: {
+    status: "live",
+    appStore: "https://apps.apple.com/eg/app/iccd-hub/id6756031833",
+    play: "https://play.google.com/store/apps/details?id=com.iccdhub.app",
+  },
   xera: { status: "private", year: "2024" },
 };
 
@@ -195,9 +200,10 @@ export const appImages = {
   jaweb: "/images/apps_logos/jaweb.webp",
   fastap: "/images/apps_logos/fastap.webp",
   btc: "/images/apps_logos/btc.webp",
-  qfight: "/images/apps_logos/q_fight_gym.png",
-  almuslim: "/images/apps_logos/al_muslim.png",
-  talia: "/images/apps_logos/talia.png",
+  qfight: "/images/apps_logos/q_fight_gym.webp",
+  almuslim: "/images/apps_logos/al_muslim.webp",
+  iccd: "/images/apps_logos/iccd.webp",
+  talia: "/images/apps_logos/talia.webp",
   ezhal: "/images/apps_logos/ezhal.webp",
   ezhalShot: "/images/ezhal_shot1.webp",
   xera: "/images/apps_logos/xera.webp",

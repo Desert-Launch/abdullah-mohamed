@@ -104,10 +104,9 @@ export const en: Dictionary = {
   },
   plansHeading: {
     eyebrow: "Engagement plans",
-    title: "Simple offers for different stages.",
+    title: "Fixed scope. Public prices. No surprises.",
     body: "Every engagement starts with a free intro call and a written scope — you know the price before any code is written.",
   },
-  plansCta: "Let's talk",
   processHeading: {
     eyebrow: "Process",
     title: "How working with me looks.",
@@ -161,6 +160,10 @@ export const en: Dictionary = {
     eyebrow: "What people say",
     title: "Feedback from teams and clients.",
     body: "Real words from people I have shipped with.",
+  },
+  testimonialLabels: {
+    verified: "Verified · LinkedIn",
+    view: "View recommendation on LinkedIn",
   },
   caseStudies: [
     {
@@ -324,6 +327,13 @@ export const en: Dictionary = {
         "A daily Muslim companion: Quran, adhkar & duas, accurate prayer times, and qibla — with smart reminders.",
       image: appImages.almuslim,
     },
+    {
+      key: "iccd",
+      title: "ICCD Hub",
+      tagline:
+        "Bilingual members' app for the Islamic Corporation for the Development of the Private Sector — events, prayer times, Qibla, calendar, and tasks.",
+      image: appImages.iccd,
+    },
   ],
   experiences: [
     {
@@ -403,6 +413,10 @@ export const en: Dictionary = {
           title: "IMOX",
           type: "Social e-commerce",
           image: appImages.imox,
+          shots: [
+            "/images/shots/imox1.webp",
+            "/images/shots/imox2.webp",
+          ],
           body: "Video-first shopping app where sellers publish products as short reels and buyers shop through social content.",
           stack: ["Flutter", "Airbridge", "Mixpanel", "Caching", "Deep Links"],
         },
@@ -501,6 +515,30 @@ export const en: Dictionary = {
   ],
   freelanceProjects: [
     {
+      title: "Voicers",
+      type: "Social audio platform",
+      image: appImages.voicers,
+      shots: [
+        "/images/shots/voicers1.webp",
+        "/images/shots/voicers2.webp",
+        "/images/shots/voicers3.webp",
+      ],
+      body: "Bilingual social audio platform for creators — voice notes (VNotes), playlists, live stages, competitions, and leaderboards, with a discovery feed and audience engagement. Built as an independent product; not yet published.",
+      stack: ["Flutter", "Clean Architecture", "Audio", "Realtime"],
+    },
+    {
+      title: "ICCD Hub",
+      type: "Community & productivity app",
+      image: appImages.iccd,
+      shots: [
+        "/images/shots/iccd1.webp",
+        "/images/shots/iccd2.webp",
+        "/images/shots/iccd3.webp",
+      ],
+      body: "Bilingual (EN/AR) members' companion app for the Islamic Corporation for the Development of the Private Sector. Blends organizational content — events, member countries, subsidiaries, and a knowledge center — with a personal productivity suite (tasks, notes, calendar, reminders) and Islamic utilities (prayer times, Qibla compass, and Hijri calendar). Built on a modular GetX architecture with Google/Apple sign-in, Firebase push, deep linking, rich-text notes, and full RTL.",
+      stack: ["Flutter", "GetX", "Firebase", "REST API", "RTL"],
+    },
+    {
       title: "Al-Muslim",
       type: "Islamic daily companion",
       image: appImages.almuslim,
@@ -511,7 +549,12 @@ export const en: Dictionary = {
       title: "Q-Fight Gym",
       type: "Muay Thai gym app",
       image: appImages.qfight,
-      body: "The official app for a professional Muay Thai gym in Qatar, connecting members with a training program led by Thai world-title fighters.",
+      shots: [
+        "/images/shots/qfight1.webp",
+        "/images/shots/qfight2.webp",
+        "/images/shots/qfight3.webp",
+      ],
+      body: "The official app for a professional Muay Thai gym in Qatar, connecting members with a training program led by Thai world-title fighters. Members browse plans, book personal and group sessions with specific trainers, and manage their class schedule in-app.",
       stack: ["Flutter", "Clean Architecture", "Firebase", "Payments"],
     },
     {
@@ -573,12 +616,6 @@ export const en: Dictionary = {
         { value: "Live", label: "technician tracking" },
       ],
     },
-    {
-      title: "Ofoq",
-      type: "Saudi home-services app",
-      body: "On-demand home-services app for browsing services, scheduling bookings, worker matching, request management, and Firebase-backed realtime flows.",
-      stack: ["Flutter", "Firebase", "REST API", "Realtime"],
-    },
   ],
   services: [
     {
@@ -594,37 +631,81 @@ export const en: Dictionary = {
       body: "The whole path from unclear idea to a live app: backend APIs, database, deployment pipeline, and a product that survives production.",
     },
   ],
+  // NOTE: prices below are placeholders taken from the reference design and are
+  // market-calibrated for a senior Flutter + AI engineer. Swap for final numbers.
   plans: [
     {
-      name: "Audit",
-      fit: "For existing products",
-      body: "A focused review of architecture, performance, UX, and deployment risks.",
+      name: "Architecture Clinic",
+      icon: "clock",
+      body: "A senior read on your system, in writing.",
+      price: "$1,200",
+      priceNote: "flat · one system · 5 business days",
+      cta: "Book a review",
       items: [
-        "Code and system review",
-        "Priority fixes list",
-        "Technical direction call",
+        "30-min scoping call + async deep-dive on your repo",
+        "Architecture, schema & data-flow review",
+        "Security, scaling and cloud-cost audit",
+        "Written findings + a prioritized action plan you can hand to any engineer",
+        "One 45-min follow-up call",
+        "You keep the doc whether or not we work together",
       ],
     },
     {
-      name: "Launch",
-      fit: "For new MVPs",
-      body: "A production-ready slice that proves the product and gives you something real to ship.",
+      name: "Launchpad",
+      icon: "diamond",
+      body: "One production-ready slice, shipped.",
+      price: "$9,000",
+      priceNote: "fixed scope · shipped to production",
+      cta: "Scope a build",
       featured: true,
+      badge: "Most popular",
+      itemsIntro: "Everything in Architecture Clinic, plus:",
       items: [
-        "Mobile or web app",
-        "Backend and database",
-        "Deploy and handoff docs",
+        "One clearly defined slice — not 'the whole product'",
+        "Backend, web, and infra owned end to end",
+        "Multi-tenant / role-based architecture where it's needed",
+        "Dockerized deploy + GitHub Actions CI/CD",
+        "Payments, auth and third-party integrations",
+        "Docs, runbooks and a clean handoff",
+        "2 weeks post-launch support",
+        "Priced by the slice, not by the hour",
+        "Milestone 1 is week one. If you don't like the code, we stop there.",
       ],
     },
     {
       name: "Partner",
-      fit: "For ongoing delivery",
-      body: "Senior engineering capacity for teams that need continuous product movement.",
+      icon: "infinity",
+      body: "Reserved senior capacity, every month.",
+      price: "$3,500",
+      priceNote: "per month · 40 hrs reserved · cancel anytime",
+      cta: "Discuss retainer",
+      itemsIntro: "Everything in Launchpad, plus:",
       items: [
-        "Roadmap execution",
-        "Maintenance and scaling",
-        "Weekly delivery rhythm",
+        "40 hours of reserved senior capacity per month",
+        "Continuous delivery + roadmap planning",
+        "Priority response, 1 business day",
+        "Scaling, performance and cost optimization",
+        "Monthly reporting + quarterly architecture review",
+        "80-hr block available at $6,000/mo",
+        "No lock-in — 30 days' notice",
       ],
+    },
+  ],
+  planAddOns: [
+    {
+      name: "Mobile Launch",
+      price: "$6,000",
+      body: "iOS + Android from one Flutter codebase, both store submissions handled.",
+    },
+    {
+      name: "AI Accelerator",
+      price: "$4,500",
+      body: "RAG or LLM features in production — retrieval, evals, guardrails, fallbacks.",
+    },
+    {
+      name: "Real-time Engine",
+      price: "$4,000",
+      body: "Server-authoritative WebSocket state, presence, and sync that won't lose writes.",
     },
   ],
   // Excerpts from LinkedIn recommendations (full texts in assets/linkedin.json).
@@ -635,6 +716,7 @@ export const en: Dictionary = {
       name: "Mohamed Sayed",
       role: "AI Lead · Appenza",
       image: testimonialImages.mohamedSayed,
+      linkedin: "https://www.linkedin.com/in/abdullah-mohamed-3010/details/recommendations/",
     },
     {
       quote:
@@ -642,6 +724,7 @@ export const en: Dictionary = {
       name: "Ahmed Farid",
       role: "Senior Software Engineer · Recovery Advisers",
       image: testimonialImages.ahmedFarid,
+      linkedin: "https://www.linkedin.com/in/abdullah-mohamed-3010/details/recommendations/",
     },
     {
       quote:
@@ -649,6 +732,7 @@ export const en: Dictionary = {
       name: "Mohamad Zakaria",
       role: "Senior Software QA Engineer · Yassir",
       image: testimonialImages.mohamadZakaria,
+      linkedin: "https://www.linkedin.com/in/abdullah-mohamed-3010/details/recommendations/",
     },
   ],
   about: {
