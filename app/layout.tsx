@@ -22,7 +22,7 @@ const cairo = Cairo({
 
 const SITE_URL = "https://abdullahmohamed.dev";
 const DESCRIPTION =
-  "Abdullah Mohamed is a senior software engineer who builds AI products, Flutter apps, backend systems, and deployment pipelines that survive production. Available for freelance and product roles.";
+  "Abdullah Mohamed is a senior software engineer who builds full-stack web apps, real-time AI features, and mobile products end to end — frontend, backend, and the infrastructure they run on. Available for freelance projects and product roles.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -36,12 +36,14 @@ export const metadata: Metadata = {
   creator: "Abdullah Mohamed",
   keywords: [
     "Abdullah Mohamed",
-    "Senior Software Engineer",
-    "Flutter developer",
-    "Node.js developer",
-    "AI product engineer",
     "Full-stack engineer",
-    "Mobile app developer",
+    "Senior Software Engineer",
+    "React developer",
+    "Node.js developer",
+    "PostgreSQL",
+    "AI product engineer",
+    "Real-time AI",
+    "Flutter developer",
     "Freelance software engineer",
     "Egypt",
   ],

@@ -27,14 +27,13 @@ export const en: Dictionary = {
     },
   },
   hero: {
-    eyebrow:
-      "Senior Software Engineer · Cairo, Egypt 🇪🇬 · Open to relocation 🌍",
+    eyebrow: "Senior Software Engineer · Cairo, Egypt 🇪🇬",
     title: "I build products that ship —",
     titleAccent: "and survive production.",
-    roleLine: "Senior Software Engineer · AI, Mobile & Full-Stack Products",
+    roleLine: "Senior Software Engineer · Full-Stack, AI & Mobile Products",
     tagline:
       "The engineer teams bring in when the product actually has to ship — and survive production.",
-    lead: "Cairo-based senior engineer, 4+ years shipping production apps end to end. Right now I'm building Faheem — Egypt's Ministry of Education AI platform with real-time voice-to-voice tutoring and AI-generated lessons. 10+ apps shipped across Egypt, Germany, the UAE, and the US. Flutter, Node.js, AWS — and comfortable adapting to",
+    lead: "Cairo-based senior engineer, 4+ years shipping production apps end to end. Right now I'm building Faheem — Egypt's Ministry of Education AI platform with real-time voice-to-voice tutoring and AI-generated lessons. 10+ apps shipped across Egypt, Germany, the UAE, and the US. React, Node.js, PostgreSQL, AWS, Flutter — and comfortable adapting to",
     leadEmphasis: "whatever the product needs.",
     primary: "Start a project",
     secondary: "Start a project",
@@ -104,8 +103,8 @@ export const en: Dictionary = {
   },
   plansHeading: {
     eyebrow: "Engagement plans",
-    title: "Fixed scope. Public prices. No surprises.",
-    body: "Every engagement starts with a free intro call and a written scope — you know the price before any code is written.",
+    title: "Starting prices. Final scope after we talk.",
+    body: "Every engagement starts with a free call. We go through the product, the constraints, and what success looks like — then I send a written proposal with the price, the timeline, and the payment phases. Nothing starts until you approve it.",
   },
   processHeading: {
     eyebrow: "Process",
@@ -115,19 +114,19 @@ export const en: Dictionary = {
   process: [
     {
       title: "Intro call",
-      body: "A free 30-minute call. You describe the product and what's blocking you; I tell you honestly whether and how I can help.",
+      body: "A free call. You describe the product and what's blocking you; I tell you honestly whether and how I can help.",
     },
     {
-      title: "Scoped plan",
-      body: "You get a written scope with milestones, a timeline, and a price — no open-ended hourly mystery.",
+      title: "Written proposal",
+      body: "Scope, price, timeline and payment phases — all in writing before any code is written. You approve it, then we start.",
     },
     {
-      title: "Weekly slices",
-      body: "I ship a testable slice every week, so you watch the product grow instead of waiting for a big reveal.",
+      title: "Milestone delivery",
+      body: "You get working, testable software at every milestone, not a status update.",
     },
     {
       title: "Handoff",
-      body: "Deployment, documentation, and a codebase the next engineer can maintain. The code is yours.",
+      body: "Deployment, documentation and a codebase the next engineer can maintain. The code is yours.",
     },
   ],
   faqHeading: {
@@ -153,7 +152,7 @@ export const en: Dictionary = {
     },
     {
       q: "How does pricing work?",
-      a: "Fixed price for scoped builds (see the engagement plans), or a monthly rate for ongoing partner work. Every engagement starts with a free intro call and a written quote.",
+      a: "Every engagement has a starting price, and the final number depends on the scope. We start with a free call, then I send a written proposal covering the price, the timeline, and the payment phases. You approve it before any work begins.",
     },
   ],
   testimonialsHeading: {
@@ -619,93 +618,75 @@ export const en: Dictionary = {
   ],
   services: [
     {
+      title: "Full-stack web apps, end to end",
+      body: "Frontend, backend, database, and the infrastructure it runs on — one engineer, one accountable delivery. Auth, admin panels, role-based access, integrations, and the deployment pipeline. The way I built Xera Lab and Talia.",
+    },
+    {
       title: "Real-time AI features",
-      body: "Streaming AI chat, voice tutors (STT/TTS), and generated content wired into your product over WebSocket — the way Faheem serves 30,000+ students live.",
+      body: "Streaming AI chat, voice interaction (STT/TTS), and generated content wired into your product over WebSocket — the way Faheem serves 30,000+ students live.",
     },
     {
-      title: "Flutter apps, end-to-end",
-      body: "iOS + Android from one clean-architecture codebase: auth, payments, analytics, push, offline, and the store release — not just screens.",
-    },
-    {
-      title: "AI product builds (idea → store)",
-      body: "The whole path from unclear idea to a live app: backend APIs, database, deployment pipeline, and a product that survives production.",
+      title: "Mobile apps from one codebase",
+      body: "iOS and Android from a single clean-architecture codebase: auth, payments, analytics, push, offline support, and the store release — not just screens.",
     },
   ],
-  // NOTE: prices below are placeholders taken from the reference design and are
-  // market-calibrated for a senior Flutter + AI engineer. Swap for final numbers.
+  // Prices are starting minimums; the final number is set per project in the
+  // written proposal. Deliberately no durations — timeline is scoped per build.
   plans: [
     {
-      name: "Architecture Clinic",
+      name: "Architecture Review",
       icon: "clock",
       body: "A senior read on your system, in writing.",
-      price: "$1,200",
-      priceNote: "flat · one system · 5 business days",
-      cta: "Book a review",
+      price: "from $900",
+      priceNote: "minimum — final price set by system size and scope",
+      cta: "Book a call",
       items: [
-        "30-min scoping call + async deep-dive on your repo",
-        "Architecture, schema & data-flow review",
-        "Security, scaling and cloud-cost audit",
-        "Written findings + a prioritized action plan you can hand to any engineer",
-        "One 45-min follow-up call",
-        "You keep the doc whether or not we work together",
+        "Scoping call, then an async deep-dive on your repository",
+        "Architecture, schema, and data-flow review",
+        "Security, scaling, and cloud-cost audit",
+        "Written findings with a prioritized action plan any engineer can execute",
+        "Follow-up call to walk through it",
+        "You keep the document whether or not we work together",
       ],
     },
     {
-      name: "Launchpad",
+      name: "Product Build",
       icon: "diamond",
       body: "One production-ready slice, shipped.",
-      price: "$9,000",
-      priceNote: "fixed scope · shipped to production",
+      price: "from $6,000",
+      priceNote:
+        "minimum — final price, timeline and payment phases set in the proposal",
       cta: "Scope a build",
       featured: true,
       badge: "Most popular",
-      itemsIntro: "Everything in Architecture Clinic, plus:",
+      itemsIntro: "Everything in Architecture Review, plus:",
       items: [
-        "One clearly defined slice — not 'the whole product'",
-        "Backend, web, and infra owned end to end",
-        "Multi-tenant / role-based architecture where it's needed",
-        "Dockerized deploy + GitHub Actions CI/CD",
-        "Payments, auth and third-party integrations",
-        "Docs, runbooks and a clean handoff",
-        "2 weeks post-launch support",
-        "Priced by the slice, not by the hour",
-        "Milestone 1 is week one. If you don't like the code, we stop there.",
+        "One clearly defined slice — not “the whole product”",
+        "Frontend, backend, database and infrastructure owned end to end",
+        "Multi-tenant and role-based access where it's needed",
+        "Dockerized deployment with CI/CD",
+        "Payments, authentication and third-party integrations",
+        "Documentation, runbooks and a clean handoff",
+        "Post-launch support window",
+        "Working software at every milestone — if the first one isn't right, we stop there",
       ],
     },
     {
-      name: "Partner",
+      name: "Monthly Partner",
       icon: "infinity",
-      body: "Reserved senior capacity, every month.",
-      price: "$3,500",
-      priceNote: "per month · 40 hrs reserved · cancel anytime",
-      cta: "Discuss retainer",
-      itemsIntro: "Everything in Launchpad, plus:",
+      body: "Reserved senior capacity, month to month.",
+      price: "from $2,500 / month",
+      priceNote: "minimum — reserved hours and rate set by the engagement",
+      cta: "Discuss a retainer",
+      itemsIntro: "Everything in Product Build, plus:",
       items: [
-        "40 hours of reserved senior capacity per month",
-        "Continuous delivery + roadmap planning",
-        "Priority response, 1 business day",
+        "Reserved senior capacity every month",
+        "Continuous delivery and roadmap planning",
+        "Priority response",
         "Scaling, performance and cost optimization",
-        "Monthly reporting + quarterly architecture review",
-        "80-hr block available at $6,000/mo",
+        "Monthly reporting and architecture review",
         "No lock-in — 30 days' notice",
       ],
-    },
-  ],
-  planAddOns: [
-    {
-      name: "Mobile Launch",
-      price: "$6,000",
-      body: "iOS + Android from one Flutter codebase, both store submissions handled.",
-    },
-    {
-      name: "AI Accelerator",
-      price: "$4,500",
-      body: "RAG or LLM features in production — retrieval, evals, guardrails, fallbacks.",
-    },
-    {
-      name: "Real-time Engine",
-      price: "$4,000",
-      body: "Server-authoritative WebSocket state, presence, and sync that won't lose writes.",
     },
   ],
   // Excerpts from LinkedIn recommendations (full texts in assets/linkedin.json).
@@ -739,7 +720,7 @@ export const en: Dictionary = {
     eyebrow: "About",
     title: "I build products that have to survive real users.",
     paragraphs: [
-      "I'm a senior software engineer working across AI features, Flutter apps, backend APIs, and the deployment pipelines that keep them running. Most of my work is the part teams underestimate: turning an unclear idea into something that actually ships and holds up in production.",
+      "I'm a senior software engineer working across full-stack web apps, real-time AI features, mobile products, and the deployment pipelines that keep them running. Most of my work is the part teams underestimate: turning an unclear idea into something that actually ships and holds up in production.",
       "Over the last few years I've put 10+ apps into stores across four regions, usually owning a feature from architecture through release. I care about clarity, momentum, and code the next engineer can maintain without a map.",
     ],
   },

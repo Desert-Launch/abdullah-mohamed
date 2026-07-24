@@ -114,28 +114,22 @@ export interface Plan {
   name: string;
   /** One-line promise shown under the name, e.g. "One production-ready slice, shipped." */
   body: string;
-  /** Headline price, pre-formatted with symbol and grouping, e.g. "$1,200". USD in both languages. */
+  /** Headline starting price, pre-formatted with symbol and grouping, e.g.
+   *  "from $900". USD in both languages. */
   price: string;
-  /** Small print under the price, e.g. "flat · one system · 5 business days". */
+  /** Small print under the price. States that the figure is a minimum and what
+   *  sets the final number — never a duration; timeline is set per proposal. */
   priceNote: string;
-  /** Per-card CTA label, e.g. "Book a review". Links to #contact. */
+  /** Per-card CTA label, e.g. "Book a call". Links to #contact. */
   cta: string;
   /** Which glyph to show in the card header. */
   icon: PlanIcon;
   featured?: boolean;
   /** Badge above a featured card, e.g. "Most popular". */
   badge?: string;
-  /** Optional lead-in above the feature list, e.g. "Everything in Architecture Clinic, plus:". */
+  /** Optional lead-in above the feature list, e.g. "Everything in Architecture Review, plus:". */
   itemsIntro?: string;
   items: string[];
-}
-
-/** A fixed-scope specialization sold alongside the core plans (the add-ons row). */
-export interface PlanAddOn {
-  name: string;
-  /** Headline price, pre-formatted, e.g. "$6,000". */
-  price: string;
-  body: string;
 }
 
 export interface Heading {
@@ -264,8 +258,6 @@ export interface Dictionary {
   freelanceProjects: Product[];
   services: Service[];
   plans: Plan[];
-  /** Fixed-scope specializations shown as a compact row below the core plans. */
-  planAddOns: PlanAddOn[];
   testimonials: Testimonial[];
   contact: ContactCopy;
 }

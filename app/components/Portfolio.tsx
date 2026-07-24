@@ -418,19 +418,6 @@ export function Portfolio() {
               </article>
             ))}
           </div>
-          <div className="plan-addons">
-            {t.planAddOns.map((addon) => (
-              <article className="plan-addon" key={addon.name} data-reveal data-glow>
-                <span className="card-spotlight" aria-hidden="true" />
-                <span className="card-edge" aria-hidden="true" />
-                <div className="plan-addon-head">
-                  <h3>{addon.name}</h3>
-                  <span className="plan-addon-price">{addon.price}</span>
-                </div>
-                <p>{addon.body}</p>
-              </article>
-            ))}
-          </div>
         </section>
 
         <section id="process" className="section">
