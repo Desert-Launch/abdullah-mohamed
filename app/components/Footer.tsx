@@ -6,11 +6,20 @@ interface FooterProps {
   t: Dictionary;
   lang: Lang;
   socials: Social[];
+  /** Page the footer's in-page anchors belong to. Empty on the locale home
+   *  pages, where `#services` resolves against the current document; set to
+   *  "/" on the standalone /work pages, where those sections live elsewhere
+   *  and a bare anchor would go nowhere. */
+  linkBase?: string;
 }
 
-export function Footer({ t, lang, socials }: FooterProps) {
+export function Footer({ t, lang, socials, linkBase = "" }: FooterProps) {
   const year = new Date().getFullYear();
   const name = lang === "ar" ? "عبدالله محمد" : "Abdullah Mohamed";
+  // Anchors get the base prefix; real paths (e.g. "/work/") are already
+  // absolute and only need the deploy basePath.
+  const sectionHref = (href: string) =>
+    href.startsWith("#") ? `${asset(linkBase)}${href}` : asset(href);
   const externalProfiles = socials.filter(
     (social) => social.href.startsWith("http") && social.label !== "WhatsApp",
   );
@@ -20,7 +29,7 @@ export function Footer({ t, lang, socials }: FooterProps) {
     <footer className="site-footer">
       <div className="footer-main">
         <div className="footer-brand">
-          <a className="footer-logo" href="#home" aria-label={`${name} home`}>
+          <a className="footer-logo" href={sectionHref("#home")} aria-label={`${name} home`}>
             <span>AM</span>
             <strong>{name}</strong>
           </a>
@@ -34,7 +43,7 @@ export function Footer({ t, lang, socials }: FooterProps) {
         <nav className="footer-column" aria-label={lang === "ar" ? "روابط الأقسام" : "Section links"}>
           <h2>{lang === "ar" ? "الأقسام" : "Sections"}</h2>
           {t.nav.map(([label, href]) => (
-            <a key={href} href={href}>
+            <a key={href} href={sectionHref(href)}>
               {label}
             </a>
           ))}
@@ -59,7 +68,7 @@ export function Footer({ t, lang, socials }: FooterProps) {
           >
             {lang === "ar" ? "احجز مكالمة" : "Book a call"}
           </a>
-          <a href="/Abdullah_Mohamed_CV.pdf" target="_blank" rel="noreferrer">
+          <a href={asset("/Abdullah_Mohamed_CV.pdf")} target="_blank" rel="noreferrer">
             {t.hero.cv}
           </a>
           <a className="footer-email" href={`mailto:${contactEmail}`}>

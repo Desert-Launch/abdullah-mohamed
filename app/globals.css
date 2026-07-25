@@ -3834,3 +3834,435 @@ span.case-avatar {
     scroll-behavior: auto !important;
   }
 }
+
+/* ------------------------------------------------------------------------
+   /work — index + per-project detail pages
+   Standalone routes outside the single-page homepage. They reuse the
+   homepage's tokens and card vocabulary (.case-label, .case-result,
+   .case-process, .tag-row, .button) and only add what a full-page,
+   English-primary case study needs: a reading column, captioned screenshots,
+   and a card grid that links into the detail pages.
+   ------------------------------------------------------------------------ */
+
+/* The homepage nav collapses into a hamburger dropdown below 760px. These
+   pages carry three links and no menu button, so the nav stays a plain row at
+   every width. Higher specificity than the .site-nav dropdown rules. */
+.site-nav.work-nav {
+  position: static;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 0;
+  border: 0;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+}
+
+.site-nav.work-nav a {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+}
+
+.work-main {
+  margin-top: clamp(28px, 5vw, 52px);
+}
+
+.work-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 500;
+  transition: color 180ms ease;
+}
+
+.work-back:hover,
+.work-back:focus-visible {
+  color: var(--gold);
+}
+
+.work-back span {
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-back:hover span {
+  transform: translateX(-3px);
+}
+
+.site-shell[dir="rtl"] .work-back:hover span {
+  transform: translateX(3px);
+}
+
+/* ---- Detail page ---- */
+
+.work-detail {
+  display: grid;
+  gap: clamp(26px, 4vw, 40px);
+  margin-top: 18px;
+}
+
+.work-detail-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px;
+}
+
+.work-detail-head h1 {
+  margin: 4px 0 0;
+  font-size: clamp(2.1rem, 5.4vw, 3.2rem);
+}
+
+.work-detail-head .eyebrow {
+  margin: 0;
+}
+
+.work-lead {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.1rem, 2.1vw, 1.32rem);
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+.work-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.work-results .case-result {
+  padding: 18px 14px;
+}
+
+/* Challenge and role read as a pair, so they sit side by side while there is
+   room and stack below it. */
+.work-narrative {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(20px, 3vw, 34px);
+}
+
+.work-block {
+  margin: 0;
+}
+
+.work-block .case-text,
+.work-block .case-process {
+  max-width: 68ch;
+}
+
+/* .case-label is written for a <p>; these are real section headings. */
+h2.case-label {
+  margin: 0 0 10px;
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.work-tags {
+  margin: 0;
+}
+
+/* ---- Screenshots ---- */
+
+.work-shots-note {
+  max-width: 62ch;
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.work-shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: clamp(14px, 2vw, 22px);
+  align-items: start;
+}
+
+.work-shot {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+/* A landscape screenshot is unreadable at a third of the width — orientation
+   is measured from the file in WorkShots.tsx, and wide shots take a row. */
+.work-shot.is-landscape {
+  grid-column: 1 / -1;
+}
+
+.work-shot img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-soft);
+}
+
+.work-shot figcaption {
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+/* ---- Closing CTA ---- */
+
+.work-cta {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: clamp(24px, 3.4vw, 36px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: var(--glass);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+}
+
+.work-cta h2 {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+}
+
+.work-cta p {
+  max-width: 60ch;
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.work-cta .button {
+  margin-top: 6px;
+}
+
+/* ---- "More work" links at the foot of a detail page ---- */
+
+.work-more {
+  margin-top: clamp(40px, 6vw, 64px);
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+}
+
+.work-more-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.work-more-link {
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-soft);
+  transition:
+    border-color 180ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-more-link:hover,
+.work-more-link:focus-visible {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.work-more-link strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.work-more-link span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+/* ---- Index grid ---- */
+
+.work-index-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 18px;
+}
+
+.work-project-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+  padding: clamp(20px, 2.6vw, 28px);
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: var(--glass);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  transition:
+    border-color 200ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-project-card:hover,
+/* Keyboard focus lands on the stretched link inside, so the card lifts from
+   :focus-within rather than :focus. */
+.work-project-card:focus-within {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+}
+
+.work-project-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 14px;
+}
+
+.work-project-head .case-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+}
+
+.work-project-head .eyebrow {
+  margin: 0;
+}
+
+.work-project-head h2 {
+  margin: 2px 0 0;
+  font-size: 1.25rem;
+}
+
+.work-project-card p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+.work-project-card .tag-row {
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.work-project-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gold);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+/* Stretched link: the whole card is clickable but there is exactly one tab
+   stop, and the accessible name is the link's own text plus the project name. */
+.work-project-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.work-project-cta span {
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-project-card:hover .work-project-cta span {
+  transform: translateX(3px);
+}
+
+.site-shell[dir="rtl"] .work-project-card:hover .work-project-cta span {
+  transform: translateX(-3px);
+}
+
+.work-featured-flag {
+  align-self: start;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--gold-soft);
+  color: var(--gold);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ---- "Also shipped" strip: apps with no written case study ---- */
+
+.work-also {
+  margin-top: clamp(48px, 7vw, 80px);
+}
+
+.work-also-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 12px;
+}
+
+.work-also-card {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-soft);
+}
+
+.work-also-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.work-also-head img,
+.work-also-head .work-also-fallback {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  object-fit: cover;
+}
+
+.work-also-head .work-also-fallback {
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.work-also-head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.work-also-card p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 620px) {
+  .work-detail-head {
+    grid-template-columns: auto 1fr;
+  }
+
+  /* The ownership badge wraps under the title rather than squeezing it. */
+  .work-detail-head .case-context {
+    grid-column: 1 / -1;
+    justify-self: start;
+    white-space: normal;
+  }
+}
