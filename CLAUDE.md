@@ -69,7 +69,11 @@ considering a change done.
   - Routes without params need `dynamic = "force-static"`.
   - Next writes them as **extension-less files**, so `vercel.json` sets their
     `content-type`; without it a static host serves them as octet-stream and
-    the scrapers refuse the card. **Adding a new card means adding a rule.**
+    the scrapers refuse the card. One wildcard rule
+    (`/(.*)opengraph-image-(.*)`) covers every card — it has to be a wildcard
+    because `trailingSlash: true` 308s each image URL to a trailing-slash
+    path, so exact-path rules silently never match. Verify with
+    `curl -sIL <og:image url> | grep -i content-type` after any change here.
   - satori can't use `next/font`, so `app/fonts/*.ttf` are checked in (see the
     README there). Cards are **Latin-only**: satori reverses Arabic word
     order, so `/ar` shares the English card and only its og:title/description
