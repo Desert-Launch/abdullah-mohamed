@@ -180,6 +180,13 @@ export interface ContactCopy {
 
 export interface Dictionary {
   dir: "ltr" | "rtl";
+  /** Localized SERP/social copy for this locale's route. */
+  meta: {
+    title: string;
+    description: string;
+  };
+  /** Visually-hidden skip link rendered first inside <body>. */
+  skipLink: string;
   nav: NavItem[];
   role: string;
   menuLabel: string;

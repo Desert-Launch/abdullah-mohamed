@@ -2,20 +2,21 @@
 
 Personal-branding / portfolio site for Abdullah Mohamed (senior software
 engineer). Single-page marketing site: hero, case studies, experience,
-freelance work, services, stack, plans, testimonials, contact. Goal is
+freelance work, services, pricing, process, testimonials, FAQ, contact. Goal is
 conversion — freelance leads and senior product roles. See `PLAN.md` for the
 product intent.
 
 ## Stack
 
 - **Next.js (App Router)** + **React** + **TypeScript** (`strict`), built with
-  **Turbopack**. `next.config.mjs` sets `output: "standalone"`.
+  **Turbopack**. `next.config.mjs` sets `output: "export"` (static export; see the
+  next/image note below).
 - **No CSS framework** — one hand-written global stylesheet, plain CSS with
   custom properties. No Tailwind, no CSS Modules, no styled-components.
 - Fonts via `next/font/google`: **DM Sans** (Latin) + **Cairo** (Arabic),
   exposed as `--font-sans` / `--font-cairo`. DM Sans is a stand-in for the
   proprietary Google Sans; to use licensed Google Sans files, swap the
-  `DM_Sans(...)` call in `layout.tsx` for `next/font/local` pointing at
+  `DM_Sans(...)` call in `lib/site.tsx` for `next/font/local` pointing at
   `app/fonts/` (keep the `--font-sans` variable name so the CSS is unchanged).
   Type weight scale is intentionally light: body 400, most labels/headings 500,
   emphasis (eyebrows, buttons, stat numbers) 600 — no 700+.
@@ -35,16 +36,27 @@ considering a change done.
 
 ## Architecture
 
-- `app/page.tsx` renders a single component, **`app/components/Portfolio.tsx`**
-  — the orchestrator that composes every section. Start here to understand or
-  change the page.
-- `app/layout.tsx` holds `<html>`, fonts, all SEO metadata, JSON-LD Person
-  schema, the viewport `themeColor`, and the **pre-paint `noFlashScript`**.
-- Components live in `app/components/`. Mix of server and client components;
-  anything with state/effects/handlers is marked `"use client"` (e.g.
-  `Portfolio`, `TopBar`, `ContactForm`, `CountUp`).
-- SEO/crawl files: `app/robots.ts`, `app/sitemap.ts`, and the image routes
-  `opengraph-image.png` / `twitter-image.png` / `icon.svg` / `apple-icon.png`.
+- **Two locales, two routes, two root layouts.** `<html>` may only be rendered
+  by a root layout, and a root layout cannot read the current route — so each
+  locale owns one, via route groups:
+  - `app/(en)/layout.tsx` + `app/(en)/page.tsx` → **`/`** (English)
+  - `app/(ar)/layout.tsx` + `app/(ar)/ar/page.tsx` → **`/ar/`** (Arabic)
+
+  There is deliberately **no `app/layout.tsx` / `app/page.tsx`** — adding one
+  back would collide with the route groups.
+- **`app/lib/site.tsx`** is the shared shell both root layouts call: fonts,
+  `SITE_URL`, `buildMetadata(lang)` (title/description/canonical/hreflang/OG),
+  `siteViewport`, the Person + FAQ JSON-LD, the pre-paint `noFlashScript`, and
+  the `RootHtml` component. Change site-wide `<head>` behaviour here, once.
+- Both pages render **`app/components/Portfolio.tsx`** with a `lang` prop — the
+  orchestrator that composes every section. Start there to change the page.
+- Components live in `app/components/`. `Portfolio` is `"use client"`, so
+  everything it renders is in the client bundle today; `ContactForm`, `CountUp`
+  and `ShotGallery` are the only ones that genuinely need to be.
+- SEO/crawl files: `app/robots.ts`, `app/sitemap.ts` (both locales + hreflang
+  alternates), `public/llms.txt`, and the image routes `opengraph-image.png` /
+  `twitter-image.png` (each with a sibling `.alt.txt`) / `icon.svg` /
+  `apple-icon.png`.
 
 ## Content & i18n (important)
 
@@ -56,7 +68,7 @@ data, not in components.**
 - `app/data/en.ts` and `app/data/ar.ts` — the two dictionaries, each typed as
   `Dictionary`. `app/data/copy.ts` combines them into `copy[lang]`.
 - `app/data/shared.ts` — language-agnostic data (social links, company logos,
-  stack groups, the `appImages` map of image paths).
+  per-app store links + lifecycle status, the `appImages` map of image paths).
 
 **Rules when touching content:**
 
@@ -68,17 +80,26 @@ data, not in components.**
   if a dictionary is missing a required field.
 - To add a new section: add it in `Portfolio.tsx` with a stable `id`, and add
   the matching `nav` entry (label + `#anchor`) to **both** dictionaries.
+- Section order is the **JSX sequence in `Portfolio.tsx`**, not a data array.
+  Reordering means moving JSX blocks; ids must stay stable (they are the nav
+  anchors and the scrollspy targets).
 
 ## Theme & language state
 
-- `Portfolio.tsx` owns `theme` (`dark`|`light`) and `lang` (`en`|`ar`) state.
-  Effects write them to `<html>` (`data-theme`, `lang`, `dir`) and persist to
-  `localStorage` keys **`portfolio-theme`** and **`portfolio-lang`**.
-- `layout.tsx`'s `noFlashScript` runs before paint to read those keys and set
-  the `<html>` attributes, preventing a theme flash and the LTR→RTL flip for
-  Arabic visitors. State is initialised **from** those attributes so the first
-  client render already matches — don't reintroduce a flash by initialising
-  from a constant default instead.
+- **Language is the URL, not state.** `lang` is a prop passed from the route's
+  page; `<html lang>`/`dir` are rendered on the server per locale. The language
+  switch in `TopBar` is an `<a href>` to the other locale (`localePath` in
+  `lib/site.tsx`), not a state toggle. Do **not** reintroduce a `portfolio-lang`
+  localStorage key or let a stored preference rewrite `<html lang>` — that would
+  put the served markup out of sync with the URL a crawler indexed.
+- `Portfolio.tsx` owns `theme` (`dark`|`light`) and `palette` state. Effects
+  write them to `<html>` (`data-theme`, `data-palette`) and persist to
+  `localStorage` keys **`portfolio-theme`** and **`portfolio-palette`**. These
+  survive a locale switch because it is a normal navigation.
+- `lib/site.tsx`'s `noFlashScript` runs before paint to read those two keys and
+  set the `<html>` attributes, preventing a theme flash. State is initialised
+  **from** those attributes so the first client render already matches — don't
+  reintroduce a flash by initialising from a constant default instead.
 - `dir` comes from each dictionary (`en.dir = "ltr"`, `ar.dir = "rtl"`).
 
 ## Styling conventions
@@ -118,14 +139,15 @@ The codebase already follows good a11y practice; keep it that way:
   still describe an "Obsidian & Gold" palette. Treat the token as the source
   of truth, not the comment, and change the token if adjusting the accent.
 - Testimonials are real quotes (LinkedIn recommendations, excerpted; full
-  texts in `assets/linkedin.json`). Any testimonial marked `sample: true` is
-  filtered out at render time — the section hides itself if none are real.
+  texts in `assets/linkedin.json`). The section hides itself if the list is
+  ever emptied. There is no placeholder/sample mechanism — don't add fake
+  quotes.
 - **App lifecycle honesty**: `storeLinks` in `shared.ts` carries a `status`
   (`live | retired | private | unreleased`) per app. Only real https URLs
   render store buttons; non-live apps get a status badge. Never claim "live"
   in copy for the aggregate numbers — say "shipped".
 - Analytics is opt-in via `NEXT_PUBLIC_ANALYTICS_SRC` / `_ID` env vars at
-  build time (see `layout.tsx`); unset means no script is emitted.
+  build time (see `lib/site.tsx`); unset means no script is emitted.
 
 ## Design skills
 
