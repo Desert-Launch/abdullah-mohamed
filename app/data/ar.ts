@@ -3,11 +3,13 @@ import type { Dictionary } from "./types";
 
 export const ar: Dictionary = {
   dir: "rtl",
+  // Mirrors the section order: commercial content first, then proof. Also
+  // rendered by the footer's "Sections" column and driven by the scrollspy.
   nav: [
+    ["ما أبنيه", "#services"],
+    ["الأسعار", "#plans"],
     ["دراسات حالة", "#cases"],
-    ["الخبرات", "#experience"],
-    ["ماذا أقدّم", "#services"],
-    ["أعمال مختارة", "#work"],
+    ["أعمال", "#work"],
     ["نبذة", "#about"],
     ["تواصل", "#contact"],
   ],
@@ -38,7 +40,7 @@ export const ar: Dictionary = {
     cv: "تحميل السيرة الذاتية",
     availability: "متاح للفريلانس، العقود، والشراكات التقنية",
     currently:
-      "أعمل حاليًا على فهيم و Talia في Appenza، وسيصدر «ذِكر» أواخر يوليو — أستقبل مشاريع جديدة من أغسطس 2026",
+      "أعمل حاليًا على فهيم و Talia في Appenza — منفتح على مشاريع جديدة",
     socialLabel: "تابعني على",
   },
   proof: [
@@ -53,13 +55,16 @@ export const ar: Dictionary = {
   appsLabel: "التطبيقات والمنتجات",
   caseStudiesHeading: {
     eyebrow: "دراسات حالة مختارة",
-    title: "منتجان، من مشكلة غير واضحة إلى الإنتاج.",
+    title: "ثلاثة منتجات، من مشكلة غير واضحة إلى الإنتاج.",
     body: "ليست مجرد صور — المشكلة، دوري، كيف بنيته، وما الذي تم إطلاقه.",
   },
+  // هذا القسم موجود لأجل ما لا يستطيع سجل الخبرات إظهاره: رابط متجر فعّال.
+  // المنتجات بلا رابط متجر تبقى في سجل الخبرات بالأعلى بسياقها الكامل،
+  // بدلاً من إدراجها مرتين.
   selectedWorkHeading: {
-    eyebrow: "أعمال مختارة",
-    title: "تطبيقات ومنتجات أخرى.",
-    body: "بعض المنتجات التي بنيتها أو ساهمت فيها بشكل فعلي، بين تطبيقات منشورة ومشاريع خاصة.",
+    eyebrow: "منشورة على المتاجر",
+    title: "تطبيقات يمكنك تحميلها الآن.",
+    body: "تفاصيل بناء كل منتج — والمنتجات التي لم تُنشر للعامة — موجودة في سجل الخبرات بالأعلى.",
   },
   selectedWorkLabels: {
     products: "منتجات",
@@ -82,7 +87,7 @@ export const ar: Dictionary = {
     body: "بدلاً من تكرار نفس التطبيقات في أكثر من مكان، كل شركة تعرض السياق، المنتجات، والنتائج الهندسية الخاصة بها.",
   },
   freelanceHeading: {
-    eyebrow: "مشاريع مستقلة وفريلانس",
+    eyebrow: "2022 – الآن · مشاريع مستقلة وفريلانس",
     title: "منتجات ومنصات خارج الخبرات الأساسية.",
     body: "هذه المشاريع تم تنفيذها كأعمال مستقلة أو ارتباطات منفصلة عن خط الخبرة الوظيفية الرئيسي.",
   },
@@ -261,37 +266,10 @@ export const ar: Dictionary = {
   ],
   selectedWork: [
     {
-      key: "voicers",
-      title: "Voicers",
-      tagline:
-        "منصة صوت اجتماعية ثنائية اللغة غير منشورة لصناع المحتوى، VNotes، القوائم، المسابقات، وتفاعل الجمهور.",
-      image: appImages.voicers,
-    },
-    {
-      key: "imox",
-      title: "IMOX",
-      tagline:
-        "تسوق اجتماعي بالفيديو — البائع ينشر ريلز والمشتري يشتري من الفيد.",
-      image: appImages.imox,
-    },
-    {
       key: "yolo",
       title: "YOLO",
       tagline: "عمليات العيادات: مرضى، مواعيد، مخزون، وفواتير في تطبيق واحد.",
       image: appImages.yolo,
-    },
-    {
-      key: "xera",
-      title: "Xera Lab",
-      tagline:
-        "منصة إدارة حالات أسنان متكاملة — بوابة عملاء، لوحة إدارة، و Node.js API. بُنيت وسُلّمت للعميل.",
-      image: appImages.xera,
-    },
-    {
-      key: "fastap",
-      title: "FasTap",
-      tagline: "المس كارت NFC لمشاركة ملف كامل — يفتح على أي هاتف بلا تثبيت.",
-      image: appImages.fastap,
     },
     {
       key: "btc",
@@ -384,7 +362,7 @@ export const ar: Dictionary = {
     {
       date: "سبتمبر 2024 - يناير 2026",
       role: "مهندس برمجيات",
-      company: "Dib GmbH",
+      company: "DIB GmbH",
       location: "دوام كامل · ألمانيا عن بعد",
       logo: "/images/company_logos/dibhoalding.webp",
       summary:
@@ -427,7 +405,7 @@ export const ar: Dictionary = {
     {
       date: "نوفمبر 2023 - فبراير 2025",
       role: "مهندس برمجيات",
-      company: "Revealsite",
+      company: "RevealSite",
       location: "دوام جزئي · أمريكا عن بعد",
       logo: "/images/company_logos/revearsite.webp",
       summary:

@@ -363,10 +363,10 @@ export function Portfolio() {
           </div>
         </section>
 
-        <CaseStudies t={t} />
-
-        <ExperienceTimeline t={t} />
-
+        {/* Commercial content first: a cold visitor sees what I build and what
+            it costs before the credential history. Case studies then justify the
+            price, testimonials sit beside that proof, and Experience follows as
+            the appendix it is. Section ids are unchanged — only order moved. */}
         <section id="services" className="section split-section">
           <div className="section-heading sticky-heading" data-reveal>
             <p className="eyebrow">{t.servicesHeading.eyebrow}</p>
@@ -433,48 +433,7 @@ export function Portfolio() {
           </div>
         </section>
 
-        <section id="process" className="section">
-          <div className="section-heading" data-reveal>
-            <p className="eyebrow">{t.processHeading.eyebrow}</p>
-            <h2>{t.processHeading.title}</h2>
-            {t.processHeading.body ? <p>{t.processHeading.body}</p> : null}
-          </div>
-          <ol className="process-grid">
-            {t.process.map((step, index) => (
-              <li className="process-step" key={step.title} data-reveal>
-                <span className="process-number" aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3>{step.title}</h3>
-                <p>{step.body}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <SelectedWork t={t} />
-
-        <section id="about" className="section about-section">
-          <div className="section-heading" data-reveal>
-            <p className="eyebrow">{t.about.eyebrow}</p>
-            <h2>{t.about.title}</h2>
-          </div>
-          <div className={`about-layout ${profilePhoto ? "has-photo" : ""}`} data-reveal>
-            {profilePhoto ? (
-              <img
-                className="about-photo"
-                src={asset(profilePhoto)}
-                alt="Abdullah Mohamed"
-                loading="lazy"
-              />
-            ) : null}
-            <div className="about-body">
-              {t.about.paragraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
-          </div>
-        </section>
+        <CaseStudies t={t} />
 
         {testimonials.length > 0 ? (
           <section id="testimonials" className="section">
@@ -542,6 +501,51 @@ export function Portfolio() {
             </div>
           </section>
         ) : null}
+
+        <section id="process" className="section">
+          <div className="section-heading" data-reveal>
+            <p className="eyebrow">{t.processHeading.eyebrow}</p>
+            <h2>{t.processHeading.title}</h2>
+            {t.processHeading.body ? <p>{t.processHeading.body}</p> : null}
+          </div>
+          <ol className="process-grid">
+            {t.process.map((step, index) => (
+              <li className="process-step" key={step.title} data-reveal>
+                <span className="process-number" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <ExperienceTimeline t={t} />
+
+        <SelectedWork t={t} />
+
+        <section id="about" className="section about-section">
+          <div className="section-heading" data-reveal>
+            <p className="eyebrow">{t.about.eyebrow}</p>
+            <h2>{t.about.title}</h2>
+          </div>
+          <div className={`about-layout ${profilePhoto ? "has-photo" : ""}`} data-reveal>
+            {profilePhoto ? (
+              <img
+                className="about-photo"
+                src={asset(profilePhoto)}
+                alt="Abdullah Mohamed"
+                loading="lazy"
+              />
+            ) : null}
+            <div className="about-body">
+              {t.about.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+          </div>
+        </section>
 
         <section id="faq" className="section">
           <div className="section-heading" data-reveal>
