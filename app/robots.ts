@@ -3,7 +3,8 @@ import type { MetadataRoute } from "next";
 // Required for `output: "export"` — emit robots.txt at build time.
 export const dynamic = "force-static";
 
-const SITE_URL = "https://abdullahmohamed.dev";
+// Must match the host that serves 200 — the apex 308-redirects to www.
+const SITE_URL = "https://www.abdullahmohamed.dev";
 
 export default function robots(): MetadataRoute.Robots {
   return {

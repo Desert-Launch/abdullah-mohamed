@@ -1,10 +1,9 @@
-import type { Social, StackGroup } from "./types";
+import type { Social } from "./types";
 
 export const shared: {
   companies: { src: string; name: string }[];
   products: { src?: string; name: string }[];
   socials: Social[];
-  stackGroups: StackGroup[];
 } = {
   companies: [
     { src: "/images/company_logos/appenza.webp", name: "Appenza Studio" },
@@ -36,7 +35,7 @@ export const shared: {
   socials: [
     {
       label: "Email",
-      href: "mailto:abdullah.mohamed102001@gmail.com",
+      href: "mailto:hi@abdullahmohamed.dev",
       icon: "/icons/social/gmail.svg",
     },
     {
@@ -53,45 +52,6 @@ export const shared: {
       label: "GitHub",
       href: "https://github.com/Abdullah3010",
       icon: "/icons/social/github.svg",
-    },
-  ],
-  stackGroups: [
-    {
-      file: "languages",
-      label: { en: "Languages", ar: "اللغات" },
-      names: "Dart, JavaScript, HTML, CSS",
-    },
-    {
-      file: "frameworks",
-      label: { en: "Frameworks & Libraries", ar: "الأطر والمكتبات" },
-      names: "Flutter, Node.js, Express, GraphQL, Sequelize",
-    },
-    {
-      file: "ai",
-      label: { en: "AI & Real-Time", ar: "الذكاء الاصطناعي والفوري" },
-      names:
-        "Azure OpenAI, Claude, ChatGPT, Cursor, GitHub Copilot, WebSocket, Socket.IO",
-    },
-    {
-      file: "databases",
-      label: { en: "Databases", ar: "قواعد البيانات" },
-      names: "PostgreSQL, MySQL, MongoDB, Firebase, Redis, Hive",
-    },
-    {
-      file: "devops",
-      label: { en: "DevOps & Cloud", ar: "DevOps والسحابة" },
-      names: "AWS, Docker, Nginx, Fastlane / CI-CD",
-    },
-    {
-      file: "tools",
-      label: { en: "Tools", ar: "الأدوات" },
-      names:
-        "Git, GitHub, Bitbucket, Postman, Jira, Swagger, Confluence, Azure DevOps",
-    },
-    {
-      file: "analytics",
-      label: { en: "Analytics & Payments", ar: "التحليلات والمدفوعات" },
-      names: "Firebase Analytics, Google Analytics",
     },
   ],
 };
@@ -169,7 +129,7 @@ export const storeLinks: Record<
 export const web3formsKey = "5b4a9d2c-da3d-47d3-b267-a5ab12484b18";
 
 /** Primary contact address, reused by the mailto fallbacks. */
-export const contactEmail = "abdullah.mohamed102001@gmail.com";
+export const contactEmail = "hi@abdullahmohamed.dev";
 
 /** The "Work with me" / "Book a call" target: the real booking link once set,
  *  otherwise a working mailto so the CTA is never dead. */
@@ -190,9 +150,7 @@ export const appImages = {
   imox: "/images/apps_logos/imox.webp",
   yolo: "/images/apps_logos/yolo.webp",
   revealsite: "/images/company_logos/revearsite.webp",
-  revealsite2: "/images/company_logos/revealsite2.webp",
   jd: "/images/apps_logos/jd.webp",
-  jd2: "/images/apps_logos/jd2.webp",
   holland: "/images/apps_logos/holland.webp",
   medical: "/images/apps_logos/medical_center.webp",
   quickrx: "/images/apps_logos/quickrx.webp",
