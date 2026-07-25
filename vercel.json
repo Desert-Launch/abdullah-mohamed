@@ -8,6 +8,14 @@
   },
   "headers": [
     {
+      "source": "/opengraph-image-:hash",
+      "headers": [{ "key": "content-type", "value": "image/png" }]
+    },
+    {
+      "source": "/ar/opengraph-image-:hash",
+      "headers": [{ "key": "content-type", "value": "image/png" }]
+    },
+    {
       "source": "/work/opengraph-image-:hash",
       "headers": [{ "key": "content-type", "value": "image/png" }]
     },

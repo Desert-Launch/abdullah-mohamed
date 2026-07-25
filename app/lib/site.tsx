@@ -76,18 +76,26 @@ export function buildMetadata(lang: Lang): Metadata {
       url: localePath[lang],
       siteName: "Abdullah Mohamed",
       title,
-      description,
+      // The share preview gets the short description: WhatsApp and LinkedIn
+      // cut around 150 characters, so the SERP-length one above would be
+      // truncated mid-sentence.
+      description: t.meta.social,
       locale: OG_LOCALE[lang],
       alternateLocale: [OG_LOCALE[otherLang[lang]]],
-      // og:image (+ its alt) comes from the file convention: opengraph-image.png
-      // and its sibling opengraph-image.alt.txt. File-based metadata wins over
-      // anything set here, so the image must not be re-declared in this object.
+      // og:image (+ its alt) comes from the file convention — the locale's own
+      // opengraph-image.tsx, generated from this dictionary. File-based
+      // metadata wins over anything set here, so it must not be re-declared.
+      //
+      // It has to sit in the same segment as the page: with no app/layout.tsx,
+      // the (en)/(ar) groups are the root layouts, and an image at app/ is
+      // built as its own route but attached to nothing. That is exactly how
+      // the site shipped for months with no share image at all.
     },
     twitter: {
       card: "summary_large_image",
       title,
-      description,
-      // twitter:image + alt likewise come from twitter-image.png / .alt.txt.
+      description: t.meta.social,
+      // twitter:image is mirrored from the opengraph-image above.
     },
     robots: {
       index: true,

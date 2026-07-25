@@ -57,12 +57,25 @@ considering a change done.
   from `WorkHeader` (reduced nav — the homepage `TopBar` is built on anchors +
   a scrollspy that don't exist here) and the shared `Footer` with `linkBase="/"`
   so its section anchors resolve back to the homepage.
-- **Per-route OG images**: `app/(en)/work/opengraph-image.tsx` and
-  `app/(en)/work/[slug]/opengraph-image.tsx` render through `app/lib/og.tsx`
-  at build time (`next/og`). The static one needs `dynamic = "force-static"`.
-  Next writes them as **extension-less files**, so `vercel.json` sets their
-  `content-type` — without it a static host serves them as octet-stream and
-  LinkedIn/X refuse the card.
+- **Social cards** are all generated at build time by `app/lib/og.tsx`
+  (`next/og`), one `opengraph-image.tsx` per route:
+  `app/(en)/` (→ `/`), `app/(ar)/ar/` (→ `/ar/`), `app/(en)/work/`,
+  `app/(en)/work/[slug]/`. `twitter:image` is mirrored from `og:image`.
+  Gotchas, all load-bearing:
+  - The image file **must sit in the same segment as the page**. With no
+    `app/layout.tsx`, the `(en)`/`(ar)` groups *are* the root layouts, so an
+    image at `app/` is built as its own route and attached to nothing — the
+    site shipped for months with no share image because of this.
+  - Routes without params need `dynamic = "force-static"`.
+  - Next writes them as **extension-less files**, so `vercel.json` sets their
+    `content-type`; without it a static host serves them as octet-stream and
+    the scrapers refuse the card. **Adding a new card means adding a rule.**
+  - satori can't use `next/font`, so `app/fonts/*.ttf` are checked in (see the
+    README there). Cards are **Latin-only**: satori reverses Arabic word
+    order, so `/ar` shares the English card and only its og:title/description
+    are Arabic.
+  - `meta.social` (short) feeds `og:`/`twitter:description`, not
+    `meta.description` — WhatsApp and LinkedIn cut around 150 characters.
 - **`app/lib/site.tsx`** is the shared shell both root layouts call: fonts,
   `SITE_URL`, `buildMetadata(lang)` (title/description/canonical/hreflang/OG),
   `siteViewport`, the Person + FAQ JSON-LD, the pre-paint `noFlashScript`, and
