@@ -3,11 +3,13 @@ import type { Dictionary } from "./types";
 
 export const en: Dictionary = {
   dir: "ltr",
+  // Mirrors the section order: commercial content first, then proof. Also
+  // rendered by the footer's "Sections" column and driven by the scrollspy.
   nav: [
+    ["What I build", "#services"],
+    ["Pricing", "#plans"],
     ["Case studies", "#cases"],
-    ["Experience", "#experience"],
-    ["What I do", "#services"],
-    ["Selected work", "#work"],
+    ["Work", "#work"],
     ["About", "#about"],
     ["Contact", "#contact"],
   ],
@@ -38,7 +40,7 @@ export const en: Dictionary = {
     cv: "Download CV",
     availability: "Open to freelance, contracts, and product partnerships",
     currently:
-      "Currently building Faheem & Talia at Appenza, shipping Zikr in late July — taking new projects from August 2026",
+      "Currently building Faheem & Talia at Appenza — open to new projects",
     socialLabel: "Find me on",
   },
   proof: [
@@ -53,13 +55,16 @@ export const en: Dictionary = {
   appsLabel: "Apps & products",
   caseStudiesHeading: {
     eyebrow: "Selected case studies",
-    title: "Two products, from unclear problem to production.",
+    title: "Three products, from unclear problem to production.",
     body: "Not just screenshots — the problem, my role, how I built it, and what shipped.",
   },
+  // This section exists for the one thing the experience timeline can't show:
+  // a working store link. Products without one live in the timeline above, with
+  // full context, instead of being listed twice.
   selectedWorkHeading: {
-    eyebrow: "Selected work",
-    title: "More apps and product work.",
-    body: "A few of the other products I've built or materially contributed to, including shipped apps and private builds.",
+    eyebrow: "Shipped to stores",
+    title: "Apps you can download today.",
+    body: "Every build detail — and the products that never shipped publicly — sits in the experience timeline above.",
   },
   selectedWorkLabels: {
     products: "products",
@@ -82,7 +87,7 @@ export const en: Dictionary = {
     body: "Each role below shows the company context, the products I worked on there, and the engineering outcomes instead of repeating the same apps across multiple sections.",
   },
   freelanceHeading: {
-    eyebrow: "Independent and freelance work",
+    eyebrow: "2022 – Present · Independent and freelance work",
     title: "Standalone products and platforms.",
     body: "These projects were built outside the main employment timeline or as separate product engagements.",
   },
@@ -261,39 +266,11 @@ export const en: Dictionary = {
   ],
   selectedWork: [
     {
-      key: "voicers",
-      title: "Voicers",
-      tagline:
-        "Unpublished bilingual social audio platform for creators, VNotes, playlists, competitions, and audience engagement.",
-      image: appImages.voicers,
-    },
-    {
-      key: "imox",
-      title: "IMOX",
-      tagline:
-        "Video-first social shopping — sellers post reels, buyers check out in-feed.",
-      image: appImages.imox,
-    },
-    {
       key: "yolo",
       title: "YOLO",
       tagline:
         "Clinic operations: patients, appointments, inventory, and billing in one app.",
       image: appImages.yolo,
-    },
-    {
-      key: "xera",
-      title: "Xera Lab",
-      tagline:
-        "Full-stack dental case management platform — customer portal, admin dashboard, and Node.js API. Built and delivered to the client.",
-      image: appImages.xera,
-    },
-    {
-      key: "fastap",
-      title: "FasTap",
-      tagline:
-        "Tap an NFC card to share a full profile — opens on any phone, no install.",
-      image: appImages.fastap,
     },
     {
       key: "btc",
@@ -387,7 +364,7 @@ export const en: Dictionary = {
     {
       date: "Sep 2024 - Jan 2026",
       role: "Software Engineer",
-      company: "Dib GmbH",
+      company: "DIB GmbH",
       location: "Full-time · Germany remote",
       logo: "/images/company_logos/dibhoalding.webp",
       summary:
@@ -430,7 +407,7 @@ export const en: Dictionary = {
     {
       date: "Nov 2023 - Feb 2025",
       role: "Software Engineer",
-      company: "Revealsite",
+      company: "RevealSite",
       location: "Part-time · United States remote",
       logo: "/images/company_logos/revearsite.webp",
       summary:

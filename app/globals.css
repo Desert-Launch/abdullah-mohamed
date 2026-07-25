@@ -917,6 +917,13 @@ h2 {
   line-height: 0.94;
 }
 
+/* Arabic needs room for ascenders and diacritics — the Latin-display values
+   (h1 0.88 / h2 0.94) make consecutive lines collide in RTL. */
+.site-shell[dir="rtl"] h1 {
+  max-width: 14ch;
+  line-height: 1.15;
+}
+
 .site-shell[dir="rtl"] h2 {
   max-width: 15ch;
   line-height: 1.08;
@@ -3356,6 +3363,18 @@ span.case-avatar {
 @media (max-width: 760px) {
   .site-shell {
     width: min(100% - 20px, var(--max));
+  }
+
+  /* The actions cluster (4 palette swatches + theme + language) needs ~252px,
+     which left the brand 19px and made the name overlap the swatches at 375px.
+     The palette selector is a nice-to-have, so it goes first; the role line
+     follows, leaving a single-line header: name · theme · language · menu. */
+  .palette-select {
+    display: none;
+  }
+
+  .brand small {
+    display: none;
   }
 
   .logo-section {
