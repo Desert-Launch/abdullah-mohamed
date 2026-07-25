@@ -530,6 +530,12 @@ img {
 }
 
 .switch-button {
+  /* Used by both the theme toggle (<button>) and the language switch (<a>,
+     because it navigates to the other locale's URL). An <a> is inline, so the
+     display + centring here is what keeps min-height meaningful for both. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 38px;
   padding: 0 12px;
   border: 1px solid var(--glass-border);

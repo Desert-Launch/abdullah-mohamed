@@ -1,0 +1,37 @@
+# Abdullah Mohamed
+
+> Senior software engineer in Cairo, Egypt (GMT+2). Builds full-stack web apps,
+> real-time AI features, and mobile products end to end — frontend, backend,
+> and the infrastructure they run on. Available for freelance and contract work
+> with US, EU, and Gulf teams. Works in English and Arabic.
+
+## Services and starting prices (USD, negotiable by scope)
+- SaaS / full multi-tenant system — from $6,000
+- Web app or internal tool — from $3,500
+- Real-time AI feature (streaming chat, STT/TTS) — from $3,000
+- Mobile app, iOS + Android from one codebase — from $5,000
+
+## Stack
+React, Next.js, SvelteKit, TypeScript, Node.js, Express, PostgreSQL, Redis,
+WebSocket, Azure OpenAI, AWS, Docker, Nginx, CI/CD, Flutter/Dart.
+
+## Selected work
+- Faheem — Arabic AI tutoring platform for Egypt's Ministry of Education.
+  30,000+ K-12 students, 8,500+ MAU. Real-time voice-to-voice tutoring over
+  WebSocket with Azure OpenAI streaming.
+- Talia — multi-tenant national LMS + SIS (25 modules, 534 requirements),
+  SvelteKit 5 + Go/REST, RBAC across a Ministry→School tree.
+- Xera Lab — full-stack dental case-management platform (Flutter Web + Node.js +
+  PostgreSQL + Docker + AWS S3), built and delivered.
+- 10+ apps shipped to the App Store and Google Play across Egypt, Germany,
+  the UAE, and the US.
+
+## Pages
+- https://www.abdullahmohamed.dev/ — English (default)
+- https://www.abdullahmohamed.dev/ar/ — Arabic
+
+## Contact
+- Email: hi@abdullahmohamed.dev
+- Book a call: https://calendly.com/abdullah-mohamed102001/book-a-call
+- LinkedIn: https://www.linkedin.com/in/abdullah-mohamed-3010
+- GitHub: https://github.com/Abdullah3010

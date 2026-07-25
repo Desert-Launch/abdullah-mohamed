@@ -1,10 +1,9 @@
 import type { MetadataRoute } from "next";
+// SITE_URL is the single source of truth for the production host (lib/site.ts).
+import { SITE_URL } from "./lib/site";
 
 // Required for `output: "export"` — emit robots.txt at build time.
 export const dynamic = "force-static";
-
-// Must match the host that serves 200 — the apex 308-redirects to www.
-const SITE_URL = "https://www.abdullahmohamed.dev";
 
 export default function robots(): MetadataRoute.Robots {
   return {

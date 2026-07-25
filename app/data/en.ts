@@ -3,6 +3,12 @@ import type { Dictionary } from "./types";
 
 export const en: Dictionary = {
   dir: "ltr",
+  meta: {
+    title: "Abdullah Mohamed | Senior Software Engineer",
+    description:
+      "Abdullah Mohamed is a senior software engineer who builds full-stack web apps, real-time AI features, and mobile products end to end — frontend, backend, and the infrastructure they run on. Available for freelance projects and product roles.",
+  },
+  skipLink: "Skip to content",
   // Mirrors the section order: commercial content first, then proof. Also
   // rendered by the footer's "Sections" column and driven by the scrollspy.
   nav: [
@@ -93,7 +99,7 @@ export const en: Dictionary = {
   },
   servicesHeading: {
     eyebrow: "Services",
-    title: "What clients usually hire me to handle.",
+    title: "Full-stack web apps, real-time AI, and mobile — what clients hire me to build.",
     body: "The value is not only writing code. It is turning unclear product needs into shipped systems with fewer moving parts.",
   },
   plansHeading: {

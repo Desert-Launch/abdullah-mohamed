@@ -3,6 +3,12 @@ import type { Dictionary } from "./types";
 
 export const ar: Dictionary = {
   dir: "rtl",
+  meta: {
+    title: "عبدالله محمد | مهندس برمجيات أول",
+    description:
+      "عبدالله محمد مهندس برمجيات أول من القاهرة، يبني تطبيقات ويب متكاملة ومزايا ذكاء اصطناعي فورية ومنتجات موبايل من البداية للنهاية — الواجهة الأمامية والخلفية والبنية التحتية التي تعمل عليها. متاح لمشاريع الفريلانس والعقود.",
+  },
+  skipLink: "تخطَّ إلى المحتوى",
   // Mirrors the section order: commercial content first, then proof. Also
   // rendered by the footer's "Sections" column and driven by the scrollspy.
   nav: [
@@ -93,7 +99,7 @@ export const ar: Dictionary = {
   },
   servicesHeading: {
     eyebrow: "الخدمات",
-    title: "ما الذي يطلبه العملاء مني عادة.",
+    title: "تطبيقات ويب متكاملة، وذكاء اصطناعي فوري، وموبايل — ما يوظّفني العملاء لبنائه.",
     body: "القيمة ليست كتابة كود فقط. القيمة في تحويل احتياج غير واضح إلى نظام يتم إطلاقه بأقل تعقيد ممكن.",
   },
   plansHeading: {

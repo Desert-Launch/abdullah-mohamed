@@ -10,7 +10,9 @@ interface TopBarProps {
   menuOpen: boolean;
   activeSection: string;
   onToggleTheme: () => void;
-  onToggleLang: () => void;
+  /** URL of the other locale. A real link, so the language switch is
+   *  crawlable and shareable rather than a client-side state flip. */
+  langHref: string;
   onSelectPalette: (palette: Palette) => void;
   onToggleMenu: () => void;
   onNavClick: () => void;
@@ -24,7 +26,7 @@ export function TopBar({
   menuOpen,
   activeSection,
   onToggleTheme,
-  onToggleLang,
+  langHref,
   onSelectPalette,
   onToggleMenu,
   onNavClick,
@@ -63,14 +65,15 @@ export function TopBar({
         >
           {theme === "dark" ? t.themeToggle : t.darkToggle}
         </button>
-        <button
+        <a
           className="switch-button"
-          type="button"
+          href={langHref}
+          hrefLang={lang === "en" ? "ar" : "en"}
+          lang={lang === "en" ? "ar" : "en"}
           aria-label={lang === "en" ? "التبديل إلى العربية" : "Switch to English"}
-          onClick={onToggleLang}
         >
           {t.langToggle}
-        </button>
+        </a>
       </div>
 
       <button

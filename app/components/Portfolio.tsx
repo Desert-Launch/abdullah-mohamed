@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { copy } from "../data/copy";
 import { shared, bookingHref, profilePhoto } from "../data/shared";
 import { asset } from "../lib/asset";
+import { localePath, otherLang } from "../lib/site";
 import type { Lang, Palette, PlanIcon, Theme } from "../data/types";
 import { TopBar } from "./TopBar";
 import { Hero } from "./Hero";
@@ -79,16 +80,17 @@ function PlanCheck() {
   );
 }
 
-export function Portfolio() {
+export function Portfolio({ lang }: { lang: Lang }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  // Start from the same defaults the server renders, so the first client render
-  // matches the SSR HTML and hydration doesn't mismatch. The pre-paint script in
-  // layout.tsx has already applied the real theme/lang/palette to <html> (from
-  // localStorage), so page colors never flash — we only adopt those values into
-  // React state on mount, which settles the toggle indicators after hydration.
+  // Language comes from the route, not from state — each locale is its own URL
+  // with its own server-rendered HTML, so there is nothing to toggle client-side.
+  // Theme and palette stay client state: they start from the same defaults the
+  // server renders so the first client render matches the SSR HTML, and the
+  // pre-paint script in lib/site.tsx has already applied the real values to
+  // <html> from localStorage, so page colors never flash. We only adopt those
+  // values into React state on mount, which settles the toggles after hydration.
   const [mounted, setMounted] = useState(false);
   const [theme, setTheme] = useState<Theme>("dark");
-  const [lang, setLang] = useState<Lang>("en");
   const [palette, setPalette] = useState<Palette>("current");
   const [activeSection, setActiveSection] = useState("");
   const progressRef = useRef<HTMLDivElement>(null);
@@ -101,7 +103,6 @@ export function Portfolio() {
   useEffect(() => {
     const el = document.documentElement;
     if (el.dataset.theme === "light" || el.dataset.theme === "dark") setTheme(el.dataset.theme);
-    if (el.lang === "ar" || el.lang === "en") setLang(el.lang);
     const p = el.dataset.palette;
     if (p === "current" || p === "terracotta" || p === "teal" || p === "gold") setPalette(p);
     setMounted(true);
@@ -112,13 +113,6 @@ export function Portfolio() {
     document.documentElement.dataset.theme = theme;
     window.localStorage.setItem("portfolio-theme", theme);
   }, [mounted, theme]);
-
-  useEffect(() => {
-    if (!mounted) return;
-    document.documentElement.lang = lang;
-    document.documentElement.dir = t.dir;
-    window.localStorage.setItem("portfolio-lang", lang);
-  }, [mounted, lang, t.dir]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -286,7 +280,7 @@ export function Portfolio() {
         menuOpen={menuOpen}
         activeSection={activeSection}
         onToggleTheme={() => setTheme((value) => (value === "dark" ? "light" : "dark"))}
-        onToggleLang={() => setLang((value) => (value === "en" ? "ar" : "en"))}
+        langHref={asset(localePath[otherLang[lang]])}
         onSelectPalette={setPalette}
         onToggleMenu={() => setMenuOpen((value) => !value)}
         onNavClick={() => setMenuOpen(false)}
