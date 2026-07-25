@@ -31,19 +31,14 @@ export const en: Dictionary = {
     title: "I build products that ship —",
     titleAccent: "and survive production.",
     roleLine: "Senior Software Engineer · Full-Stack, AI & Mobile Products",
-    tagline:
-      "The engineer teams bring in when the product actually has to ship — and survive production.",
     lead: "Cairo-based senior engineer, 4+ years shipping production apps end to end. Right now I'm building Faheem — Egypt's Ministry of Education AI platform with real-time voice-to-voice tutoring and AI-generated lessons. 10+ apps shipped across Egypt, Germany, the UAE, and the US. React, Node.js, PostgreSQL, AWS, Flutter — and comfortable adapting to",
     leadEmphasis: "whatever the product needs.",
     primary: "Start a project",
-    secondary: "Start a project",
     work: "See selected work",
     cv: "Download CV",
     availability: "Open to freelance, contracts, and product partnerships",
     currently:
       "Currently building Faheem & Talia at Appenza, shipping Zikr in late July — taking new projects from August 2026",
-    stackLabel: "Core stack",
-    stack: "Flutter + Node.js + PostgreSQL + AWS",
     socialLabel: "Find me on",
   },
   proof: [
@@ -52,7 +47,6 @@ export const en: Dictionary = {
     ["4+", "years shipping production"],
     ["4 regions", "Egypt, Gulf, Europe, US"],
   ],
-  proofNote: "Shipped to the App Store & Google Play.",
   logosLabel: "Built with teams. Shipped for real users.",
   logosIntro: "Companies I have partnered with and products I have helped take from an idea to production.",
   companiesLabel: "Companies",
@@ -96,10 +90,6 @@ export const en: Dictionary = {
     eyebrow: "Services",
     title: "What clients usually hire me to handle.",
     body: "The value is not only writing code. It is turning unclear product needs into shipped systems with fewer moving parts.",
-  },
-  stackHeading: {
-    eyebrow: "Stack",
-    title: "Tools I use when the product has to survive production.",
   },
   plansHeading: {
     eyebrow: "Pricing",

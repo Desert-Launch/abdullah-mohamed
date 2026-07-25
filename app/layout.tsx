@@ -20,7 +20,10 @@ const cairo = Cairo({
   display: "swap",
 });
 
-const SITE_URL = "https://abdullahmohamed.dev";
+// Production serves the www host; the apex 308-redirects to it. Every SEO
+// signal below (canonical, og:url, JSON-LD url, sitemap, robots) derives from
+// this constant, so it must match the host that actually answers 200.
+const SITE_URL = "https://www.abdullahmohamed.dev";
 const DESCRIPTION =
   "Abdullah Mohamed is a senior software engineer who builds full-stack web apps, real-time AI features, and mobile products end to end — frontend, backend, and the infrastructure they run on. Available for freelance projects and product roles.";
 
@@ -55,13 +58,16 @@ export const metadata: Metadata = {
     title: "Abdullah Mohamed | Senior Software Engineer",
     description: DESCRIPTION,
     locale: "en_US",
-    alternateLocale: ["ar_AR"],
+    alternateLocale: ["ar_EG"],
+    // og:image (+ its alt) comes from the file convention: opengraph-image.png
+    // and its sibling opengraph-image.alt.txt. File-based metadata wins over
+    // anything set here, so the image must not be re-declared in this object.
   },
   twitter: {
     card: "summary_large_image",
     title: "Abdullah Mohamed | Senior Software Engineer",
     description: DESCRIPTION,
-    creator: "@Abdullah3010",
+    // twitter:image + alt likewise come from twitter-image.png / .alt.txt.
   },
   robots: {
     index: true,
@@ -84,7 +90,7 @@ const personJsonLd = {
   jobTitle: "Senior Software Engineer",
   description: DESCRIPTION,
   url: SITE_URL,
-  email: "mailto:abdullah.mohamed102001@gmail.com",
+  email: "mailto:hi@abdullahmohamed.dev",
   knowsAbout: [
     "Flutter",
     "Dart",

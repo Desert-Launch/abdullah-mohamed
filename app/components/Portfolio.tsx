@@ -94,9 +94,9 @@ export function Portfolio() {
   const progressRef = useRef<HTMLDivElement>(null);
   const backToTopRef = useRef<HTMLAnchorElement>(null);
   const t = copy[lang];
-  // Placeholder quotes never render — the section only appears once at least
-  // one real (non-sample) testimonial exists in the dictionaries.
-  const testimonials = t.testimonials.filter((item) => !item.sample);
+  // Every quote in the dictionaries is a real LinkedIn recommendation. The
+  // section still hides itself if the list is ever emptied.
+  const testimonials = t.testimonials;
 
   useEffect(() => {
     const el = document.documentElement;

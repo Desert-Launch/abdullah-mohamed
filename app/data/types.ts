@@ -11,12 +11,6 @@ export interface Social {
   icon: string;
 }
 
-export interface StackGroup {
-  file: string;
-  label: Record<Lang, string>;
-  names: string;
-}
-
 export interface Metric {
   value: string;
   label: string;
@@ -74,10 +68,6 @@ export interface Testimonial {
   /** LinkedIn URL where the recommendation can be verified. When set, the
    *  card shows a "Verified · LinkedIn" badge and links to the source. */
   linkedin?: string;
-  /** Marks placeholder content to be swapped for a real client quote.
-   *  Sample testimonials are never rendered — the section hides itself
-   *  until at least one real quote exists. */
-  sample?: boolean;
 }
 
 /** One step in the "How working with me looks" strip. */
@@ -145,22 +135,20 @@ export interface HeroCopy {
   title: string;
   /** Tail of the headline, rendered in the accent color (gold). */
   titleAccent: string;
+  /** Role/positioning line. Rendered by the footer, not the hero. */
   roleLine: string;
-  tagline: string;
   lead: string;
   /** Italic emphasis phrase appended to the end of `lead`. */
   leadEmphasis: string;
   primary: string;
-  secondary: string;
   /** Label for the "see selected work" hero button. */
   work: string;
   cv: string;
+  /** Availability line. Rendered by the footer, not the hero. */
   availability: string;
   /** Live status line ("Currently: … — taking new projects from …"),
    *  rendered with a pulsing dot under the hero actions. */
   currently: string;
-  stackLabel: string;
-  stack: string;
   socialLabel: string;
 }
 
@@ -206,8 +194,6 @@ export interface Dictionary {
   };
   hero: HeroCopy;
   proof: Proof[];
-  /** Store-availability line under the proof strip, e.g. "Live on the App Store & Google Play". */
-  proofNote: string;
   logosLabel: string;
   logosIntro: string;
   companiesLabel: string;
@@ -229,7 +215,6 @@ export interface Dictionary {
   workHeading: Heading;
   freelanceHeading: Heading;
   servicesHeading: Heading;
-  stackHeading: Heading;
   plansHeading: Heading;
   processHeading: Heading;
   process: ProcessStep[];

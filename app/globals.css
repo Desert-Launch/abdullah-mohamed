@@ -1106,7 +1106,6 @@ p {
 .case-card,
 .project-tile,
 .service-card,
-.stack-section,
 .plan-card,
 .timeline article,
 .contact-section {
@@ -2457,51 +2456,6 @@ span.case-avatar {
   line-height: 1.72;
 }
 
-.stack-section {
-  display: grid;
-  gap: 24px;
-  padding: 28px;
-}
-
-.stack-groups {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-}
-
-.stack-group {
-  display: grid;
-  gap: 12px;
-  align-content: start;
-}
-
-.stack-group-label {
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-
-.stack-group-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.stack-group-list li {
-  padding: 5px 11px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--surface-soft);
-  color: var(--ink-soft);
-  font-size: 0.82rem;
-  line-height: 1.2;
-}
-
 .about-body {
   display: grid;
   gap: 18px;
@@ -3353,7 +3307,6 @@ span.case-avatar {
 @media (max-width: 1020px) {
   .hero,
   .split-section,
-  .stack-section,
   .experience-section,
   .contact-section {
     grid-template-columns: 1fr;
@@ -3565,7 +3518,6 @@ span.case-avatar {
   .project-catalog,
   .service-grid,
   .plans-grid,
-  .stack-groups,
   .work-grid {
     grid-template-columns: 1fr;
   }
