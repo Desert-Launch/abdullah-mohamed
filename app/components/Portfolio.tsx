@@ -25,25 +25,38 @@ function PlanGlyph({ icon }: { icon: PlanIcon }) {
     strokeLinejoin: "round" as const,
     "aria-hidden": true,
   };
-  if (icon === "clock") {
+  if (icon === "layers") {
     return (
       <svg {...common}>
-        <circle cx="12" cy="12" r="8.5" />
-        <path d="M12 7.5V12l3 1.8" />
+        <path d="M12 3 3 7.5l9 4.5 9-4.5L12 3Z" />
+        <path d="M3 12.5 12 17l9-4.5" />
+        <path d="M3 17 12 21.5 21 17" />
       </svg>
     );
   }
-  if (icon === "diamond") {
+  if (icon === "browser") {
     return (
       <svg {...common}>
-        <path d="M12 3 21 12l-9 9-9-9 9-9Z" />
+        <rect x="3" y="4.5" width="18" height="15" rx="2.5" />
+        <path d="M3 9h18" />
+        <path d="M6.5 6.75h.01M9.25 6.75h.01" />
       </svg>
     );
   }
-  // infinity
+  if (icon === "spark") {
+    return (
+      <svg {...common}>
+        <path d="M12 3.5c.9 3.6 2 4.7 5.6 5.6-3.6.9-4.7 2-5.6 5.6-.9-3.6-2-4.7-5.6-5.6 3.6-.9 4.7-2 5.6-5.6Z" />
+        <path d="M17.5 15.5c.45 1.8 1 2.35 2.8 2.8-1.8.45-2.35 1-2.8 2.8-.45-1.8-1-2.35-2.8-2.8 1.8-.45 2.35-1 2.8-2.8Z" />
+      </svg>
+    );
+  }
+  // mobile
   return (
     <svg {...common}>
-      <path d="M7 8.5a3.5 3.5 0 1 0 0 7c2 0 3-1.75 5-3.5s3-3.5 5-3.5a3.5 3.5 0 1 1 0 7c-2 0-3-1.75-5-3.5S9 8.5 7 8.5Z" />
+      <rect x="6.5" y="2.5" width="11" height="19" rx="2.5" />
+      <path d="M10.5 5.25h3" />
+      <path d="M10.75 18.5h2.5" />
     </svg>
   );
 }
