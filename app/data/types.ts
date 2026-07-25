@@ -108,17 +108,18 @@ export interface Service {
 }
 
 /** Glyph rendered in a plan card's header. */
-export type PlanIcon = "clock" | "diamond" | "infinity";
+export type PlanIcon = "layers" | "browser" | "spark" | "mobile";
 
 export interface Plan {
   name: string;
-  /** One-line promise shown under the name, e.g. "One production-ready slice, shipped." */
+  /** One-line promise shown under the name, e.g. "A focused web product or
+   *  internal tool, shipped." */
   body: string;
   /** Headline starting price, pre-formatted with symbol and grouping, e.g.
-   *  "from $900". USD in both languages. */
+   *  "from $3,500". USD in both languages. */
   price: string;
-  /** Small print under the price. States that the figure is a minimum and what
-   *  sets the final number — never a duration; timeline is set per proposal. */
+  /** Small print under the price. States that the figure is a starting point
+   *  and negotiable — never a duration; timeline is set per proposal. */
   priceNote: string;
   /** Per-card CTA label, e.g. "Book a call". Links to #contact. */
   cta: string;
@@ -127,7 +128,7 @@ export interface Plan {
   featured?: boolean;
   /** Badge above a featured card, e.g. "Most popular". */
   badge?: string;
-  /** Optional lead-in above the feature list, e.g. "Everything in Architecture Review, plus:". */
+  /** Optional lead-in above the feature list, e.g. "Everything above, plus:". */
   itemsIntro?: string;
   items: string[];
 }
