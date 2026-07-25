@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { Shot } from "../data/types";
 import { asset } from "../lib/asset";
 
 /**
@@ -12,16 +13,34 @@ import { asset } from "../lib/asset";
  * - all landscape → one full-width stack
  * Orientation is a property of the image files, so it's measured from
  * naturalWidth/Height instead of being duplicated into the dictionaries.
+ *
+ * Accepts either bare paths (`Product.shots`) or full `Shot` objects
+ * (`CaseStudy.shots`, which carry real alt text and a caption). Captions are
+ * not shown here — this strip stays compact for the homepage cards. The /work
+ * detail pages use `WorkShots`, which renders the same images as captioned
+ * figures.
  */
-export function ShotGallery({ shots, title }: { shots: string[]; title: string }) {
+export function ShotGallery({
+  shots,
+  title,
+}: {
+  shots: (string | Shot)[];
+  title: string;
+}) {
   const [landscape, setLandscape] = useState<Record<number, boolean>>({});
+
+  const items: Shot[] = shots.map((shot) =>
+    typeof shot === "string"
+      ? { src: shot, alt: `${title} screenshot`, caption: "" }
+      : shot,
+  );
 
   const measured = Object.keys(landscape).length;
   const landscapeCount = Object.values(landscape).filter(Boolean).length;
   const layout =
-    measured < shots.length || landscapeCount === 0
+    measured < items.length || landscapeCount === 0
       ? ""
-      : landscapeCount === shots.length
+      : landscapeCount === items.length
         ? " shots-landscape"
         : " shots-mixed";
 
@@ -35,12 +54,12 @@ export function ShotGallery({ shots, title }: { shots: string[]; title: string }
 
   return (
     <div className={`case-shots${layout}`}>
-      {shots.map((shot, index) => (
+      {items.map((shot, index) => (
         <img
-          key={shot}
+          key={shot.src}
           ref={(img) => record(index, img)}
-          src={asset(shot)}
-          alt={`${title} screenshot`}
+          src={asset(shot.src)}
+          alt={shot.alt}
           loading="lazy"
           className={landscape[index] ? "is-landscape" : undefined}
           onLoad={(event) => record(index, event.currentTarget)}

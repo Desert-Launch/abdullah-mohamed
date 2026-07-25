@@ -171,11 +171,29 @@ export const en: Dictionary = {
       title: "Faheem",
       type: "Arabic AI tutoring platform",
       context: "Appenza Studio · product team",
+      featured: true,
       image: appImages.faheem,
+      // The product UI is Arabic-only, so these captions describe what is
+      // visible in each screenshot for readers who cannot read the interface.
       shots: [
-        "/images/shots/faheem1.webp",
-        "/images/shots/faheem2.webp",
-        "/images/shots/faheem3.webp",
+        {
+          src: "/images/shots/faheem1.webp",
+          alt: "Faheem's worked solution screen: three numbered steps solving 2x + 10 = 50, a highlighted answer of x = 20, and chips listing the underlying concepts.",
+          caption:
+            "The worked solution: numbered steps, the final answer called out on its own, and chips naming the concepts the student just used.",
+        },
+        {
+          src: "/images/shots/faheem2.webp",
+          alt: "Faheem's image analysis screen: a photo of a handwritten equation at the top, then the tutor restating the question with an out-of-syllabus notice above it.",
+          caption:
+            "A student photographs a handwritten equation. Faheem reads it, restates the question, and flags up front that it falls outside the loaded syllabus before answering.",
+        },
+        {
+          src: "/images/shots/faheem3.webp",
+          alt: "Faheem's chemistry chat: a student question about transition elements, the tutor's answer with key terms emphasised, and quick-reply chips for practice, example, and explain.",
+          caption:
+            "Subject chat with a progress ring in the header — the tutor answers, corrects a common misconception, asks a check question back, then offers practice, example, or explain.",
+        },
       ],
       summary:
         "The core of an Arabic-first AI tutor now used by 30,000+ K-12 students.",
@@ -248,9 +266,24 @@ export const en: Dictionary = {
       context: "Independent build · shipped 2025 · retired",
       image: appImages.jaweb,
       shots: [
-        "/images/jaweb1.webp",
-        "/images/jaweb2.webp",
-        "/images/jaweb3.webp",
+        {
+          src: "/images/jaweb1.webp",
+          alt: "Jaweb match setup sheet: fields for the game name and both team names, each with a stepper setting how many players are on that side.",
+          caption:
+            "Match setup: name the game, name both teams, and set the player count on each side before the round starts.",
+        },
+        {
+          src: "/images/jaweb2.webp",
+          alt: "Jaweb category board: six illustrated categories, each with paired 300, 500, and 700 point tiles, and a score stepper plus lifelines for each team along the bottom.",
+          caption:
+            "The board — six categories, three point tiers per category, and each team's running score and lifelines pinned to the bottom corners.",
+        },
+        {
+          src: "/images/jaweb3.webp",
+          alt: "Jaweb question view: a photo prompt with the question and its point value, a countdown timer, reveal and score buttons, and both teams' totals listed alongside.",
+          caption:
+            "A question in play: countdown timer, the point value at stake, reveal-answer and mark-correct controls, with both teams' totals and remaining lifelines alongside.",
+        },
       ],
       summary:
         "A living-room trivia night turned into a fair, automated product with payments.",
@@ -270,6 +303,35 @@ export const en: Dictionary = {
       stack: ["Flutter", "Clean Architecture", "My Fatoorah", "Payments"],
     },
   ],
+  work: {
+    meta: {
+      title: "Work — case studies | Abdullah Mohamed",
+      description:
+        "Case studies from products I have built and shipped: what the problem was, what I owned, how it was built, and what it produced.",
+    },
+    eyebrow: "Work",
+    title: "Products I built, written up end to end.",
+    body: "One page per project: the problem, my role, how it was built, and what shipped. Everything here is work that is live or has been in real users' hands.",
+    navLabel: "Work pages",
+    home: "Home",
+    readCase: "Read the case study",
+    viewAll: "View all work",
+    backToIndex: "All work",
+    alsoShipped: {
+      eyebrow: "Also shipped",
+      title: "Other products in users' hands.",
+      body: "Shipped apps that do not have a written case study yet. Where a build is on a store, the store link is the proof.",
+    },
+    screenshots: "From the product",
+    screenshotsNote:
+      "The product interface is Arabic. Each caption describes what the screen is doing.",
+    links: "See it live",
+    cta: {
+      title: "Building something like this?",
+      body: "Tell me what you are trying to ship and I will tell you, honestly, whether I am the right person to build it.",
+      button: "Start a project",
+    },
+  },
   selectedWork: [
     {
       key: "yolo",
