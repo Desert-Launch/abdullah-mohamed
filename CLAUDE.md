@@ -57,12 +57,16 @@ considering a change done.
   from `WorkHeader` (reduced nav — the homepage `TopBar` is built on anchors +
   a scrollspy that don't exist here) and the shared `Footer` with `linkBase="/"`
   so its section anchors resolve back to the homepage.
-- **Social cards.** The locale home pages (`/`, `/ar/`) share one static file,
-  `public/images/og-home.jpg` — a crop of the hero, declared as
-  `SHARE_IMAGE` in `lib/site.tsx`. The `/work` routes generate theirs per
-  project from `app/lib/og.tsx` (`next/og`), via `opengraph-image.tsx` in
-  `app/(en)/work/` and `app/(en)/work/[slug]/`. `twitter:image` mirrors
-  `og:image`. The traps, all load-bearing:
+- **Social cards.** The locale home pages (`/`, `/ar/`) declare two candidates
+  via `SHARE_IMAGES` in `lib/site.tsx`, both static files under `public/`:
+  `og-card.png` (the designed card — what everyone actually sees) then
+  `og-home.jpg` (a crop of the hero, the standby). og:image is a *candidate
+  list*, not a try-then-fall-back chain: nearly every scraper takes the first,
+  Facebook being the one that moves down when an earlier image fails. Twitter
+  gets only the first — it shows exactly one.
+  The `/work` routes generate theirs per project from `app/lib/og.tsx`
+  (`next/og`), via `opengraph-image.tsx` in `app/(en)/work/` and
+  `app/(en)/work/[slug]/`. The traps, all load-bearing:
   - **A generated card is an extension-less route**, which `trailingSlash:
     true` then 308s to a trailing-slash path. A static host serves it as
     octet-stream, so `vercel.json` forces the content-type with a wildcard
@@ -82,6 +86,13 @@ considering a change done.
     `meta.description` — WhatsApp and LinkedIn cut around 150 characters.
   - Keep share images ~1200x630 and under ~300KB; WhatsApp skips heavier ones.
   - After any change here: `curl -sIL <og:image url> | grep -i content-type`.
+  - **Regenerating `og-card.png`** (do this when the hero copy changes — a
+    static file can't track the dictionary the way a route did):
+    `git show 9649a91:'app/(en)/opengraph-image.tsx' > 'app/(en)/opengraph-image.tsx'`,
+    `npm run build`, `cp out/opengraph-image-* public/images/og-card.png`, then
+    delete the route again — leaving it in place would override `SHARE_IMAGES`
+    and drop the second candidate. `renderSiteOgImage` in `lib/og.tsx` is kept
+    for exactly this.
 - SEO/crawl files: `app/robots.ts`, `app/sitemap.ts` (both locales + hreflang
   alternates; `/work` entries carry no alternates), `public/llms.txt`, and
   `app/icon.svg` / `app/apple-icon.png`.

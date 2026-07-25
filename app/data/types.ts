@@ -244,6 +244,9 @@ export interface Dictionary {
     title: string;
     /** Full description, for search results. */
     description: string;
+    /** Uppercase rule line at the top of the generated social card: role,
+     *  city, availability. */
+    cardEyebrow: string;
     /** Short description, for og:/twitter: and the social card's sub-line.
      *  WhatsApp and LinkedIn truncate around 150 characters — the SERP-length
      *  description above gets cut mid-sentence in a share preview. */
