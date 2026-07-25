@@ -4293,3 +4293,66 @@ h2.case-label {
   max-width: 28ch;
   line-height: 1.2;
 }
+
+/* A heading that carries a link to the matching /work page, e.g. "View all
+   work". The link sits beside the heading on wide screens and drops under it
+   when the pair no longer fits. */
+.section-heading--linked {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 18px 32px;
+}
+
+.section-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gold);
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.section-link span {
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.section-link:hover span,
+.section-link:focus-visible span {
+  transform: translateX(3px);
+}
+
+.site-shell[dir="rtl"] .section-link:hover span {
+  transform: translateX(-3px);
+}
+
+/* Inside the Selected Work heading the link is stacked under the copy, not
+   beside it — the count badge already owns the right-hand column. */
+.selected-work-heading .section-link {
+  margin-top: 18px;
+}
+
+@media (max-width: 720px) {
+  .section-heading--linked {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section-heading--linked .section-link {
+    justify-self: start;
+  }
+}
+
+/* .button is an inline-flex row, so whitespace between its children collapses
+   — the trailing arrow needs a real gap rather than a leading space. */
+.button > span[aria-hidden] {
+  margin-inline-start: 8px;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.button:hover > span[aria-hidden] {
+  transform: translateX(3px);
+}
+
+.site-shell[dir="rtl"] .button:hover > span[aria-hidden] {
+  transform: translateX(-3px);
+}

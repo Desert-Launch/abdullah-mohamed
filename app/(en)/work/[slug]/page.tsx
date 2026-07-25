@@ -155,7 +155,7 @@ export default async function WorkDetailPage({
                     rel="noreferrer"
                   >
                     {link.label}
-                    <span aria-hidden="true"> ↗</span>
+                    <span aria-hidden="true">↗</span>
                   </a>
                 ))}
               </div>

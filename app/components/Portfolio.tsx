@@ -403,7 +403,7 @@ export function Portfolio({ lang }: { lang: Lang }) {
           </div>
         </section>
 
-        <CaseStudies t={t} />
+        <CaseStudies t={t} lang={lang} />
 
         {testimonials.length > 0 ? (
           <section id="testimonials" className="section">
@@ -493,7 +493,7 @@ export function Portfolio({ lang }: { lang: Lang }) {
 
         <ExperienceTimeline t={t} />
 
-        <SelectedWork t={t} />
+        <SelectedWork t={t} lang={lang} />
 
         <section id="about" className="section about-section">
           <div className="section-heading" data-reveal>

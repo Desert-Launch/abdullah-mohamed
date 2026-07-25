@@ -15,7 +15,10 @@ export const en: Dictionary = {
     ["What I build", "#services"],
     ["Pricing", "#plans"],
     ["Case studies", "#cases"],
-    ["Work", "#work"],
+    // The only non-anchor entry: /work is a real route with a page per
+    // project. The homepage's own "#work" section is still there and still
+    // links into it — it just isn't the nav destination any more.
+    ["Work", "/work/"],
     ["About", "#about"],
     ["Contact", "#contact"],
   ],

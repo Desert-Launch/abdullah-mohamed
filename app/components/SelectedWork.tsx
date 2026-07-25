@@ -1,10 +1,11 @@
-import type { Dictionary } from "../data/types";
+import type { Dictionary, Lang } from "../data/types";
 import { storeLinks } from "../data/shared";
 import { asset } from "../lib/asset";
+import { WORK_INDEX_PATH, WORK_LANG } from "../lib/work";
 
 const isRealUrl = (url?: string): url is string => !!url && url.startsWith("http");
 
-export function SelectedWork({ t }: { t: Dictionary }) {
+export function SelectedWork({ t, lang }: { t: Dictionary; lang: Lang }) {
   if (t.selectedWork.length === 0) return null;
 
   return (
@@ -14,6 +15,13 @@ export function SelectedWork({ t }: { t: Dictionary }) {
           <p className="eyebrow">{t.selectedWorkHeading.eyebrow}</p>
           <h2>{t.selectedWorkHeading.title}</h2>
           {t.selectedWorkHeading.body ? <p>{t.selectedWorkHeading.body}</p> : null}
+          {/* English-only while /work has no Arabic mirror. */}
+          {lang === WORK_LANG ? (
+            <a className="section-link" href={asset(WORK_INDEX_PATH)}>
+              {t.work.viewAll}
+              <span aria-hidden="true">→</span>
+            </a>
+          ) : null}
         </div>
         <p className="work-count" aria-label={`${t.selectedWork.length} ${t.selectedWorkLabels.products}`}>
           <strong>{String(t.selectedWork.length).padStart(2, "0")}</strong>
