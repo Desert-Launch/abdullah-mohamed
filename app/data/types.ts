@@ -163,6 +163,8 @@ export interface WorkCopy {
   viewAll: string;
   /** Back link at the top of a detail page. */
   backToIndex: string;
+  /** Label above the other-projects links at the foot of a detail page. */
+  more: string;
   /** Heading for shipped apps that have no written case study yet. */
   alsoShipped: Heading;
   /** Label above the screenshot strip on a detail page. */

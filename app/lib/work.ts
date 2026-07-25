@@ -14,6 +14,10 @@ import { SITE_URL } from "./site";
  *
  * English only for now. `/ar/work` is deferred — the copy exists in both
  * dictionaries, but the routes below are mounted inside the (en) route group.
+ *
+ * TODO(abdullah): decide whether to mirror these at /ar/work. It needs an (ar)
+ * route group copy of both pages, hreflang restored in buildWorkMetadata and
+ * sitemap.ts, and the homepage links in CaseStudies/SelectedWork ungated.
  */
 export const WORK_LANG: Lang = "en";
 

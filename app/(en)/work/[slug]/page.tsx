@@ -69,11 +69,8 @@ export default async function WorkDetailPage({
 
           <header className="work-detail-head">
             {study.image ? (
-              <img
-                className="case-avatar"
-                src={asset(study.image)}
-                alt={`${study.title} app icon`}
-              />
+              // Decorative: the project name is the <h1> immediately beside it.
+              <img className="case-avatar" src={asset(study.image)} alt="" />
             ) : (
               <span className="case-avatar" aria-hidden="true">
                 {study.title.slice(0, 1)}
@@ -172,8 +169,12 @@ export default async function WorkDetailPage({
         </article>
 
         {others.length > 0 ? (
-          <nav className="work-more" aria-label={t.work.navLabel}>
-            <p className="case-label">{t.work.viewAll}</p>
+          // Its own label, not the header nav's — two landmarks sharing one
+          // accessible name is a maze to navigate by landmark.
+          <nav className="work-more" aria-labelledby={`heading-${study.slug}-more`}>
+            <h2 className="case-label" id={`heading-${study.slug}-more`}>
+              {t.work.more}
+            </h2>
             <div className="work-more-links">
               {others.map((item) => (
                 <a className="work-more-link" key={item.slug} href={asset(workPath(item.slug))}>

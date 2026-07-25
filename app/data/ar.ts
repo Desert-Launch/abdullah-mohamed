@@ -318,6 +318,7 @@ export const ar: Dictionary = {
     readCase: "اقرأ دراسة الحالة",
     viewAll: "كل الأعمال",
     backToIndex: "كل الأعمال",
+    more: "دراسات حالة أخرى",
     alsoShipped: {
       eyebrow: "أُطلق أيضًا",
       title: "منتجات أخرى بين أيدي المستخدمين.",

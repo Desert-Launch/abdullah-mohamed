@@ -4356,3 +4356,11 @@ h2.case-label {
 .site-shell[dir="rtl"] .button:hover > span[aria-hidden] {
   transform: translateX(-3px);
 }
+
+/* WCAG 2.2 target size (2.5.8): these are standalone links, not inline in a
+   sentence, so they need a 24px-plus hit area rather than just their text box. */
+.work-back,
+.section-link {
+  min-height: 28px;
+  padding-block: 4px;
+}

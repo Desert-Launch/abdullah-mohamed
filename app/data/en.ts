@@ -232,6 +232,11 @@ export const en: Dictionary = {
       ],
     },
     {
+      // TODO(abdullah): this copy is already live on the homepage, but
+      // /work/talia gives the Qatar Ministry of Education line its own
+      // indexed URL. Confirm that is fine with the client, or soften it.
+      // TODO(abdullah): no screenshots for Talia — the detail page renders
+      // without a "From the product" section until some exist.
       slug: "talia",
       title: "Talia",
       type: "National LMS + SIS platform",
@@ -320,6 +325,7 @@ export const en: Dictionary = {
     readCase: "Read the case study",
     viewAll: "View all work",
     backToIndex: "All work",
+    more: "More case studies",
     alsoShipped: {
       eyebrow: "Also shipped",
       title: "Other products in users' hands.",
