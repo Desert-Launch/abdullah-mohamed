@@ -1,4 +1,5 @@
 import type { Dictionary, Lang, Palette, Theme } from "../data/types";
+import { asset } from "../lib/asset";
 
 const PALETTES: Palette[] = ["current", "terracotta", "teal", "gold"];
 
@@ -95,7 +96,10 @@ export function TopBar({
           return (
             <a
               key={href}
-              href={href}
+              // Anchors resolve against the current document; a real route
+              // (e.g. "/work/") needs the deploy basePath, which Next only
+              // applies to <Link>, not to raw hrefs.
+              href={href.startsWith("#") ? href : asset(href)}
               className={isActive ? "is-active" : undefined}
               aria-current={isActive ? "true" : undefined}
               onClick={onNavClick}

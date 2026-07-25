@@ -5,7 +5,8 @@ import { copy } from "../data/copy";
 import { shared, bookingHref, profilePhoto } from "../data/shared";
 import { asset } from "../lib/asset";
 import { localePath, otherLang } from "../lib/site";
-import type { Lang, Palette, PlanIcon, Theme } from "../data/types";
+import { useSiteTheme } from "../lib/useSiteTheme";
+import type { Lang, PlanIcon } from "../data/types";
 import { TopBar } from "./TopBar";
 import { Hero } from "./Hero";
 import { CaseStudies } from "./CaseStudies";
@@ -84,14 +85,9 @@ export function Portfolio({ lang }: { lang: Lang }) {
   const [menuOpen, setMenuOpen] = useState(false);
   // Language comes from the route, not from state — each locale is its own URL
   // with its own server-rendered HTML, so there is nothing to toggle client-side.
-  // Theme and palette stay client state: they start from the same defaults the
-  // server renders so the first client render matches the SSR HTML, and the
-  // pre-paint script in lib/site.tsx has already applied the real values to
-  // <html> from localStorage, so page colors never flash. We only adopt those
-  // values into React state on mount, which settles the toggles after hydration.
-  const [mounted, setMounted] = useState(false);
-  const [theme, setTheme] = useState<Theme>("dark");
-  const [palette, setPalette] = useState<Palette>("current");
+  // Theme and palette stay client state, shared with the /work pages' header via
+  // useSiteTheme so the choice survives navigating off the homepage.
+  const { theme, setTheme, palette, setPalette } = useSiteTheme();
   const [activeSection, setActiveSection] = useState("");
   const progressRef = useRef<HTMLDivElement>(null);
   const backToTopRef = useRef<HTMLAnchorElement>(null);
@@ -99,26 +95,6 @@ export function Portfolio({ lang }: { lang: Lang }) {
   // Every quote in the dictionaries is a real LinkedIn recommendation. The
   // section still hides itself if the list is ever emptied.
   const testimonials = t.testimonials;
-
-  useEffect(() => {
-    const el = document.documentElement;
-    if (el.dataset.theme === "light" || el.dataset.theme === "dark") setTheme(el.dataset.theme);
-    const p = el.dataset.palette;
-    if (p === "current" || p === "terracotta" || p === "teal" || p === "gold") setPalette(p);
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-    document.documentElement.dataset.theme = theme;
-    window.localStorage.setItem("portfolio-theme", theme);
-  }, [mounted, theme]);
-
-  useEffect(() => {
-    if (!mounted) return;
-    document.documentElement.dataset.palette = palette;
-    window.localStorage.setItem("portfolio-palette", palette);
-  }, [mounted, palette]);
 
   // Scroll reveal: fade + rise each [data-reveal] block in as it enters view.
   // Reveal once, then stop observing. Falls back to showing everything if the
@@ -427,7 +403,7 @@ export function Portfolio({ lang }: { lang: Lang }) {
           </div>
         </section>
 
-        <CaseStudies t={t} />
+        <CaseStudies t={t} lang={lang} />
 
         {testimonials.length > 0 ? (
           <section id="testimonials" className="section">
@@ -517,7 +493,7 @@ export function Portfolio({ lang }: { lang: Lang }) {
 
         <ExperienceTimeline t={t} />
 
-        <SelectedWork t={t} />
+        <SelectedWork t={t} lang={lang} />
 
         <section id="about" className="section about-section">
           <div className="section-heading" data-reveal>

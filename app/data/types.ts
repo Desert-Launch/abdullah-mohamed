@@ -42,6 +42,20 @@ export interface CaseLink {
   href: string;
 }
 
+/** A product screenshot on a case study.
+ *
+ *  `alt` is the accessible description; `caption` is the visible explanation
+ *  under the shot on the /work detail page. Several products have an Arabic-only
+ *  UI, so an English reader cannot read the screenshot itself — the caption is
+ *  what makes the shot legible to them. Captions describe only what is actually
+ *  visible in the file; where that is ambiguous the string is left empty and
+ *  the shot renders without a caption. */
+export interface Shot {
+  src: string;
+  alt: string;
+  caption: string;
+}
+
 export interface CaseStudy {
   slug: string;
   title: string;
@@ -49,7 +63,7 @@ export interface CaseStudy {
   /** Ownership/context badge, e.g. "Appenza Studio · product team" vs "Independent build". */
   context?: string;
   image?: string;
-  shots?: string[];
+  shots?: Shot[];
   summary: string;
   challenge: string;
   role: string;
@@ -57,6 +71,8 @@ export interface CaseStudy {
   results: Metric[];
   stack: string[];
   links?: CaseLink[];
+  /** Sorts first on the /work index. */
+  featured?: boolean;
 }
 
 export interface Testimonial {
@@ -121,6 +137,49 @@ export interface Plan {
   /** Optional lead-in above the feature list, e.g. "Everything above, plus:". */
   itemsIntro?: string;
   items: string[];
+}
+
+/** Copy for the standalone `/work` index and `/work/[slug]` detail pages.
+ *
+ *  These pages exist in English only today (see the deferred `/ar/work` mirror),
+ *  but the strings live in both dictionaries so the Arabic mirror is a routing
+ *  change rather than a content project, and so `Dictionary` stays one contract. */
+export interface WorkCopy {
+  /** SERP/social copy for the /work index route. */
+  meta: {
+    title: string;
+    description: string;
+  };
+  eyebrow: string;
+  title: string;
+  body: string;
+  /** aria-label for the reduced header rendered on the /work pages. */
+  navLabel: string;
+  /** Link back to the homepage from the /work header. */
+  home: string;
+  /** Card CTA into a detail page; also used on the homepage case cards. */
+  readCase: string;
+  /** Homepage CTA into the /work index. */
+  viewAll: string;
+  /** Back link at the top of a detail page. */
+  backToIndex: string;
+  /** Label above the other-projects links at the foot of a detail page. */
+  more: string;
+  /** Heading for shipped apps that have no written case study yet. */
+  alsoShipped: Heading;
+  /** Label above the screenshot strip on a detail page. */
+  screenshots: string;
+  /** Notes that the product UI in the screenshots is Arabic, so the captions
+   *  are how a non-Arabic reader can follow them. */
+  screenshotsNote: string;
+  /** Label above the store/live links on a detail page. */
+  links: string;
+  /** Closing CTA block on a detail page. */
+  cta: {
+    title: string;
+    body: string;
+    button: string;
+  };
 }
 
 export interface Heading {
@@ -246,6 +305,8 @@ export interface Dictionary {
     results: string;
   };
   caseStudies: CaseStudy[];
+  /** Copy for the standalone /work index + detail routes. */
+  work: WorkCopy;
   selectedWork: SelectedApp[];
   experiences: Experience[];
   freelanceProjects: Product[];

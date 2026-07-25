@@ -1,8 +1,19 @@
-import type { CaseStudy, Dictionary } from "../data/types";
+import type { CaseStudy, Dictionary, Lang } from "../data/types";
 import { asset } from "../lib/asset";
+import { WORK_INDEX_PATH, WORK_LANG, workPath } from "../lib/work";
 import { ShotGallery } from "./ShotGallery";
 
-function CaseStudyCard({ study, labels }: { study: CaseStudy; labels: Dictionary["caseLabels"] }) {
+function CaseStudyCard({
+  study,
+  labels,
+  readCase,
+}: {
+  study: CaseStudy;
+  labels: Dictionary["caseLabels"];
+  /** Label for the link into this project's own page, or null when the
+   *  standalone pages don't exist for this locale. */
+  readCase: string | null;
+}) {
   const gallery = study.shots?.slice(0, 3) ?? [];
 
   return (
@@ -63,9 +74,16 @@ function CaseStudyCard({ study, labels }: { study: CaseStudy; labels: Dictionary
 
       {gallery.length > 0 ? <ShotGallery shots={gallery} title={study.title} /> : null}
 
-      {study.links && study.links.length > 0 ? (
+      {readCase || (study.links && study.links.length > 0) ? (
         <div className="case-links">
-          {study.links.map((link) => (
+          {readCase ? (
+            <a className="button primary" href={asset(workPath(study.slug))}>
+              {readCase}
+              <span aria-hidden="true">→</span>
+              <span className="sr-only"> — {study.title}</span>
+            </a>
+          ) : null}
+          {study.links?.map((link) => (
             <a key={link.href} className="button ghost" href={link.href} target="_blank" rel="noreferrer">
               {link.label}
             </a>
@@ -76,20 +94,38 @@ function CaseStudyCard({ study, labels }: { study: CaseStudy; labels: Dictionary
   );
 }
 
-export function CaseStudies({ t }: { t: Dictionary }) {
+export function CaseStudies({ t, lang }: { t: Dictionary; lang: Lang }) {
   if (t.caseStudies.length === 0) return null;
+
+  // The standalone /work pages are English-only for now, so the Arabic page
+  // keeps the self-contained cards rather than linking readers to a locale
+  // they didn't ask for. See the deferred /ar/work mirror.
+  const hasWorkPages = lang === WORK_LANG;
 
   return (
     <section id="cases" className="section">
-      <div className="section-heading" data-reveal>
-        <p className="eyebrow">{t.caseStudiesHeading.eyebrow}</p>
-        <h2>{t.caseStudiesHeading.title}</h2>
-        {t.caseStudiesHeading.body ? <p>{t.caseStudiesHeading.body}</p> : null}
+      <div className="section-heading section-heading--linked" data-reveal>
+        <div>
+          <p className="eyebrow">{t.caseStudiesHeading.eyebrow}</p>
+          <h2>{t.caseStudiesHeading.title}</h2>
+          {t.caseStudiesHeading.body ? <p>{t.caseStudiesHeading.body}</p> : null}
+        </div>
+        {hasWorkPages ? (
+          <a className="section-link" href={asset(WORK_INDEX_PATH)}>
+            {t.work.viewAll}
+            <span aria-hidden="true">→</span>
+          </a>
+        ) : null}
       </div>
 
       <div className="case-grid">
         {t.caseStudies.map((study) => (
-          <CaseStudyCard key={study.slug} study={study} labels={t.caseLabels} />
+          <CaseStudyCard
+            key={study.slug}
+            study={study}
+            labels={t.caseLabels}
+            readCase={hasWorkPages ? t.work.readCase : null}
+          />
         ))}
       </div>
     </section>

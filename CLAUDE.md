@@ -44,6 +44,25 @@ considering a change done.
 
   There is deliberately **no `app/layout.tsx` / `app/page.tsx`** — adding one
   back would collide with the route groups.
+- **Standalone `/work` routes** (English only today):
+  - `app/(en)/work/page.tsx` → **`/work/`** — grid of every case study
+    (featured first) plus an "also shipped" strip for the Selected Work apps
+  - `app/(en)/work/[slug]/page.tsx` → **`/work/<slug>/`** — one full page per
+    case study, via `generateStaticParams`
+
+  They live **inside the `(en)` group on purpose**: a top-level `app/work/`
+  would have no root layout at all. `app/lib/work.ts` owns the slug/path
+  helpers, the sort, and `buildWorkMetadata` (per-page canonical + OG, and
+  deliberately **no hreflang** while `/ar/work` doesn't exist). Chrome comes
+  from `WorkHeader` (reduced nav — the homepage `TopBar` is built on anchors +
+  a scrollspy that don't exist here) and the shared `Footer` with `linkBase="/"`
+  so its section anchors resolve back to the homepage.
+- **Per-route OG images**: `app/(en)/work/opengraph-image.tsx` and
+  `app/(en)/work/[slug]/opengraph-image.tsx` render through `app/lib/og.tsx`
+  at build time (`next/og`). The static one needs `dynamic = "force-static"`.
+  Next writes them as **extension-less files**, so `vercel.json` sets their
+  `content-type` — without it a static host serves them as octet-stream and
+  LinkedIn/X refuse the card.
 - **`app/lib/site.tsx`** is the shared shell both root layouts call: fonts,
   `SITE_URL`, `buildMetadata(lang)` (title/description/canonical/hreflang/OG),
   `siteViewport`, the Person + FAQ JSON-LD, the pre-paint `noFlashScript`, and
@@ -80,6 +99,15 @@ data, not in components.**
   if a dictionary is missing a required field.
 - To add a new section: add it in `Portfolio.tsx` with a stable `id`, and add
   the matching `nav` entry (label + `#anchor`) to **both** dictionaries.
+- `nav` entries are normally `#anchor`s. The EN dictionary has one real path
+  (`["Work", "/work/"]`); `TopBar` and `Footer` run non-anchor hrefs through
+  `asset()`, since Next only applies `basePath` to `<Link>`.
+- `CaseStudy.shots` is `Shot[]` (`{src, alt, caption}`), not bare paths — the
+  caption is what makes an Arabic-only screenshot legible to an English
+  reader on the `/work` page. `Product.shots` is still `string[]`;
+  `ShotGallery` accepts either.
+- Anything the `/work` pages render comes from `Dictionary.work`, present in
+  both dictionaries even though only English is routed today.
 - Section order is the **JSX sequence in `Portfolio.tsx`**, not a data array.
   Reordering means moving JSX blocks; ids must stay stable (they are the nav
   anchors and the scrollspy targets).
