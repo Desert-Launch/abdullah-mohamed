@@ -57,38 +57,45 @@ considering a change done.
   from `WorkHeader` (reduced nav — the homepage `TopBar` is built on anchors +
   a scrollspy that don't exist here) and the shared `Footer` with `linkBase="/"`
   so its section anchors resolve back to the homepage.
-- **Social cards** are all generated at build time by `app/lib/og.tsx`
-  (`next/og`), one `opengraph-image.tsx` per route:
-  `app/(en)/` (→ `/`), `app/(ar)/ar/` (→ `/ar/`), `app/(en)/work/`,
-  `app/(en)/work/[slug]/`. `twitter:image` is mirrored from `og:image`.
-  Gotchas, all load-bearing:
-  - The image file **must sit in the same segment as the page**. With no
-    `app/layout.tsx`, the `(en)`/`(ar)` groups *are* the root layouts, so an
-    image at `app/` is built as its own route and attached to nothing — the
-    site shipped for months with no share image because of this.
-  - Routes without params need `dynamic = "force-static"`.
-  - Next writes them as **extension-less files**, so `vercel.json` sets their
-    `content-type`; without it a static host serves them as octet-stream and
-    the scrapers refuse the card. **Adding a new card means adding a rule.**
+- **Social cards.** The locale home pages (`/`, `/ar/`) declare two candidates
+  via `SHARE_IMAGES` in `lib/site.tsx`, both static files under `public/`:
+  `og-card.png` (the designed card — what everyone actually sees) then
+  `og-home.jpg` (a crop of the hero, the standby). og:image is a *candidate
+  list*, not a try-then-fall-back chain: nearly every scraper takes the first,
+  Facebook being the one that moves down when an earlier image fails. Twitter
+  gets only the first — it shows exactly one.
+  The `/work` routes generate theirs per project from `app/lib/og.tsx`
+  (`next/og`), via `opengraph-image.tsx` in `app/(en)/work/` and
+  `app/(en)/work/[slug]/`. The traps, all load-bearing:
+  - **A generated card is an extension-less route**, which `trailingSlash:
+    true` then 308s to a trailing-slash path. A static host serves it as
+    octet-stream, so `vercel.json` forces the content-type with a wildcard
+    rule (`/(.*)opengraph-image-(.*)`) — exact-path rules silently never
+    match. A plain file under `public/` has neither problem, which is why the
+    home cards are one.
+  - A declared `openGraph.images` **only applies if there is no
+    `opengraph-image.*` file in that segment** — the file convention wins.
+  - A generated image file **must sit in the same segment as its page**. With
+    no `app/layout.tsx`, the `(en)`/`(ar)` groups *are* the root layouts, so an
+    image at `app/` is built as its own route and attached to nothing. The site
+    shipped for months with no share image because of this.
   - satori can't use `next/font`, so `app/fonts/*.ttf` are checked in (see the
-    README there). Cards are **Latin-only**: satori reverses Arabic word
-    order, so `/ar` shares the English card and only its og:title/description
-    are Arabic.
+    README there). Generated cards are Latin-only: satori reverses Arabic word
+    order.
   - `meta.social` (short) feeds `og:`/`twitter:description`, not
     `meta.description` — WhatsApp and LinkedIn cut around 150 characters.
-- **`app/lib/site.tsx`** is the shared shell both root layouts call: fonts,
-  `SITE_URL`, `buildMetadata(lang)` (title/description/canonical/hreflang/OG),
-  `siteViewport`, the Person + FAQ JSON-LD, the pre-paint `noFlashScript`, and
-  the `RootHtml` component. Change site-wide `<head>` behaviour here, once.
-- Both pages render **`app/components/Portfolio.tsx`** with a `lang` prop — the
-  orchestrator that composes every section. Start there to change the page.
-- Components live in `app/components/`. `Portfolio` is `"use client"`, so
-  everything it renders is in the client bundle today; `ContactForm`, `CountUp`
-  and `ShotGallery` are the only ones that genuinely need to be.
+  - Keep share images ~1200x630 and under ~300KB; WhatsApp skips heavier ones.
+  - After any change here: `curl -sIL <og:image url> | grep -i content-type`.
+  - **Regenerating `og-card.png`** (do this when the hero copy changes — a
+    static file can't track the dictionary the way a route did):
+    `git show 9649a91:'app/(en)/opengraph-image.tsx' > 'app/(en)/opengraph-image.tsx'`,
+    `npm run build`, `cp out/opengraph-image-* public/images/og-card.png`, then
+    delete the route again — leaving it in place would override `SHARE_IMAGES`
+    and drop the second candidate. `renderSiteOgImage` in `lib/og.tsx` is kept
+    for exactly this.
 - SEO/crawl files: `app/robots.ts`, `app/sitemap.ts` (both locales + hreflang
-  alternates), `public/llms.txt`, and the image routes `opengraph-image.png` /
-  `twitter-image.png` (each with a sibling `.alt.txt`) / `icon.svg` /
-  `apple-icon.png`.
+  alternates; `/work` entries carry no alternates), `public/llms.txt`, and
+  `app/icon.svg` / `app/apple-icon.png`.
 
 ## Content & i18n (important)
 

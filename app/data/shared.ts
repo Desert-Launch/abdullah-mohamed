@@ -121,12 +121,12 @@ export const storeLinks: Record<
   xera: { status: "private", year: "2022" },
 };
 
-/** Stack shown as pills on the social cards. Language-agnostic (these are
- *  product names, not copy) and deliberately short — five is what fits on one
+/** Stack shown as pills on the generated social card. Language-agnostic
+ *  (product names, not copy) and deliberately short — five is what fits on one
  *  row at 1200px without shrinking the type below thumbnail legibility. */
 export const stackTags = ["React", "Node.js", "PostgreSQL", "Flutter", "AWS"];
 
-/** The bare host, printed on the social cards under the name. */
+/** The bare host, printed on the generated social card under the name. */
 export const siteDomain = "abdullahmohamed.dev";
 
 /** Web3Forms access key for the contact form (designed to be public — it only

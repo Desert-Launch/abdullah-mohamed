@@ -38,6 +38,46 @@ export const otherLang: Record<Lang, Lang> = { en: "ar", ar: "en" };
 
 const OG_LOCALE: Record<Lang, string> = { en: "en_US", ar: "ar_EG" };
 
+/**
+ * The cards WhatsApp, LinkedIn and X show for either locale home page, in
+ * preference order.
+ *
+ * og:image is a *candidate list*, not a try-this-then-that chain: nearly every
+ * scraper takes the first one, and Facebook is the notable one that moves down
+ * the list when an earlier image fails to fetch or is too small. So the first
+ * entry is what people will actually see — the designed card — and the hero
+ * crop is the standby.
+ *
+ * Both are plain files under `public/`, not generated `opengraph-image.tsx`
+ * routes, and that is load-bearing twice over:
+ *   1. A generated card is an extension-less route, which `trailingSlash: true`
+ *      308s to a trailing-slash path — a static host serves it as
+ *      octet-stream, and some scrapers won't follow the redirect. A real
+ *      .png/.jpg has neither problem.
+ *   2. The file convention *replaces* anything declared here, so a single
+ *      generated card would make a second candidate impossible.
+ * (The /work cards are still generated — one card per project can't be a
+ * static file — so they still depend on the content-type rule in vercel.json.)
+ *
+ * `og-card.png` is baked from `renderSiteOgImage` in lib/og.tsx; regenerate it
+ * when the hero copy changes (see CLAUDE.md). Both are 1200x630 and ~110-140KB:
+ * WhatsApp routinely skips previews for images much over 300KB.
+ */
+const SHARE_IMAGES = [
+  {
+    url: "/images/og-card.png",
+    width: 1200,
+    height: 630,
+    alt: "Abdullah Mohamed — I build products that ship, and survive production. Senior Software Engineer, Cairo, Egypt.",
+  },
+  {
+    url: "/images/og-home.jpg",
+    width: 1200,
+    height: 630,
+    alt: "The abdullahmohamed.dev hero: I build products that ship, and survive production.",
+  },
+];
+
 export function buildMetadata(lang: Lang): Metadata {
   const t = copy[lang];
   const { title, description } = t.meta;
@@ -82,20 +122,14 @@ export function buildMetadata(lang: Lang): Metadata {
       description: t.meta.social,
       locale: OG_LOCALE[lang],
       alternateLocale: [OG_LOCALE[otherLang[lang]]],
-      // og:image (+ its alt) comes from the file convention — the locale's own
-      // opengraph-image.tsx, generated from this dictionary. File-based
-      // metadata wins over anything set here, so it must not be re-declared.
-      //
-      // It has to sit in the same segment as the page: with no app/layout.tsx,
-      // the (en)/(ar) groups are the root layouts, and an image at app/ is
-      // built as its own route but attached to nothing. That is exactly how
-      // the site shipped for months with no share image at all.
+      images: SHARE_IMAGES,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description: t.meta.social,
-      // twitter:image is mirrored from the opengraph-image above.
+      // Twitter shows exactly one image; no candidate list to fall back through.
+      images: [SHARE_IMAGES[0]],
     },
     robots: {
       index: true,
