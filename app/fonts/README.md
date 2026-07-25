@@ -3,8 +3,9 @@
 TrueType copies of the site's two faces, checked in for **social-card
 rendering only**.
 
-`app/lib/og.tsx` renders the OG images through satori (`next/og`), which runs
-outside the browser and cannot use `next/font`. With no font supplied it falls
+`app/lib/og.tsx` renders the **/work** OG cards through satori (`next/og`),
+which runs outside the browser and cannot use `next/font`. (The home pages use
+a static image, so they don't need these.) With no font supplied it falls
 back to a generic sans — the card would be typeset in a face the site never
 uses, and Arabic would come out as blank boxes.
 

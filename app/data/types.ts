@@ -248,9 +248,6 @@ export interface Dictionary {
      *  WhatsApp and LinkedIn truncate around 150 characters — the SERP-length
      *  description above gets cut mid-sentence in a share preview. */
     social: string;
-    /** Uppercase rule line at the top of the social card: role, city,
-     *  availability. */
-    cardEyebrow: string;
   };
   /** Visually-hidden skip link rendered first inside <body>. */
   skipLink: string;

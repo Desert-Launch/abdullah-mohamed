@@ -9,7 +9,6 @@ export const en: Dictionary = {
       "Abdullah Mohamed is a senior software engineer who builds full-stack web apps, real-time AI features, and mobile products end to end — frontend, backend, and the infrastructure they run on. Available for freelance projects and product roles.",
     social:
       "Full-stack web, real-time AI, and mobile products shipped end to end. 10+ apps live across Egypt, the Gulf, Europe, and the US.",
-    cardEyebrow: "Senior Software Engineer · Cairo, Egypt · Open to freelance",
   },
   skipLink: "Skip to content",
   // Mirrors the section order: commercial content first, then proof. Also

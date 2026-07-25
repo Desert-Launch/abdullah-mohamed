@@ -38,6 +38,32 @@ export const otherLang: Record<Lang, Lang> = { en: "ar", ar: "en" };
 
 const OG_LOCALE: Record<Lang, string> = { en: "en_US", ar: "ar_EG" };
 
+/**
+ * The card WhatsApp, LinkedIn and X show for either locale home page: a crop of
+ * the site's own hero, supplied by Abdullah (source kept in the git-ignored
+ * `image_assets/og/`).
+ *
+ * A plain file under `public/` rather than a generated `opengraph-image.tsx`,
+ * and that is load-bearing. Next writes generated metadata images as
+ * extension-less routes, which `trailingSlash: true` then 308s to a
+ * trailing-slash path — so a static host serves them as octet-stream and some
+ * scrapers never follow the redirect. A real `.jpg` has neither problem.
+ * (The /work cards are still generated: one card per project can't be a
+ * screenshot. They rely on the content-type rule in vercel.json.)
+ *
+ * Declared here, in the metadata object, which only works because there is no
+ * opengraph-image.* file in these segments — the file convention would win.
+ *
+ * Kept at 1200x630 and ~140KB: WhatsApp routinely skips previews for images
+ * much over 300KB.
+ */
+const SHARE_IMAGE = {
+  url: "/images/og-home.jpg",
+  width: 1200,
+  height: 630,
+  alt: "Abdullah Mohamed — I build products that ship, and survive production. Senior Software Engineer, Cairo, Egypt.",
+};
+
 export function buildMetadata(lang: Lang): Metadata {
   const t = copy[lang];
   const { title, description } = t.meta;
@@ -82,20 +108,13 @@ export function buildMetadata(lang: Lang): Metadata {
       description: t.meta.social,
       locale: OG_LOCALE[lang],
       alternateLocale: [OG_LOCALE[otherLang[lang]]],
-      // og:image (+ its alt) comes from the file convention — the locale's own
-      // opengraph-image.tsx, generated from this dictionary. File-based
-      // metadata wins over anything set here, so it must not be re-declared.
-      //
-      // It has to sit in the same segment as the page: with no app/layout.tsx,
-      // the (en)/(ar) groups are the root layouts, and an image at app/ is
-      // built as its own route but attached to nothing. That is exactly how
-      // the site shipped for months with no share image at all.
+      images: [SHARE_IMAGE],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description: t.meta.social,
-      // twitter:image is mirrored from the opengraph-image above.
+      images: [SHARE_IMAGE],
     },
     robots: {
       index: true,
