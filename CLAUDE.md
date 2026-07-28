@@ -121,6 +121,17 @@ considering a change done.
     that fails integrity checks** — the one-liner is in the doc.
   - `AgentTools.tsx` (WebMCP) is intentionally **read-only**: it drafts a
     `mailto:` and never POSTs the contact form. Don't add a sending tool.
+  - `public/.well-known/http-message-signatures-directory` is the Web Bot Auth
+    JWKS — the **outbound** half of the agent surface: it identifies requests
+    *this* domain signs and sends, not requests it receives. Nothing signs
+    anything today, so it is inert on purpose. **The private key is not in this
+    repo and must never be committed.** Rotating means replacing `x` *and*
+    `kid` (the RFC 8037 thumbprint) together.
+  - **DNS-AID lives in DNS, not here.** `scripts/dns-aid.sh apply|verify` owns
+    the `_index._agents` SVCB record on Cloudflare. Only `_index` is published
+    — no `_a2a`, and no agent protocol in `alpn`, because there is no agent
+    endpoint to hand anyone. Don't debug it with `dig SVCB …` on macOS: DiG
+    9.10.6 predates the type and returns the name's A records instead.
   - The audit's OAuth / MCP-server-card / payments / commerce items are
     **declined on purpose**, not forgotten. The doc says why for each: the site
     has no API, no accounts, and nothing machine-purchasable, and publishing

@@ -1,0 +1,13 @@
+{
+  "_comment": "Web Bot Auth key directory (IETF webbotauth WG). This is the SENDING half of the protocol: it lets a receiving site verify an HTTP request that was signed by this domain and carries `Signature-Agent: \"https://www.abdullahmohamed.dev\"`. Nothing on this site crawls anything today, so no signed request has been sent yet — the directory exists so that the day one is, the key is already published and aged. It makes no claim about an endpoint, which is why it is here and the OAuth/MCP discovery documents are not. Only `kty`, `crv` and `x` are read by verifiers; `kid` is the RFC 8037 JWK thumbprint of this key and is what a signature's `keyid` parameter must match. The private half is NOT in this repo.",
+  "keys": [
+    {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "x": "JSXPuEpgIltMJDvf9GGsny647aSeoyLRbKrPOjCfaXc",
+      "kid": "ig9_ACFK6QMxx7bWRTN0ljlRt0Ly9t7UiD_jHX4jXXs",
+      "use": "sig",
+      "alg": "EdDSA"
+    }
+  ]
+}
