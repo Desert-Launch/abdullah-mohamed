@@ -1,0 +1,78 @@
+{
+  "_comment": "RFC 9727 API catalog, serialised as an RFC 9264 JSON linkset. This site is a static portfolio and exposes no HTTP API — what it catalogues is its machine-readable surface: the Markdown twin of every page, the llms.txt summary, and the agent-skills index. Each linkset member carries both the RFC 9264 rel-keyed arrays and a flat `links` array, because consumers in the wild read one or the other.",
+  "linkset": [
+    {
+      "anchor": "https://www.abdullahmohamed.dev/",
+      "service-doc": [
+        {
+          "href": "https://www.abdullahmohamed.dev/llms.txt",
+          "type": "text/plain",
+          "title": "llms.txt — who Abdullah Mohamed is, what he builds, and what it costs"
+        }
+      ],
+      "service-desc": [
+        {
+          "href": "https://www.abdullahmohamed.dev/.well-known/agent-skills/index.json",
+          "type": "application/json",
+          "title": "Agent Skills discovery index"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://www.abdullahmohamed.dev/index.md",
+          "type": "text/markdown",
+          "title": "The full homepage as Markdown"
+        },
+        {
+          "href": "https://www.abdullahmohamed.dev/sitemap.xml",
+          "type": "application/xml",
+          "title": "Sitemap, both locales"
+        }
+      ],
+      "links": [
+        {
+          "rel": "service-doc",
+          "href": "https://www.abdullahmohamed.dev/llms.txt",
+          "type": "text/plain",
+          "title": "llms.txt — who Abdullah Mohamed is, what he builds, and what it costs"
+        },
+        {
+          "rel": "service-desc",
+          "href": "https://www.abdullahmohamed.dev/.well-known/agent-skills/index.json",
+          "type": "application/json",
+          "title": "Agent Skills discovery index"
+        },
+        {
+          "rel": "describedby",
+          "href": "https://www.abdullahmohamed.dev/index.md",
+          "type": "text/markdown",
+          "title": "The full homepage as Markdown"
+        },
+        {
+          "rel": "describedby",
+          "href": "https://www.abdullahmohamed.dev/sitemap.xml",
+          "type": "application/xml",
+          "title": "Sitemap, both locales"
+        }
+      ]
+    },
+    {
+      "anchor": "https://www.abdullahmohamed.dev/work/",
+      "service-doc": [
+        {
+          "href": "https://www.abdullahmohamed.dev/work/index.md",
+          "type": "text/markdown",
+          "title": "Every written case study as Markdown"
+        }
+      ],
+      "links": [
+        {
+          "rel": "service-doc",
+          "href": "https://www.abdullahmohamed.dev/work/index.md",
+          "type": "text/markdown",
+          "title": "Every written case study as Markdown"
+        }
+      ]
+    }
+  ]
+}

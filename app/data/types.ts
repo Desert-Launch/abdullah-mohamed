@@ -188,6 +188,26 @@ export interface Heading {
   body?: string;
 }
 
+/** Labels for the Markdown twin of a page — the body served to clients that
+ *  ask for `Accept: text/markdown` (see `app/lib/markdown.ts` and
+ *  `docs/agent-readiness.md`). None of this is rendered in the HTML UI, but it
+ *  is still display copy read by a human on the other side of an agent, so it
+ *  lives in the dictionaries like everything else. */
+export interface MarkdownCopy {
+  /** Lead note telling the reader what the file is. */
+  note: string;
+  /** Label above a stack list. */
+  stack: string;
+  /** Label above a link list. */
+  links: string;
+  /** Label above a metric list (case-study results). */
+  metrics: string;
+  /** Label above the contact block. */
+  contact: string;
+  /** Label on the line pointing back at the human-readable page. */
+  htmlVersion: string;
+}
+
 export interface HeroCopy {
   eyebrow: string;
   /** Headline lead-in, rendered in default ink. */
@@ -322,4 +342,6 @@ export interface Dictionary {
   plans: Plan[];
   testimonials: Testimonial[];
   contact: ContactCopy;
+  /** Copy for the `Accept: text/markdown` twin of every page in this locale. */
+  markdown: MarkdownCopy;
 }

@@ -7,6 +7,7 @@ import { asset } from "../lib/asset";
 import { localePath, otherLang } from "../lib/site";
 import { useSiteTheme } from "../lib/useSiteTheme";
 import type { Lang, PlanIcon } from "../data/types";
+import { AgentTools } from "./AgentTools";
 import { TopBar } from "./TopBar";
 import { Hero } from "./Hero";
 import { CaseStudies } from "./CaseStudies";
@@ -239,6 +240,9 @@ export function Portfolio({ lang }: { lang: Lang }) {
 
   return (
     <div className="site-shell" data-theme={theme} data-palette={palette} data-lang={lang} dir={t.dir}>
+      {/* Renders nothing. Offers this page's content to an AI agent driving the
+          browser, via WebMCP — see AgentTools.tsx. */}
+      <AgentTools t={t} lang={lang} />
       {/* Living aurora — three blurred orbs drifting at glacial speed over the
           static gradient wash. Pure transform animation on pre-painted layers
           (compositor work, not repaints); static under reduced motion. */}
