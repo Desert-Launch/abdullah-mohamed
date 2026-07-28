@@ -128,10 +128,14 @@ considering a change done.
     repo and must never be committed.** Rotating means replacing `x` *and*
     `kid` (the RFC 8037 thumbprint) together.
   - **DNS-AID lives in DNS, not here.** `scripts/dns-aid.sh apply|verify` owns
-    the `_index._agents` SVCB record on Cloudflare. Only `_index` is published
-    — no `_a2a`, and no agent protocol in `alpn`, because there is no agent
-    endpoint to hand anyone. Don't debug it with `dig SVCB …` on macOS: DiG
-    9.10.6 predates the type and returns the name's A records instead.
+    the `_index._agents` SVCB record on Cloudflare (published; verify with the
+    script, never by editing this repo). Only `_index` is published — no
+    `_a2a`, and no agent protocol in `alpn`, because there is no agent endpoint
+    to hand anyone. Don't debug it with `dig SVCB …` on macOS: DiG 9.10.6
+    predates the type and returns the name's A records instead. The auditor
+    still marks `dnsAid` failed because **DNSSEC is deliberately off** — the
+    registrar can't take Cloudflare's algorithm-13 DS. That is a settled
+    decision, not a TODO; the reasoning is in `docs/agent-readiness.md`.
   - The audit's OAuth / MCP-server-card / payments / commerce items are
     **declined on purpose**, not forgotten. The doc says why for each: the site
     has no API, no accounts, and nothing machine-purchasable, and publishing
