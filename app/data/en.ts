@@ -796,4 +796,12 @@ export const en: Dictionary = {
       directLabel: "Or reach me directly",
     },
   },
+  markdown: {
+    note: "Markdown version of this page, served to clients that ask for `Accept: text/markdown`. Generated from the same content as the HTML.",
+    stack: "Stack",
+    links: "Links",
+    metrics: "Results",
+    contact: "Contact",
+    htmlVersion: "HTML version",
+  },
 };

@@ -6,10 +6,102 @@
       "main": true
     }
   },
+  "redirects": [
+    {
+      "source": "/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/ar",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/ar/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/work",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/work/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/work/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/work/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/work/:slug([a-z0-9-]+)",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/work/:slug/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/work/:slug([a-z0-9-]+)/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/work/:slug/index.md",
+      "permanent": false
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)opengraph-image-(.*)",
       "headers": [{ "key": "content-type", "value": "image/png" }]
+    },
+    {
+      "source": "/(.*).md",
+      "headers": [{ "key": "content-type", "value": "text/markdown; charset=utf-8" }]
+    },
+    {
+      "source": "/(.*)api-catalog(.*)",
+      "headers": [{ "key": "content-type", "value": "application/linkset+json" }]
+    },
+    {
+      "source": "/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </index.md>; rel=\"describedby\"; type=\"text/markdown\", </index.md>; rel=\"alternate\"; type=\"text/markdown\", </ar/>; rel=\"alternate\"; hreflang=\"ar\", </sitemap.xml>; rel=\"index\"; type=\"application/xml\", <https://www.abdullahmohamed.dev/>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/ar/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </ar/index.md>; rel=\"describedby\"; type=\"text/markdown\", </ar/index.md>; rel=\"alternate\"; type=\"text/markdown\", </>; rel=\"alternate\"; hreflang=\"en\", <https://www.abdullahmohamed.dev/ar/>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/work/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </work/index.md>; rel=\"describedby\"; type=\"text/markdown\", </work/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.abdullahmohamed.dev/work/>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/work/:slug([a-z0-9-]+)/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </work/index.md>; rel=\"alternate\"; type=\"text/markdown\""
+        }
+      ]
     }
   ]
 }

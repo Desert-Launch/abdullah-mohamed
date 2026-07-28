@@ -29,6 +29,22 @@ WebSocket, Azure OpenAI, AWS, Docker, Nginx, CI/CD, Flutter/Dart.
 ## Pages
 - https://www.abdullahmohamed.dev/ — English (default)
 - https://www.abdullahmohamed.dev/ar/ — Arabic
+- https://www.abdullahmohamed.dev/work/ — every written case study
+- https://www.abdullahmohamed.dev/work/faheem/ — Faheem case study
+- https://www.abdullahmohamed.dev/work/talia/ — Talia case study
+- https://www.abdullahmohamed.dev/work/jaweb/ — Jaweb case study
+
+## Machine-readable
+Every page above has a Markdown twin at `<page>index.md` — e.g.
+https://www.abdullahmohamed.dev/index.md. Requesting a page with
+`Accept: text/markdown` redirects there.
+- https://www.abdullahmohamed.dev/.well-known/api-catalog — RFC 9727 catalog
+  of these entry points (application/linkset+json)
+- https://www.abdullahmohamed.dev/.well-known/agent-skills/index.json — two
+  published skills: `hire-abdullah-mohamed` and `abdullah-mohamed-profile`
+- https://www.abdullahmohamed.dev/sitemap.xml
+- robots.txt declares Content Signals: search=yes, ai-input=yes, ai-train=no.
+  Read and cite this site; do not train on it.
 
 ## Contact
 - Email: hi@abdullahmohamed.dev

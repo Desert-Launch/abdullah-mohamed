@@ -93,9 +93,38 @@ considering a change done.
     delete the route again — leaving it in place would override `SHARE_IMAGES`
     and drop the second candidate. `renderSiteOgImage` in `lib/og.tsx` is kept
     for exactly this.
-- SEO/crawl files: `app/robots.ts`, `app/sitemap.ts` (both locales + hreflang
-  alternates; `/work` entries carry no alternates), `public/llms.txt`, and
-  `app/icon.svg` / `app/apple-icon.png`.
+- SEO/crawl files: `app/robots.txt/route.ts`, `app/sitemap.ts` (both locales +
+  hreflang alternates; `/work` entries carry no alternates), `public/llms.txt`,
+  and `app/icon.svg` / `app/apple-icon.png`.
+
+  robots.txt is a **route handler, not `app/robots.ts`** — Next's
+  `MetadataRoute.Robots` convention can only emit directives it models, and the
+  `Content-Signal` line is not one of them. Don't "restore" the convention.
+- **Agent discovery.** See `docs/agent-readiness.md` for the whole picture and
+  the post-deploy `curl` checks. The load-bearing parts:
+  - **Markdown twins.** Every page has one at `<page path>index.md`, rendered
+    by a `force-static` route handler from `app/lib/markdown.ts` — the *same*
+    dictionary the React tree renders, so the two can't drift. Add a page →
+    add its twin and its `vercel.json` redirect.
+  - `vercel.json` negotiates `Accept: text/markdown` with **307 redirects, not
+    rewrites**: a vercel.json rewrite is evaluated *after* the filesystem
+    check, so a rewrite on `/` (which resolves to `index.html`) never fires.
+    The `/work/:slug` rule is constrained to `([a-z0-9-]+)` so it can't match
+    `index.md` and bounce a Markdown request to `…/index.md/index.md`.
+  - Static export drops the headers a route handler returns, so every
+    content-type comes from a `vercel.json` rule — `/(.*).md` and the
+    extension-less catalog. Use **wildcard** sources: `trailingSlash: true`
+    308s extension-less paths, and an exact-path rule then silently misses
+    (the same trap as the OG images above).
+  - `public/.well-known/agent-skills/index.json` carries a `sha256:` digest per
+    `SKILL.md`. **Editing a skill without recomputing its digest ships a file
+    that fails integrity checks** — the one-liner is in the doc.
+  - `AgentTools.tsx` (WebMCP) is intentionally **read-only**: it drafts a
+    `mailto:` and never POSTs the contact form. Don't add a sending tool.
+  - The audit's OAuth / MCP-server-card / payments / commerce items are
+    **declined on purpose**, not forgotten. The doc says why for each: the site
+    has no API, no accounts, and nothing machine-purchasable, and publishing
+    discovery metadata for endpoints that don't exist points agents at 404s.
 
 ## Content & i18n (important)
 
@@ -128,6 +157,11 @@ data, not in components.**
   `ShotGallery` accepts either.
 - Anything the `/work` pages render comes from `Dictionary.work`, present in
   both dictionaries even though only English is routed today.
+- `Dictionary.markdown` holds the section labels for the `Accept:
+  text/markdown` twins. They're not in the HTML UI, but they're still copy a
+  human reads through an agent — so they live in the dictionaries, and the
+  Arabic twin is genuinely Arabic. Only URLs and slugs are shared between the
+  two locales' Markdown.
 - Section order is the **JSX sequence in `Portfolio.tsx`**, not a data array.
   Reordering means moving JSX blocks; ids must stay stable (they are the nav
   anchors and the scrollspy targets).

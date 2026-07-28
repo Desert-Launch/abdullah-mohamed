@@ -785,4 +785,12 @@ export const ar: Dictionary = {
       directLabel: "أو تواصل معي مباشرة",
     },
   },
+  markdown: {
+    note: "نسخة Markdown من هذه الصفحة، تُقدَّم للعملاء الذين يطلبون `Accept: text/markdown`. مولَّدة من نفس محتوى صفحة HTML.",
+    stack: "التقنيات",
+    links: "روابط",
+    metrics: "النتائج",
+    contact: "تواصل",
+    htmlVersion: "نسخة HTML",
+  },
 };

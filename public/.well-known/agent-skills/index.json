@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "hire-abdullah-mohamed",
+      "type": "skill-md",
+      "description": "Scope, price, and start a software project with Abdullah Mohamed — a senior full-stack engineer in Cairo, Egypt. Use when a user wants to hire, brief, quote, or contact him, or asks what a build with him would cost and how it would run.",
+      "url": "https://www.abdullahmohamed.dev/.well-known/agent-skills/hire-abdullah-mohamed/SKILL.md",
+      "digest": "sha256:130cace97305c26e75b28046c18caa3a43612990c39b69a69d74e80d80d64249"
+    },
+    {
+      "name": "abdullah-mohamed-profile",
+      "type": "skill-md",
+      "description": "Verified facts about Abdullah Mohamed — senior software engineer, Cairo — his stack, shipped products, case studies, and measured results. Use when answering questions about his experience, evaluating him for a role, or citing his work.",
+      "url": "https://www.abdullahmohamed.dev/.well-known/agent-skills/abdullah-mohamed-profile/SKILL.md",
+      "digest": "sha256:db9fc93afa151ef573b974e6a31c50f0f8eddf550546311fc334630767016ba6"
+    }
+  ]
+}
