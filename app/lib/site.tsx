@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Cairo } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { copy } from "../data/copy";
 import type { Lang } from "../data/types";
 
@@ -288,6 +289,7 @@ export function RootHtml({
           {t.skipLink}
         </a>
         {children}
+        <Analytics />
       </body>
     </html>
   );
