@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { copy } from "../data/copy";
 import { shared, bookingHref, profilePhoto } from "../data/shared";
 import { asset } from "../lib/asset";
-import { localePath, otherLang } from "../lib/site";
 import { useSiteTheme } from "../lib/useSiteTheme";
 import type { Lang, PlanIcon } from "../data/types";
 import { AgentTools } from "./AgentTools";
@@ -260,7 +259,6 @@ export function Portfolio({ lang }: { lang: Lang }) {
         menuOpen={menuOpen}
         activeSection={activeSection}
         onToggleTheme={() => setTheme((value) => (value === "dark" ? "light" : "dark"))}
-        langHref={asset(localePath[otherLang[lang]])}
         onSelectPalette={setPalette}
         onToggleMenu={() => setMenuOpen((value) => !value)}
         onNavClick={() => setMenuOpen(false)}

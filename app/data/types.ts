@@ -282,6 +282,14 @@ export interface Dictionary {
   themeToggle: string;
   darkToggle: string;
   langToggle: string;
+  /** The header's language menu. `label` names the control; `options` are the
+   *  locale names written *in their own language* (autonyms) — a visitor
+   *  scanning for Arabic looks for "العربية", not for "Arabic", so these two
+   *  strings are deliberately identical in both dictionaries. */
+  language: {
+    label: string;
+    options: Record<Lang, string>;
+  };
   palette: {
     label: string;
     options: Record<Palette, string>;

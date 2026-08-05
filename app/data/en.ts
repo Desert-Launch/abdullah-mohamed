@@ -31,6 +31,13 @@ export const en: Dictionary = {
   themeToggle: "Light",
   darkToggle: "Dark",
   langToggle: "عربي",
+  language: {
+    label: "Language",
+    options: {
+      en: "English",
+      ar: "العربية",
+    },
+  },
   palette: {
     label: "Color palette",
     options: {

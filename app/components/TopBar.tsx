@@ -1,5 +1,6 @@
 import type { Dictionary, Lang, Palette, Theme } from "../data/types";
 import { asset } from "../lib/asset";
+import { LanguageMenu } from "./LanguageMenu";
 
 const PALETTES: Palette[] = ["current", "terracotta", "teal", "gold"];
 
@@ -11,9 +12,6 @@ interface TopBarProps {
   menuOpen: boolean;
   activeSection: string;
   onToggleTheme: () => void;
-  /** URL of the other locale. A real link, so the language switch is
-   *  crawlable and shareable rather than a client-side state flip. */
-  langHref: string;
   onSelectPalette: (palette: Palette) => void;
   onToggleMenu: () => void;
   onNavClick: () => void;
@@ -27,7 +25,6 @@ export function TopBar({
   menuOpen,
   activeSection,
   onToggleTheme,
-  langHref,
   onSelectPalette,
   onToggleMenu,
   onNavClick,
@@ -66,15 +63,9 @@ export function TopBar({
         >
           {theme === "dark" ? t.themeToggle : t.darkToggle}
         </button>
-        <a
-          className="switch-button"
-          href={langHref}
-          hrefLang={lang === "en" ? "ar" : "en"}
-          lang={lang === "en" ? "ar" : "en"}
-          aria-label={lang === "en" ? "التبديل إلى العربية" : "Switch to English"}
-        >
-          {t.langToggle}
-        </a>
+        {/* Both locale URLs live in the menu, so the header no longer needs a
+            langHref prop threaded down from Portfolio. */}
+        <LanguageMenu t={t} lang={lang} />
       </div>
 
       <button

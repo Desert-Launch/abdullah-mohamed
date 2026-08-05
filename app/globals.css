@@ -560,6 +560,127 @@ img {
   transform: translateY(0) scale(0.96);
 }
 
+/* Language menu — a menu-button dropdown whose items are real links to each
+   locale's URL (see LanguageMenu.tsx). The panel is positioned against the
+   trigger and anchored with logical inset so it hangs from the same edge in
+   both directions. */
+.lang-menu {
+  position: relative;
+  display: inline-flex;
+}
+
+.lang-menu-trigger {
+  gap: 6px;
+}
+
+/* The trigger doesn't rise on hover like the theme toggle: it is the anchor the
+   panel is measured from, and a 1px lift shows as a seam under an open menu. */
+.lang-menu-trigger:hover {
+  transform: none;
+}
+
+.lang-menu-trigger:active {
+  transform: scale(0.96);
+}
+
+.lang-menu-globe {
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+}
+
+.lang-menu-trigger:hover .lang-menu-globe,
+.lang-menu.is-open .lang-menu-globe {
+  color: var(--gold);
+}
+
+.lang-menu-chevron {
+  width: 13px;
+  height: 13px;
+  color: var(--muted);
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lang-menu.is-open .lang-menu-chevron {
+  transform: rotate(180deg);
+}
+
+.lang-menu-list {
+  position: absolute;
+  top: calc(100% + 8px);
+  inset-inline-end: 0;
+  z-index: 3;
+  display: grid;
+  gap: 2px;
+  min-width: 168px;
+  padding: 6px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: var(--glass-strong);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  /* Same trick as the mobile nav: visibility:hidden keeps the closed menu's
+     links out of the tab order, delayed so the close animation still plays. */
+  visibility: hidden;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease,
+    visibility 0s linear 160ms;
+}
+
+.lang-menu.is-open .lang-menu-list {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  visibility: visible;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease,
+    visibility 0s;
+}
+
+.lang-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: calc(var(--radius) - 4px);
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.lang-menu-item:hover,
+.lang-menu-item:focus-visible {
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+
+.lang-menu-item.is-current {
+  background: var(--gold-soft);
+  color: var(--ink);
+}
+
+/* The check is the only marker of the active locale, so it holds its 16px slot
+   on every row — otherwise the labels shift when the current language changes. */
+.lang-menu-check {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--gold);
+  opacity: 0;
+}
+
+.lang-menu-item.is-current .lang-menu-check {
+  opacity: 1;
+}
+
 /* Palette selector — a segmented control of preview swatches. The swatch fill
    colors are fixed palette identities (they must read the same regardless of
    the active palette), defined as tokens so no hex lives in the component. */
@@ -3380,6 +3501,13 @@ span.case-avatar {
   }
 
   .brand small {
+    display: none;
+  }
+
+  /* Same width squeeze: the language trigger keeps its globe and chevron (and
+     its aria-label, which already spells out the current language), but drops
+     the autonym so the header still fits on a 375px screen. */
+  .lang-menu-current {
     display: none;
   }
 

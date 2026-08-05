@@ -28,6 +28,13 @@ export const ar: Dictionary = {
   themeToggle: "فاتح",
   darkToggle: "داكن",
   langToggle: "EN",
+  language: {
+    label: "اللغة",
+    options: {
+      en: "English",
+      ar: "العربية",
+    },
+  },
   palette: {
     label: "لوحة الألوان",
     options: {

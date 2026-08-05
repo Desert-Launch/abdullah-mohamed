@@ -35,7 +35,8 @@ export const SITE_URL = "https://www.abdullahmohamed.dev";
  */
 export const localePath: Record<Lang, string> = { en: "/", ar: "/ar/" };
 
-/** The other locale — used for the language switch link. */
+/** The other locale — used for og:alternateLocale. (The header's language menu
+ *  lists every locale by name, so it reads `localePath` directly.) */
 export const otherLang: Record<Lang, Lang> = { en: "ar", ar: "en" };
 
 const OG_LOCALE: Record<Lang, string> = { en: "en_US", ar: "ar_EG" };

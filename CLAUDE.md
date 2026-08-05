@@ -185,8 +185,11 @@ data, not in components.**
 
 - **Language is the URL, not state.** `lang` is a prop passed from the route's
   page; `<html lang>`/`dir` are rendered on the server per locale. The language
-  switch in `TopBar` is an `<a href>` to the other locale (`localePath` in
-  `lib/site.tsx`), not a state toggle. Do **not** reintroduce a `portfolio-lang`
+  switch in `TopBar` is `LanguageMenu` — a menu-button dropdown listing every
+  locale by its own name, whose items are plain `<a href>`s built from
+  `localePath` (`lib/site.tsx`), not a state toggle. Only open/closed is client
+  state; picking a language must stay a navigation, so keep the items real
+  links (`hrefLang` + `aria-current`). Do **not** reintroduce a `portfolio-lang`
   localStorage key or let a stored preference rewrite `<html lang>` — that would
   put the served markup out of sync with the URL a crawler indexed.
 - `Portfolio.tsx` owns `theme` (`dark`|`light`) and `palette` state. Effects
