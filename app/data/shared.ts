@@ -99,12 +99,11 @@ export const storeLinks: Record<
     appStore: "https://apps.apple.com/us/app/btc-e-shop/id6757194529",
     play: "https://play.google.com/store/apps/details?id=com.bulliontradingcenter.btc.eshop",
   },
-  // Google Play build is still under review — the Play button appears when
-  // the listing goes live and the URL lands here.
   qfight: {
     status: "live",
     year: "2026",
     appStore: "https://apps.apple.com/us/app/q-fight-gym/id6759147399",
+    play: "https://play.google.com/store/apps/details?id=com.qfightgym.app",
   },
   almuslim: {
     status: "live",
