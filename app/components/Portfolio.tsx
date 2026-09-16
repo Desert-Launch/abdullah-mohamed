@@ -5,6 +5,7 @@ import { copy } from "../data/copy";
 import { shared, bookingHref, profilePhoto } from "../data/shared";
 import { asset } from "../lib/asset";
 import { useSiteTheme } from "../lib/useSiteTheme";
+import { servicePath, servicesIndexPath } from "../lib/services";
 import type { Lang, PlanIcon } from "../data/types";
 import { AgentTools } from "./AgentTools";
 import { TopBar } from "./TopBar";
@@ -13,7 +14,6 @@ import { CaseStudies } from "./CaseStudies";
 import { ExperienceTimeline } from "./ExperienceTimeline";
 import { SelectedWork } from "./SelectedWork";
 import { ContactForm } from "./ContactForm";
-import { CountUp } from "./CountUp";
 import { Footer } from "./Footer";
 
 /** Header glyph for each plan tier, keyed by `Plan.icon`. */
@@ -85,9 +85,9 @@ export function Portfolio({ lang }: { lang: Lang }) {
   const [menuOpen, setMenuOpen] = useState(false);
   // Language comes from the route, not from state — each locale is its own URL
   // with its own server-rendered HTML, so there is nothing to toggle client-side.
-  // Theme and palette stay client state, shared with the /work pages' header via
+  // Theme stays client state, shared with the /work pages' header via
   // useSiteTheme so the choice survives navigating off the homepage.
-  const { theme, setTheme, palette, setPalette } = useSiteTheme();
+  const { theme, setTheme } = useSiteTheme();
   const [activeSection, setActiveSection] = useState("");
   const progressRef = useRef<HTMLDivElement>(null);
   const backToTopRef = useRef<HTMLAnchorElement>(null);
@@ -95,6 +95,9 @@ export function Portfolio({ lang }: { lang: Lang }) {
   // Every quote in the dictionaries is a real LinkedIn recommendation. The
   // section still hides itself if the list is ever emptied.
   const testimonials = t.testimonials;
+  // The contact lanes lead with one channel each; both come from shared data.
+  const linkedin = shared.socials.find((social) => social.label === "LinkedIn");
+  const whatsapp = shared.socials.find((social) => social.label === "WhatsApp");
 
   // Scroll reveal: fade + rise each [data-reveal] block in as it enters view.
   // Reveal once, then stop observing. Falls back to showing everything if the
@@ -238,7 +241,7 @@ export function Portfolio({ lang }: { lang: Lang }) {
   }, [t.nav]);
 
   return (
-    <div className="site-shell" data-theme={theme} data-palette={palette} data-lang={lang} dir={t.dir}>
+    <div className="site-shell" data-theme={theme} data-lang={lang} dir={t.dir}>
       {/* Renders nothing. Offers this page's content to an AI agent driving the
           browser, via WebMCP — see AgentTools.tsx. */}
       <AgentTools t={t} lang={lang} />
@@ -255,28 +258,16 @@ export function Portfolio({ lang }: { lang: Lang }) {
         t={t}
         lang={lang}
         theme={theme}
-        palette={palette}
         menuOpen={menuOpen}
         activeSection={activeSection}
         onToggleTheme={() => setTheme((value) => (value === "dark" ? "light" : "dark"))}
-        onSelectPalette={setPalette}
         onToggleMenu={() => setMenuOpen((value) => !value)}
         onNavClick={() => setMenuOpen(false)}
       />
 
       <main id="home">
-        <Hero t={t} socials={shared.socials} />
-
-        <section className="proof-grid" aria-label="Proof points">
-          {t.proof.map(([value, label]) => (
-            <article key={label} data-reveal>
-              <strong>
-                <CountUp value={value} />
-              </strong>
-              <span>{label}</span>
-            </article>
-          ))}
-        </section>
+        {/* The proof stats are part of the hero now — see Hero.tsx. */}
+        <Hero t={t} lang={lang} socials={shared.socials} />
 
         <section className="logo-section" aria-label="Brands and products" data-reveal>
           <div className="logo-section-heading">
@@ -295,7 +286,7 @@ export function Portfolio({ lang }: { lang: Lang }) {
             <div className="company-logo-grid">
               {shared.companies.map((item) => (
                 <article className="brand-card company-brand-card" key={item.name}>
-                  <img src={asset(item.src)} alt="" loading="lazy" />
+                  <img src={asset(item.src)} alt="" width="50" height="50" loading="lazy" />
                   <strong>{item.name}</strong>
                 </article>
               ))}
@@ -321,7 +312,7 @@ export function Portfolio({ lang }: { lang: Lang }) {
                     {shared.products.map((item) => (
                       <article className="brand-card product-brand-card" key={item.name}>
                         {item.src ? (
-                          <img src={asset(item.src)} alt="" loading="lazy" />
+                          <img src={asset(item.src)} alt="" width="50" height="50" loading="lazy" />
                         ) : (
                           <span className="brand-fallback" aria-hidden="true">{item.name.charAt(0)}</span>
                         )}
@@ -335,10 +326,13 @@ export function Portfolio({ lang }: { lang: Lang }) {
           </div>
         </section>
 
-        {/* Commercial content first: a cold visitor sees what I build and what
-            it costs before the credential history. Case studies then justify the
-            price, testimonials sit beside that proof, and Experience follows as
-            the appendix it is. Section ids are unchanged — only order moved. */}
+        <CaseStudies t={t} lang={lang} />
+
+        {/* Proof before price. A recruiter reaches the case studies on the
+            second screen without scrolling past a pricing table they don't care
+            about; a founder still reaches pricing on the third. What I build and
+            what it costs then reads as the answer to the work just shown.
+            Section ids are unchanged — only the order moved. */}
         <section id="services" className="section split-section">
           <div className="section-heading sticky-heading" data-reveal>
             <p className="eyebrow">{t.servicesHeading.eyebrow}</p>
@@ -360,10 +354,17 @@ export function Portfolio({ lang }: { lang: Lang }) {
         </section>
 
         <section id="plans" className="section">
-          <div className="section-heading" data-reveal>
-            <p className="eyebrow">{t.plansHeading.eyebrow}</p>
-            <h2>{t.plansHeading.title}</h2>
-            {t.plansHeading.body ? <p>{t.plansHeading.body}</p> : null}
+          <div className="section-heading section-heading--linked" data-reveal>
+            <div>
+              <p className="eyebrow">{t.plansHeading.eyebrow}</p>
+              <h2>{t.plansHeading.title}</h2>
+              {t.plansHeading.body ? <p>{t.plansHeading.body}</p> : null}
+            </div>
+            {/* Into this locale's /services index. */}
+            <a className="section-link" href={asset(servicesIndexPath(lang))}>
+              {t.servicePages.viewAll}
+              <span className="glyph-dir" aria-hidden="true">→</span>
+            </a>
           </div>
           <div className="plans-grid">
             {t.plans.map((plan) => (
@@ -383,9 +384,15 @@ export function Portfolio({ lang }: { lang: Lang }) {
                 <p className="plan-lead">{plan.body}</p>
                 <p className="plan-price">{plan.price}</p>
                 <p className="plan-price-note">{plan.priceNote}</p>
+                {/* Straight to the booking link, not #contact: the card's own
+                    label says "book a call", and bouncing to a form lower down
+                    the page lost the intent. */}
                 <a
                   className={`button ${plan.featured ? "primary" : "ghost"} plan-cta`}
-                  href="#contact"
+                  href={bookingHref}
+                  data-track="book_call_click"
+                  data-track-source="plan-card"
+                  data-track-slug={plan.slug}
                 >
                   {plan.cta}
                 </a>
@@ -400,12 +407,22 @@ export function Portfolio({ lang }: { lang: Lang }) {
                     </li>
                   ))}
                 </ul>
+                {/* Into the plan's own landing page — the crawlable long form
+                    of this card. The plan name is in the accessible name so
+                    four identical links are distinguishable out of context. */}
+                <a className="plan-more" href={asset(servicePath(plan.slug, lang))}>
+                  {t.servicePages.learnMore}
+                  <span className="glyph-dir" aria-hidden="true">→</span>
+                  <span className="sr-only"> — {plan.name}</span>
+                </a>
               </article>
             ))}
           </div>
         </section>
 
-        <CaseStudies t={t} lang={lang} />
+        <ExperienceTimeline t={t} />
+
+        <SelectedWork t={t} lang={lang} />
 
         {testimonials.length > 0 ? (
           <section id="testimonials" className="section">
@@ -493,10 +510,6 @@ export function Portfolio({ lang }: { lang: Lang }) {
           </ol>
         </section>
 
-        <ExperienceTimeline t={t} />
-
-        <SelectedWork t={t} lang={lang} />
-
         <section id="about" className="section about-section">
           <div className="section-heading" data-reveal>
             <p className="eyebrow">{t.about.eyebrow}</p>
@@ -515,6 +528,19 @@ export function Portfolio({ lang }: { lang: Lang }) {
               {t.about.paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
+              {/* The quotable summary: a real <dl>, so a screen reader and a
+                  crawler both get label→value pairs rather than a wall of
+                  spans. This is the block assistants lift when asked who he
+                  is, so every value is one line and states a fact found
+                  elsewhere on the page. */}
+              <dl className="about-facts" aria-label={t.about.factsLabel}>
+                {t.about.facts.map(([label, value]) => (
+                  <div className="about-fact" key={label}>
+                    <dt>{label}</dt>
+                    <dd>{value}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           </div>
         </section>
@@ -541,22 +567,98 @@ export function Portfolio({ lang }: { lang: Lang }) {
         </section>
 
         <section id="contact" className="contact-section" data-reveal>
-          <div>
+          <div className="contact-intro">
             <p className="eyebrow">{t.contact.eyebrow}</p>
             <h2>{t.contact.title}</h2>
             <p>{t.contact.body}</p>
-            <a className="button primary contact-book" href={bookingHref} data-magnetic>
-              {t.contact.book}
-            </a>
+
+            {/* Two lanes, so each audience sees its own next step. The buttons
+                are built from data the site already holds — the CV path, the
+                booking link, shared.socials — so no label is duplicated in the
+                dictionaries. */}
+            <div className="contact-lanes">
+              <article className="contact-lane">
+                <h3>{t.contact.lanes.hiring.title}</h3>
+                <p>{t.contact.lanes.hiring.body}</p>
+                <div className="contact-lane-actions">
+                  <a
+                    className="button primary"
+                    href={asset("/Abdullah_Mohamed_CV.pdf")}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-track="cv_download"
+                    data-track-source="contact"
+                  >
+                    {t.hero.cv}
+                    <span className="button-icon button-icon--down" aria-hidden="true">
+                      ↓
+                    </span>
+                  </a>
+                  {linkedin ? (
+                    <a
+                      className="button ghost"
+                      href={linkedin.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      data-track="linkedin_click"
+                      data-track-source="contact"
+                    >
+                      {linkedin.label}
+                      <span className="button-icon glyph-dir" aria-hidden="true">
+                        ↗
+                      </span>
+                    </a>
+                  ) : null}
+                </div>
+              </article>
+
+              <article className="contact-lane">
+                <h3>{t.contact.lanes.project.title}</h3>
+                <p>{t.contact.lanes.project.body}</p>
+                <div className="contact-lane-actions">
+                  <a
+                    className="button primary"
+                    href={bookingHref}
+                    data-magnetic
+                    data-track="book_call_click"
+                    data-track-source="contact"
+                  >
+                    {t.contact.book}
+                    <span className="button-icon button-icon--go" aria-hidden="true">
+                      →
+                    </span>
+                  </a>
+                  {whatsapp ? (
+                    <a
+                      className="button ghost"
+                      href={whatsapp.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      data-track="whatsapp_click"
+                      data-track-source="contact"
+                    >
+                      {whatsapp.label}
+                      <span className="button-icon glyph-dir" aria-hidden="true">
+                        ↗
+                      </span>
+                    </a>
+                  ) : null}
+                </div>
+              </article>
+            </div>
           </div>
 
           <ContactForm form={t.contact.form} socials={shared.socials} />
         </section>
-      </main>
 
-      <a className="back-to-top" href="#home" ref={backToTopRef} aria-label={t.backToTop}>
-        <span aria-hidden="true">↑</span>
-      </a>
+        {/* Inside <main> deliberately: it is position:fixed, so DOM order
+            doesn't affect where it renders, and a control outside every
+            landmark is content a screen-reader user can only reach by
+            leaving the landmark structure (axe: region). */}
+        <a className="back-to-top" href="#home" ref={backToTopRef} aria-label={t.backToTop}>
+          <span aria-hidden="true">↑</span>
+        </a>
+      </main>
 
       <Footer t={t} lang={lang} socials={shared.socials} />
     </div>

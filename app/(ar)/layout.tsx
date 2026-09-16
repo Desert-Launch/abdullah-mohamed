@@ -1,4 +1,6 @@
 import "../globals.css";
+import { JsonLd } from "../components/JsonLd";
+import { siteGraph } from "../lib/jsonld";
 import { RootHtml, buildMetadata, siteViewport } from "../lib/site";
 
 // Arabic root layout, serving "/ar". Sibling root layout to (en) — see the
@@ -7,5 +9,11 @@ export const metadata = buildMetadata("ar");
 export const viewport = siteViewport;
 
 export default function ArLayout({ children }: { children: React.ReactNode }) {
-  return <RootHtml lang="ar">{children}</RootHtml>;
+  return (
+    <RootHtml lang="ar">
+      {/* The same entities as the English layout — one Person, not two. */}
+      <JsonLd data={siteGraph()} />
+      {children}
+    </RootHtml>
+  );
 }

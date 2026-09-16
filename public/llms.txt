@@ -1,15 +1,28 @@
 # Abdullah Mohamed
 
-> Senior software engineer in Cairo, Egypt (GMT+2). Builds full-stack web apps,
-> real-time AI features, and mobile products end to end — frontend, backend,
-> and the infrastructure they run on. Available for freelance and contract work
-> with US, EU, and Gulf teams. Works in English and Arabic.
+> Senior software engineer in Cairo, Egypt (GMT+2). Builds full-stack web apps
+> (React, Next.js, Node.js, PostgreSQL), real-time AI features (streaming chat,
+> voice STT/TTS over WebSocket), and Flutter mobile apps end to end — frontend,
+> backend, and the infrastructure they run on. Shipping production software
+> since 2022 at four companies; 10+ apps in the App Store and Google Play.
+> B.Sc. Computer Science & AI, Helwan University (2023). Available for freelance and
+> contract work with US, EU, and Gulf teams, and open to senior product roles
+> (remote first). Works in English and Arabic; builds bilingual, RTL-ready
+> products.
 
-## Services and starting prices (USD, negotiable by scope)
+## Services and starting prices (USD, negotiable by scope; fixed price per project, not hourly)
 - SaaS / full multi-tenant system — from $6,000
+  https://www.abdullahmohamed.dev/services/saas-development/
 - Web app or internal tool — from $3,500
+  https://www.abdullahmohamed.dev/services/web-app-development/
 - Real-time AI feature (streaming chat, STT/TTS) — from $3,000
-- Mobile app, iOS + Android from one codebase — from $5,000
+  https://www.abdullahmohamed.dev/services/ai-integration/
+- Flutter mobile app, iOS + Android from one codebase — from $5,000
+  https://www.abdullahmohamed.dev/services/flutter-app-development/
+
+Every project starts with a free call and a written proposal (price, timeline,
+payment phases) that the client approves before any work begins. The client
+owns the code.
 
 ## Stack
 React, Next.js, SvelteKit, TypeScript, Node.js, Express, PostgreSQL, Redis,
@@ -17,7 +30,7 @@ WebSocket, Azure OpenAI, AWS, Docker, Nginx, CI/CD, Flutter/Dart.
 
 ## Selected work
 - Faheem — Arabic AI tutoring platform for Egypt's Ministry of Education.
-  30,000+ K-12 students, 8,500+ MAU. Real-time voice-to-voice tutoring over
+  200,000+ K-12 students, 8,500+ MAU. Real-time voice-to-voice tutoring over
   WebSocket with Azure OpenAI streaming.
 - Talia — multi-tenant national LMS + SIS (25 modules, 534 requirements),
   SvelteKit 5 + Go/REST, RBAC across a Ministry→School tree.
@@ -28,16 +41,24 @@ WebSocket, Azure OpenAI, AWS, Docker, Nginx, CI/CD, Flutter/Dart.
 
 ## Pages
 - https://www.abdullahmohamed.dev/ — English (default)
-- https://www.abdullahmohamed.dev/ar/ — Arabic
+- https://www.abdullahmohamed.dev/services/ — what he builds, with prices
 - https://www.abdullahmohamed.dev/work/ — every written case study
 - https://www.abdullahmohamed.dev/work/faheem/ — Faheem case study
 - https://www.abdullahmohamed.dev/work/talia/ — Talia case study
 - https://www.abdullahmohamed.dev/work/jaweb/ — Jaweb case study
+- https://www.abdullahmohamed.dev/cv/ — full CV: summary, every role with
+  dates, technical skills graded core/strong/used, education, languages
+
+Every page above has an Arabic version at the same path under `/ar/`:
+https://www.abdullahmohamed.dev/ar/ (home), /ar/services/, /ar/services/<slug>/,
+/ar/work/, /ar/work/<slug>/, /ar/cv/ — same slugs, Arabic copy.
 
 ## Machine-readable
-Every page above has a Markdown twin at `<page>index.md` — e.g.
-https://www.abdullahmohamed.dev/index.md. Requesting a page with
-`Accept: text/markdown` redirects there.
+- https://www.abdullahmohamed.dev/llms-full.txt — every English page above as
+  one Markdown document, regenerated on each build
+- Every page above has a Markdown twin at `<page>index.md` — e.g.
+  https://www.abdullahmohamed.dev/index.md. Requesting a page with
+  `Accept: text/markdown` redirects there.
 - https://www.abdullahmohamed.dev/.well-known/api-catalog — RFC 9727 catalog
   of these entry points (application/linkset+json)
 - https://www.abdullahmohamed.dev/.well-known/agent-skills/index.json — two
@@ -51,3 +72,4 @@ https://www.abdullahmohamed.dev/index.md. Requesting a page with
 - Book a call: https://calendly.com/abdullah-mohamed102001/book-a-call
 - LinkedIn: https://www.linkedin.com/in/abdullah-mohamed-3010
 - GitHub: https://github.com/Abdullah3010
+- CV (PDF): https://www.abdullahmohamed.dev/Abdullah_Mohamed_CV.pdf

@@ -2,15 +2,18 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans, Cairo } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { TrackClicks } from "../components/TrackClicks";
 import { copy } from "../data/copy";
 import type { Lang } from "../data/types";
 
 // DM Sans — a geometric, low-contrast open sans in the Google Sans family.
 // (Google Sans / Product Sans itself is proprietary and can't be bundled. To use
 // real licensed files, swap this for next/font/local pointing at app/fonts/.)
+// Weights match what globals.css actually sets (400/500/600/700); each extra
+// weight is another woff2 on the critical path.
 export const sans = DM_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
   display: "swap",
 });
@@ -66,18 +69,18 @@ const OG_LOCALE: Record<Lang, string> = { en: "en_US", ar: "ar_EG" };
  * when the hero copy changes (see CLAUDE.md). Both are 1200x630 and ~110-140KB:
  * WhatsApp routinely skips previews for images much over 300KB.
  */
-const SHARE_IMAGES = [
+export const SHARE_IMAGES = [
   {
     url: "/images/og-card.png",
     width: 1200,
     height: 630,
-    alt: "Abdullah Mohamed — I build products that ship, and survive production. Senior Software Engineer, Cairo, Egypt.",
+    alt: "Abdullah Mohamed — Full-stack, real-time AI, and Flutter: products that ship and hold up in production. Senior Software Engineer, Cairo, Egypt.",
   },
   {
     url: "/images/og-home.jpg",
     width: 1200,
     height: 630,
-    alt: "The abdullahmohamed.dev hero: I build products that ship, and survive production.",
+    alt: "The abdullahmohamed.dev hero: full-stack, real-time AI, and Flutter — products that ship and hold up in production.",
   },
 ];
 
@@ -91,18 +94,27 @@ export function buildMetadata(lang: Lang): Metadata {
     applicationName: "Abdullah Mohamed Portfolio",
     authors: [{ name: "Abdullah Mohamed", url: SITE_URL }],
     creator: "Abdullah Mohamed",
+    // Google ignores this tag; Bing (and so ChatGPT search, which is built on
+    // Bing's index) still reads it lightly. Phrased the way people search —
+    // role + stack + place + intent — not as a bag of nouns.
     keywords: [
       "Abdullah Mohamed",
-      "Full-stack engineer",
-      "Senior Software Engineer",
-      "React developer",
-      "Node.js developer",
+      "Abdullah Mohamed software engineer",
+      "senior software engineer Cairo",
+      "senior software engineer Egypt remote",
+      "full-stack developer Egypt",
+      "freelance full-stack developer",
+      "hire React Node.js developer",
+      "Flutter developer Egypt",
+      "freelance Flutter developer",
+      "hire Flutter developer",
+      "real-time AI integration developer",
+      "AI chatbot voice integration",
+      "SaaS MVP developer",
+      "multi-tenant SaaS development",
+      "Arabic RTL app developer",
       "PostgreSQL",
-      "AI product engineer",
-      "Real-time AI",
-      "Flutter developer",
-      "Freelance software engineer",
-      "Egypt",
+      "Next.js",
     ],
     // Self-referential canonical per locale, plus the full hreflang cluster.
     // x-default points at English, the locale served from the bare root.
@@ -142,6 +154,74 @@ export function buildMetadata(lang: Lang): Metadata {
   };
 }
 
+/**
+ * Metadata for a standalone sub-page (`/work/…`, `/services/…`), which exists
+ * at the same `subpath` under every locale root — so it gets the same
+ * self-canonical + full hreflang cluster the home pages have.
+ *
+ * Next merges metadata shallowly, so `openGraph` and `alternates` here replace
+ * the locale layout's versions wholesale rather than extending them — every
+ * field a page needs must be declared.
+ *
+ * `images` defaults to the home share cards. A segment with its own
+ * `opengraph-image.tsx` (the English /work and /services routes) must pass
+ * `images: null`: a list declared here *replaces* the generated card (verified
+ * in the build output — the file convention only wins when nothing is
+ * declared), and `null` is an explicit "declare nothing" that a destructuring
+ * default can't swallow the way `undefined` would.
+ */
+export function buildPageMetadata({
+  lang,
+  title,
+  description,
+  subpath,
+  type = "website",
+  images = SHARE_IMAGES,
+}: {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Path below the locale root, e.g. "work/faheem/". */
+  subpath: string;
+  type?: "website" | "article";
+  images?: typeof SHARE_IMAGES | null;
+}): Metadata {
+  const path = `${localePath[lang]}${subpath}`;
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: path,
+      languages: {
+        en: `${localePath.en}${subpath}`,
+        ar: `${localePath.ar}${subpath}`,
+        "x-default": `${localePath.en}${subpath}`,
+      },
+    },
+    openGraph: {
+      type,
+      url: `${SITE_URL}${path}`,
+      siteName: "Abdullah Mohamed",
+      title,
+      description,
+      locale: OG_LOCALE[lang],
+      alternateLocale: [OG_LOCALE[otherLang[lang]]],
+      ...(images ? { images } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(images ? { images: [images[0]] } : {}),
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, "max-image-preview": "large" },
+    },
+  };
+}
+
 export const siteViewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: dark)", color: "#0e0d0b" },
@@ -149,93 +229,11 @@ export const siteViewport: Viewport = {
   ],
 };
 
-/** Person schema — the primary machine-readable answer to "who is this and
- *  what can I hire them for". Emitted on both locales. */
-const personJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Abdullah Mohamed",
-  givenName: "Abdullah",
-  familyName: "Mohamed",
-  jobTitle: "Senior Software Engineer",
-  description: copy.en.meta.description,
-  url: SITE_URL,
-  image: `${SITE_URL}/images/abdullah.webp`,
-  email: "mailto:hi@abdullahmohamed.dev",
-  telephone: "+20-111-185-2544",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Cairo",
-    addressCountry: "EG",
-  },
-  knowsLanguage: ["en", "ar"],
-  knowsAbout: [
-    "Full-stack web development",
-    "React",
-    "Next.js",
-    "Node.js",
-    "PostgreSQL",
-    "SvelteKit",
-    "TypeScript",
-    "REST APIs",
-    "WebSocket",
-    "Real-time AI",
-    "Azure OpenAI",
-    "AWS",
-    "Docker",
-    "CI/CD",
-    "Flutter",
-    "Mobile app development",
-    "Multi-tenant SaaS",
-    "RBAC",
-  ],
-  worksFor: { "@type": "Organization", name: "Appenza Studio" },
-  sameAs: [
-    "https://github.com/Abdullah3010",
-    "https://www.linkedin.com/in/abdullah-mohamed-3010",
-  ],
-  hasOccupation: {
-    "@type": "Occupation",
-    name: "Senior Full-Stack Software Engineer",
-    occupationLocation: { "@type": "City", name: "Cairo" },
-    skills: "Full-stack web, real-time AI, mobile, DevOps",
-  },
-  // Starting prices, mirroring the pricing cards. Kept in sync by hand — if the
-  // plan cards change, change these too.
-  makesOffer: [
-    offer("SaaS / full system build", 6000),
-    offer("Web app build", 3500),
-    offer("Real-time AI feature", 3000),
-    offer("Mobile app build", 5000),
-  ],
-};
-
-function offer(name: string, minPrice: number) {
-  return {
-    "@type": "Offer",
-    name,
-    priceSpecification: {
-      "@type": "PriceSpecification",
-      minPrice,
-      priceCurrency: "USD",
-    },
-  };
-}
-
-/** FAQ rich-result schema, generated from the dictionary for the locale being
- *  rendered, so the on-page FAQ and the structured data can never drift apart. */
-function faqJsonLd(lang: Lang) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    inLanguage: lang,
-    mainEntity: copy[lang].faq.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: { "@type": "Answer", text: item.a },
-    })),
-  };
-}
+// Structured data lives in app/lib/jsonld.ts. The site-wide graph (Person,
+// WebSite, ProfessionalService) is rendered by each locale layout; page-level
+// nodes (ProfilePage + FAQ, Article, Service…) by the page that owns them. The
+// root layout emits none itself: it cannot see the route, and FAQPage markup
+// on a page with no FAQ is a guidelines violation.
 
 // Privacy-light analytics (e.g. Umami Cloud), opt-in via env at build time:
 //   NEXT_PUBLIC_ANALYTICS_SRC = script URL (https://cloud.umami.is/script.js)
@@ -244,11 +242,11 @@ function faqJsonLd(lang: Lang) {
 const analyticsSrc = process.env.NEXT_PUBLIC_ANALYTICS_SRC;
 const analyticsId = process.env.NEXT_PUBLIC_ANALYTICS_ID;
 
-// Runs before paint to apply the saved theme/palette and avoid a flash of the
-// default theme (FOUC). It deliberately does NOT touch lang/dir: the URL is the
-// single source of truth for language now, so a stored preference must never
-// override the locale the server rendered.
-const noFlashScript = `(function(){try{var d=document.documentElement;d.dataset.revealReady='1';var t=localStorage.getItem('portfolio-theme');d.dataset.theme=(t==='light'||t==='dark')?t:'dark';var p=localStorage.getItem('portfolio-palette');d.dataset.palette=(p==='terracotta'||p==='teal'||p==='gold')?p:'current';}catch(e){d.dataset.theme='dark';d.dataset.palette='current';}})();`;
+// Runs before paint to apply the saved theme and avoid a flash of the default
+// theme (FOUC). It deliberately does NOT touch lang/dir: the URL is the single
+// source of truth for language now, so a stored preference must never override
+// the locale the server rendered.
+const noFlashScript = `(function(){try{var d=document.documentElement;d.dataset.revealReady='1';var t=localStorage.getItem('portfolio-theme');d.dataset.theme=(t==='light'||t==='dark')?t:'dark';}catch(e){d.dataset.theme='dark';}})();`;
 
 /**
  * The `<html>` shell, parameterised by locale. `<html>` may only be rendered by
@@ -268,20 +266,11 @@ export function RootHtml({
       lang={lang}
       dir={t.dir}
       data-theme="dark"
-      data-palette="current"
       className={`${sans.variable} ${cairo.variable}`}
       suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: noFlashScript }} />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(lang)) }}
-        />
         {analyticsSrc && analyticsId ? (
           <script defer src={analyticsSrc} data-website-id={analyticsId} />
         ) : null}
@@ -293,6 +282,8 @@ export function RootHtml({
         {children}
         <Analytics />
         <SpeedInsights />
+        {/* Conversion events for every `data-track` CTA (docs/analytics.md). */}
+        <TrackClicks />
       </body>
     </html>
   );

@@ -11,7 +11,7 @@ function ProductGrid({ products }: { products: Product[] }) {
           <span className="card-edge" aria-hidden="true" />
           <div className="app-card-head">
             {app.image ? (
-              <img src={asset(app.image)} alt="" loading="lazy" />
+              <img src={asset(app.image)} alt="" width="48" height="48" loading="lazy" />
             ) : (
               <span className="project-initial" aria-hidden="true">
                 {app.title.charAt(0)}
@@ -70,7 +70,7 @@ export function ExperienceTimeline({ t }: { t: Dictionary }) {
             <span className="experience-node" aria-hidden="true" />
 
             <header className="experience-company">
-              <img src={asset(experience.logo)} alt="" loading="lazy" />
+              <img src={asset(experience.logo)} alt="" width="60" height="60" loading="lazy" />
               <div>
                 <p className="eyebrow">{experience.date}</p>
                 <h3>{experience.company}</h3>

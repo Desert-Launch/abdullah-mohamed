@@ -1,8 +1,16 @@
 import { copy } from "../data/copy";
 import { bookingHref, contactEmail, shared, storeLinks } from "../data/shared";
-import type { CaseStudy, Dictionary, Lang, Product } from "../data/types";
+import type { CaseStudy, Dictionary, Lang, Product, ServicePage } from "../data/types";
+import {
+  planFor,
+  proofFor,
+  servicePages,
+  servicePath,
+  servicesIndexPath,
+} from "./services";
+import { cvPath } from "./cv";
 import { SITE_URL, localePath } from "./site";
-import { WORK_INDEX_PATH, WORK_LANG, workPath, workProjects } from "./work";
+import { workIndexPath, workPath, workProjects } from "./work";
 
 /**
  * Markdown twins of the rendered pages.
@@ -16,8 +24,8 @@ import { WORK_INDEX_PATH, WORK_LANG, workPath, workProjects } from "./work";
  * Rules that keep these files honest:
  * - No string here is invented. Section labels come from the dictionary, so
  *   the Arabic twin is Arabic; only the anchor slugs and URLs are shared.
- * - Nothing claims a link that doesn't exist: `/work` is English-only today,
- *   so the Arabic twin links case studies to the homepage section instead.
+ * - Every link is this locale's own: the Arabic twin links to `/ar/work/…`
+ *   and `/ar/services/…`, never across locales.
  * - App store links follow `storeLinks.status` exactly as the UI does — a
  *   retired app is labelled retired, never given a dead URL.
  */
@@ -114,7 +122,6 @@ export function homeMarkdown(lang: Lang): string {
   const t = copy[lang];
   const url = abs(localePath[lang]);
   const other = lang === "en" ? "ar" : "en";
-  const hasWorkRoutes = lang === WORK_LANG;
 
   return join([
     `# ${t.meta.title}`,
@@ -128,7 +135,7 @@ export function homeMarkdown(lang: Lang): string {
     `_${t.markdown.note}_`,
 
     `## ${t.hero.title} ${t.hero.titleAccent}`,
-    `${t.hero.lead} ${t.hero.leadEmphasis}`,
+    t.hero.lead,
     bullets(t.proof.map(([value, label]) => `**${value}** — ${label}`)),
 
     `## ${t.servicesHeading.title}`,
@@ -144,6 +151,7 @@ export function homeMarkdown(lang: Lang): string {
           `${plan.body} (${plan.priceNote})`,
           plan.itemsIntro,
           bullets(plan.items),
+          `[${t.servicePages.learnMore}](${abs(servicePath(plan.slug, lang))})`,
         ]).trimEnd(),
       )
       .join("\n\n"),
@@ -154,11 +162,7 @@ export function homeMarkdown(lang: Lang): string {
       .map((study) =>
         join([
           caseStudyBlock(t, study, "###"),
-          // /work exists in English only; the Arabic twin must not link at a
-          // URL that 404s, so it points back at the homepage section.
-          hasWorkRoutes
-            ? `[${t.work.readCase}](${abs(workPath(study.slug))})`
-            : `[${t.work.readCase}](${url}#cases)`,
+          `[${t.work.readCase}](${abs(workPath(study.slug, lang))})`,
         ]).trimEnd(),
       )
       .join("\n\n"),
@@ -193,6 +197,8 @@ export function homeMarkdown(lang: Lang): string {
 
     `## ${t.about.title}`,
     t.about.paragraphs.join("\n\n"),
+    `### ${t.about.factsLabel}`,
+    bullets(t.about.facts.map(([label, value]) => `**${label}:** ${value}`)),
 
     t.testimonials.length > 0 && `## ${t.testimonialsHeading.title}`,
     t.testimonials.length > 0 &&
@@ -207,14 +213,14 @@ export function homeMarkdown(lang: Lang): string {
   ]);
 }
 
-/** The `/work` index. English-only today, like the route itself. */
-export function workIndexMarkdown(lang: Lang = WORK_LANG): string {
+/** The `/work` index, per locale. */
+export function workIndexMarkdown(lang: Lang): string {
   const t = copy[lang];
   return join([
     `# ${t.work.meta.title}`,
     `> ${t.work.meta.description}`,
     bullets([
-      `${t.markdown.htmlVersion}: ${abs(WORK_INDEX_PATH)}`,
+      `${t.markdown.htmlVersion}: ${abs(workIndexPath(lang))}`,
       `${t.work.home}: ${abs(localePath[lang])}`,
     ]),
     `_${t.markdown.note}_`,
@@ -222,7 +228,7 @@ export function workIndexMarkdown(lang: Lang = WORK_LANG): string {
     ...workProjects(lang).map((study) =>
       join([
         caseStudyBlock(t, study, "##"),
-        `[${t.work.readCase}](${abs(workPath(study.slug))})`,
+        `[${t.work.readCase}](${abs(workPath(study.slug, lang))})`,
       ]).trimEnd(),
     ),
     `## ${t.work.alsoShipped.title}`,
@@ -234,15 +240,16 @@ export function workIndexMarkdown(lang: Lang = WORK_LANG): string {
   ]);
 }
 
-/** One `/work/<slug>` detail page. */
-export function caseStudyMarkdown(study: CaseStudy, lang: Lang = WORK_LANG): string {
+/** One `/work/<slug>` detail page, per locale. */
+export function caseStudyMarkdown(study: CaseStudy, lang: Lang): string {
   const t = copy[lang];
   const others = workProjects(lang).filter((other) => other.slug !== study.slug);
+  const related = servicePages(lang).filter((page) => page.proof.includes(study.slug));
   return join([
     caseStudyBlock(t, study, "#"),
     bullets([
-      `${t.markdown.htmlVersion}: ${abs(workPath(study.slug))}`,
-      `${t.work.backToIndex}: ${abs(WORK_INDEX_PATH)}`,
+      `${t.markdown.htmlVersion}: ${abs(workPath(study.slug, lang))}`,
+      `${t.work.backToIndex}: ${abs(workIndexPath(lang))}`,
     ]),
     `_${t.markdown.note}_`,
     study.shots?.length &&
@@ -253,11 +260,186 @@ export function caseStudyMarkdown(study: CaseStudy, lang: Lang = WORK_LANG): str
       ]).trimEnd(),
     others.length > 0 && `## ${t.work.more}`,
     others.length > 0 &&
-      bullets(others.map((other) => `[${other.title}](${abs(workPath(other.slug))})`)),
+      bullets(others.map((other) => `[${other.title}](${abs(workPath(other.slug, lang))})`)),
     `## ${t.work.cta.title}`,
     t.work.cta.body,
+    related.length > 0 && `**${t.work.relatedServices}:**`,
+    related.length > 0 &&
+      bullets(
+        related.map((page) => {
+          const plan = planFor(page.slug, lang);
+          return `[${page.name}](${abs(servicePath(page.slug, lang))})${plan ? ` — ${plan.price}` : ""}`;
+        }),
+      ),
     contactBlock(t),
   ]);
+}
+
+/** One service, rendered the same way on the index and on its own page. */
+function serviceBlock(t: Dictionary, page: ServicePage, level: string, lang: Lang): string {
+  const plan = planFor(page.slug, lang);
+  const labels = t.servicePages.labels;
+  const sub = level + "#";
+  return join([
+    `${level} ${page.title}`,
+    page.lead,
+    plan && `**${labels.pricing}:** ${plan.price} — ${plan.priceNote}`,
+    `${sub} ${labels.fit}\n\n${bullets(page.fit)}`,
+    `${sub} ${labels.deliverables}\n\n${bullets(page.deliverables)}`,
+    `${sub} ${labels.approach}\n\n${bullets(page.approach)}`,
+  ]).trimEnd();
+}
+
+/** The `/services` index, per locale. */
+export function servicesIndexMarkdown(lang: Lang): string {
+  const t = copy[lang];
+  return join([
+    `# ${t.servicePages.meta.title}`,
+    `> ${t.servicePages.meta.description}`,
+    bullets([
+      `${t.markdown.htmlVersion}: ${abs(servicesIndexPath(lang))}`,
+      `${t.work.home}: ${abs(localePath[lang])}`,
+    ]),
+    `_${t.markdown.note}_`,
+    t.servicePages.body,
+    ...servicePages(lang).map((page) => {
+      const plan = planFor(page.slug, lang);
+      return join([
+        `## ${page.name}${plan ? ` — ${plan.price}` : ""}`,
+        page.lead,
+        `[${t.servicePages.readMore}](${abs(servicePath(page.slug, lang))})`,
+      ]).trimEnd();
+    }),
+    `## ${t.servicePages.cta.title}`,
+    t.servicePages.cta.body,
+    contactBlock(t),
+  ]);
+}
+
+/**
+ * The `/cv/` page, per locale.
+ *
+ * The résumé is the page an assistant is most likely to be asked for directly
+ * ("what is his background", "where did he study"), so the Markdown twin
+ * carries the same graded skills and dated roles the HTML does — not a
+ * summary of them.
+ */
+export function cvMarkdown(lang: Lang): string {
+  const t = copy[lang];
+  const cv = t.cv;
+  const labels = cv.labels;
+  return join([
+    `# ${cv.title}`,
+    `> ${cv.meta.description}`,
+    bullets([
+      `${t.markdown.htmlVersion}: ${abs(cvPath(lang))}`,
+      `PDF: ${abs("/Abdullah_Mohamed_CV.pdf")}`,
+      `${t.work.home}: ${abs(localePath[lang])}`,
+    ]),
+    `_${t.markdown.note}_`,
+    cv.lead,
+
+    `## ${labels.summary}`,
+    cv.summary,
+
+    `## ${labels.experience}`,
+    t.experiences
+      .map((role) =>
+        join([
+          `### ${role.role} — ${role.company}`,
+          `${role.date} · ${role.location}`,
+          role.summary,
+          bullets(role.achievements),
+          role.apps.length
+            ? `${t.appsLabel}: ${role.apps.map((app) => app.title).join(", ")}`
+            : null,
+        ]).trimEnd(),
+      )
+      .join("\n\n"),
+
+    `## ${labels.skills}`,
+    cv.skills
+      .map((group) =>
+        join([
+          `### ${group.group}`,
+          bullets(
+            [
+              group.core.length ? `**${labels.core}** — ${group.core.join(", ")}` : null,
+              group.strong.length ? `**${labels.strong}** — ${group.strong.join(", ")}` : null,
+              group.used.length ? `**${labels.used}** — ${group.used.join(", ")}` : null,
+            ].filter((line): line is string => line !== null),
+          ),
+        ]).trimEnd(),
+      )
+      .join("\n\n"),
+
+    `## ${labels.education}`,
+    bullets(
+      cv.education.map(
+        (item) => `**${item.degree}** — ${item.school} · ${item.date} · ${item.detail}`,
+      ),
+    ),
+
+    `## ${labels.languages}`,
+    bullets(cv.languages),
+
+    contactBlock(t),
+  ]);
+}
+
+/** One `/services/<slug>` page, per locale. */
+export function servicePageMarkdown(page: ServicePage, lang: Lang): string {
+  const t = copy[lang];
+  const labels = t.servicePages.labels;
+  const proof = proofFor(page, lang);
+  const others = servicePages(lang).filter((other) => other.slug !== page.slug);
+  return join([
+    serviceBlock(t, page, "#", lang),
+    bullets([
+      `${t.markdown.htmlVersion}: ${abs(servicePath(page.slug, lang))}`,
+      `${t.servicePages.backToIndex}: ${abs(servicesIndexPath(lang))}`,
+    ]),
+    `_${t.markdown.note}_`,
+    proof.length > 0 && `## ${labels.proof}`,
+    proof.length > 0 &&
+      bullets(
+        proof.map(
+          (study) => `[${study.title} — ${study.type}](${abs(workPath(study.slug, lang))}): ${study.summary}`,
+        ),
+      ),
+    page.faq.length > 0 && `## ${labels.faq}`,
+    page.faq.length > 0 && page.faq.map((item) => `### ${item.q}\n\n${item.a}`).join("\n\n"),
+    others.length > 0 && `## ${labels.more}`,
+    others.length > 0 &&
+      bullets(
+        others.map((other) => {
+          const plan = planFor(other.slug, lang);
+          return `[${other.name}](${abs(servicePath(other.slug, lang))})${plan ? ` — ${plan.price}` : ""}`;
+        }),
+      ),
+    `## ${t.servicePages.cta.title}`,
+    t.servicePages.cta.body,
+    contactBlock(t),
+  ]);
+}
+
+/**
+ * `llms-full.txt`: every English page's Markdown twin in one file, in reading
+ * order — the llms.txt convention's "give me everything" companion, for
+ * agents that would rather make one fetch than follow links.
+ */
+export function llmsFullMarkdown(lang: Lang = "en"): string {
+  const divider = "\n\n---\n\n";
+  return [
+    homeMarkdown(lang),
+    servicesIndexMarkdown(lang),
+    ...servicePages(lang).map((page) => servicePageMarkdown(page, lang)),
+    workIndexMarkdown(lang),
+    ...workProjects(lang).map((study) => caseStudyMarkdown(study, lang)),
+    cvMarkdown(lang),
+  ]
+    .map((body) => body.trimEnd())
+    .join(divider) + "\n";
 }
 
 /**

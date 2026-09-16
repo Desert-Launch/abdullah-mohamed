@@ -1,7 +1,7 @@
 import type { Dictionary, Lang } from "../data/types";
 import { storeLinks } from "../data/shared";
 import { asset } from "../lib/asset";
-import { WORK_INDEX_PATH, WORK_LANG } from "../lib/work";
+import { workIndexPath } from "../lib/work";
 
 const isRealUrl = (url?: string): url is string => !!url && url.startsWith("http");
 
@@ -15,13 +15,10 @@ export function SelectedWork({ t, lang }: { t: Dictionary; lang: Lang }) {
           <p className="eyebrow">{t.selectedWorkHeading.eyebrow}</p>
           <h2>{t.selectedWorkHeading.title}</h2>
           {t.selectedWorkHeading.body ? <p>{t.selectedWorkHeading.body}</p> : null}
-          {/* English-only while /work has no Arabic mirror. */}
-          {lang === WORK_LANG ? (
-            <a className="section-link" href={asset(WORK_INDEX_PATH)}>
-              {t.work.viewAll}
-              <span aria-hidden="true">→</span>
-            </a>
-          ) : null}
+          <a className="section-link" href={asset(workIndexPath(lang))}>
+            {t.work.viewAll}
+            <span className="glyph-dir" aria-hidden="true">→</span>
+          </a>
         </div>
         <p className="work-count" aria-label={`${t.selectedWork.length} ${t.selectedWorkLabels.products}`}>
           <strong>{String(t.selectedWork.length).padStart(2, "0")}</strong>
@@ -56,7 +53,7 @@ export function SelectedWork({ t, lang }: { t: Dictionary; lang: Lang }) {
               <div className="work-card-head">
                 <div className="work-card-logo">
                   {app.image ? (
-                    <img src={asset(app.image)} alt="" loading="lazy" />
+                    <img src={asset(app.image)} alt="" width="42" height="42" loading="lazy" />
                   ) : (
                     <span className="work-card-fallback" aria-hidden="true">
                       {app.title.slice(0, 1)}
@@ -69,13 +66,29 @@ export function SelectedWork({ t, lang }: { t: Dictionary; lang: Lang }) {
               {hasStore ? (
                 <div className="work-stores">
                   {isRealUrl(links?.appStore) ? (
-                    <a className="store-pill" href={links.appStore} target="_blank" rel="noreferrer">
-                      {labels.appStore}<span aria-hidden="true">↗</span>
+                    <a
+                      className="store-pill"
+                      href={links.appStore}
+                      target="_blank"
+                      rel="noreferrer"
+                      data-track="store_link_click"
+                      data-track-app={app.key}
+                      data-track-store="app-store"
+                    >
+                      {labels.appStore}<span className="glyph-dir" aria-hidden="true">↗</span>
                     </a>
                   ) : null}
                   {isRealUrl(links?.play) ? (
-                    <a className="store-pill" href={links.play} target="_blank" rel="noreferrer">
-                      {labels.googlePlay}<span aria-hidden="true">↗</span>
+                    <a
+                      className="store-pill"
+                      href={links.play}
+                      target="_blank"
+                      rel="noreferrer"
+                      data-track="store_link_click"
+                      data-track-app={app.key}
+                      data-track-store="google-play"
+                    >
+                      {labels.googlePlay}<span className="glyph-dir" aria-hidden="true">↗</span>
                     </a>
                   ) : null}
                 </div>

@@ -2,6 +2,12 @@ import type { Dictionary, Lang, Social } from "../data/types";
 import { asset } from "../lib/asset";
 import { bookingHref, contactEmail } from "../data/shared";
 
+/** Conversion event per profile link (see docs/analytics.md). */
+const PROFILE_EVENT: Record<string, string> = {
+  LinkedIn: "linkedin_click",
+  GitHub: "github_click",
+};
+
 interface FooterProps {
   t: Dictionary;
   lang: Lang;
@@ -29,7 +35,11 @@ export function Footer({ t, lang, socials, linkBase = "" }: FooterProps) {
     <footer className="site-footer">
       <div className="footer-main">
         <div className="footer-brand">
-          <a className="footer-logo" href={sectionHref("#home")} aria-label={`${name} home`}>
+          {/* The visible text is "AM Abdullah Mohamed", so the accessible name
+              has to start with it — an aria-label of "… home" alone made the
+              two disagree (axe: label-content-name-mismatch), which breaks
+              voice control, where people say what they can see. */}
+          <a className="footer-logo" href={sectionHref("#home")} title={t.work.home}>
             <span>AM</span>
             <strong>{name}</strong>
           </a>
@@ -52,7 +62,14 @@ export function Footer({ t, lang, socials, linkBase = "" }: FooterProps) {
         <div className="footer-column">
           <h2>{lang === "ar" ? "الملفات" : "Profiles"}</h2>
           {externalProfiles.map((social) => (
-            <a key={social.label} href={social.href} target="_blank" rel="noreferrer">
+            <a
+              key={social.label}
+              href={social.href}
+              target="_blank"
+              rel="noreferrer"
+              data-track={PROFILE_EVENT[social.label]}
+              data-track-source="footer"
+            >
               <img src={asset(social.icon)} alt="" width="18" height="18" loading="lazy" />
               {social.label}
             </a>
@@ -65,17 +82,36 @@ export function Footer({ t, lang, socials, linkBase = "" }: FooterProps) {
             href={bookingHref}
             target={bookingHref.startsWith("http") ? "_blank" : undefined}
             rel="noreferrer"
+            data-track="book_call_click"
+            data-track-source="footer"
           >
             {lang === "ar" ? "احجز مكالمة" : "Book a call"}
           </a>
-          <a href={asset("/Abdullah_Mohamed_CV.pdf")} target="_blank" rel="noreferrer">
+          <a
+            href={asset("/Abdullah_Mohamed_CV.pdf")}
+            target="_blank"
+            rel="noreferrer"
+            data-track="cv_download"
+            data-track-source="footer"
+          >
             {t.hero.cv}
           </a>
-          <a className="footer-email" href={`mailto:${contactEmail}`}>
+          <a
+            className="footer-email"
+            href={`mailto:${contactEmail}`}
+            data-track="email_click"
+            data-track-source="footer"
+          >
             {contactEmail}
           </a>
           {whatsapp ? (
-            <a href={whatsapp.href} target="_blank" rel="noreferrer">
+            <a
+              href={whatsapp.href}
+              target="_blank"
+              rel="noreferrer"
+              data-track="whatsapp_click"
+              data-track-source="footer"
+            >
               {lang === "ar" ? "واتساب" : "WhatsApp"}
             </a>
           ) : null}
@@ -87,7 +123,11 @@ export function Footer({ t, lang, socials, linkBase = "" }: FooterProps) {
         <p>
           © {year} · {name}
         </p>
-        <p>{lang === "ar" ? "بدون تتبع · بدون كوكيز" : "No tracking · No cookies"}</p>
+        <p>
+          {lang === "ar"
+            ? "تحليلات تحترم الخصوصية · بدون كوكيز"
+            : "Privacy-friendly analytics · No cookies"}
+        </p>
       </div>
     </footer>
   );

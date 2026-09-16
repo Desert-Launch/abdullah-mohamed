@@ -3,8 +3,9 @@
 import { useEffect } from "react";
 import { bookingHref, contactEmail, shared, storeLinks } from "../data/shared";
 import type { Dictionary, Lang } from "../data/types";
+import { servicePath } from "../lib/services";
 import { SITE_URL, localePath } from "../lib/site";
-import { WORK_LANG, workPath } from "../lib/work";
+import { workPath } from "../lib/work";
 
 /**
  * WebMCP — the site's own tools, offered to an AI agent driving the browser.
@@ -50,9 +51,9 @@ const NO_ARGS = { type: "object", properties: {}, additionalProperties: false };
 
 function buildTools(t: Dictionary, lang: Lang): WebMcpTool[] {
   const home = `${SITE_URL}${localePath[lang]}`;
-  // /work is English-only; the Arabic page must not hand out URLs that 404.
-  const caseUrl = (slug: string) =>
-    lang === WORK_LANG ? `${SITE_URL}${workPath(slug)}` : `${home}#cases`;
+  // Every URL handed out is this locale's own — both locales have the pages.
+  const caseUrl = (slug: string) => `${SITE_URL}${workPath(slug, lang)}`;
+  const serviceUrl = (slug: string) => `${SITE_URL}${servicePath(slug, lang)}`;
 
   return [
     {
@@ -91,6 +92,7 @@ function buildTools(t: Dictionary, lang: Lang): WebMcpTool[] {
             startingPrice: plan.price,
             priceNote: plan.priceNote,
             includes: plan.items,
+            url: serviceUrl(plan.slug),
           })),
           note: t.plansHeading.body ?? t.plansHeading.title,
         }),

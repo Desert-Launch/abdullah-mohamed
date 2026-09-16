@@ -1,18 +1,14 @@
-import type { Dictionary, Lang, Palette, Theme } from "../data/types";
+import type { Dictionary, Lang, Theme } from "../data/types";
 import { asset } from "../lib/asset";
 import { LanguageMenu } from "./LanguageMenu";
-
-const PALETTES: Palette[] = ["current", "terracotta", "teal", "gold"];
 
 interface TopBarProps {
   t: Dictionary;
   lang: Lang;
   theme: Theme;
-  palette: Palette;
   menuOpen: boolean;
   activeSection: string;
   onToggleTheme: () => void;
-  onSelectPalette: (palette: Palette) => void;
   onToggleMenu: () => void;
   onNavClick: () => void;
 }
@@ -21,11 +17,9 @@ export function TopBar({
   t,
   lang,
   theme,
-  palette,
   menuOpen,
   activeSection,
   onToggleTheme,
-  onSelectPalette,
   onToggleMenu,
   onNavClick,
 }: TopBarProps) {
@@ -39,21 +33,6 @@ export function TopBar({
       </a>
 
       <div className="topbar-actions">
-        <div className="palette-select" role="group" aria-label={t.palette.label}>
-          {PALETTES.map((value) => (
-            <button
-              key={value}
-              className={`palette-swatch palette-swatch--${value}${palette === value ? " is-active" : ""}`}
-              type="button"
-              aria-pressed={palette === value}
-              aria-label={t.palette.options[value]}
-              title={t.palette.options[value]}
-              onClick={() => onSelectPalette(value)}
-            >
-              <span aria-hidden="true" />
-            </button>
-          ))}
-        </div>
         <button
           className="switch-button"
           type="button"

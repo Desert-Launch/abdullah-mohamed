@@ -44,19 +44,72 @@ considering a change done.
 
   There is deliberately **no `app/layout.tsx` / `app/page.tsx`** — adding one
   back would collide with the route groups.
-- **Standalone `/work` routes** (English only today):
-  - `app/(en)/work/page.tsx` → **`/work/`** — grid of every case study
-    (featured first) plus an "also shipped" strip for the Selected Work apps
-  - `app/(en)/work/[slug]/page.tsx` → **`/work/<slug>/`** — one full page per
-    case study, via `generateStaticParams`
+- **Standalone `/work`, `/services` and `/cv` routes, in both locales.** Each
+  locale group mounts the same routes under its root:
+  - `(en)/work/` → **`/work/`**, `(en)/work/[slug]/` → **`/work/<slug>/`**;
+    `(ar)/ar/work/…` → **`/ar/work/…`**
+  - `(en)/services/` → **`/services/`**, `(en)/services/[slug]/` →
+    **`/services/<slug>/`**; `(ar)/ar/services/…` → **`/ar/services/…`**
 
-  They live **inside the `(en)` group on purpose**: a top-level `app/work/`
-  would have no root layout at all. `app/lib/work.ts` owns the slug/path
-  helpers, the sort, and `buildWorkMetadata` (per-page canonical + OG, and
-  deliberately **no hreflang** while `/ar/work` doesn't exist). Chrome comes
-  from `WorkHeader` (reduced nav — the homepage `TopBar` is built on anchors +
-  a scrollspy that don't exist here) and the shared `Footer` with `linkBase="/"`
-  so its section anchors resolve back to the homepage.
+  - `(en)/cv/` → **`/cv/`**; `(ar)/ar/cv/` → **`/ar/cv/`**
+
+  The route files are thin: they pick the locale and render the shared page
+  bodies in `app/components/pages/` (`WorkIndex`, `WorkDetail`,
+  `ServicesIndex`, `ServiceDetail`, `CvPage`). They live **inside the locale groups on
+  purpose**: a top-level `app/work/` would have no root layout at all.
+  `app/lib/work.ts` and `app/lib/services.ts` own the locale-aware path
+  helpers (`workPath(slug, lang)`, `servicePath(slug, lang)` — every call
+  site passes `lang`; there is no English default), the sort/join, `caseMeta`
+  (fills the `work.caseMeta` title/description templates), and the
+  `build*Metadata` wrappers. A service page's copy is
+  `Dictionary.servicePages.pages[]`, its price the `Plan` with the same
+  `slug`, its proof `caseStudies` by slug; `servicesCiting` is the reverse
+  join a case-study page uses for its "hire me for the same thing" links.
+  `app/lib/cv.ts` owns `cvPath(lang)` and `buildCvMetadata`. **`/cv/` does not
+  store the employment history**: `CvPage` renders `Dictionary.experiences`,
+  the same array the homepage timeline uses, so the résumé and the timeline
+  cannot disagree. Only the summary, education, graded skills and languages
+  are its own (`Dictionary.cv`).
+  Chrome comes from `WorkHeader` (reduced nav — the homepage `TopBar` is built
+  on anchors + a scrollspy that don't exist here; takes `lang` and
+  `section="work" | "services" | "cv"`, and renders `LanguageMenu` so the
+  Arabic version of a sub-page is reachable from the page, not only from
+  `<head>`) and the shared `Footer` with `linkBase={localePath[lang]}`. The services pages exist for search intent
+  ("hire a Flutter developer", "مطور فلاتر"); see `docs/seo.md`.
+- **Sub-page metadata** comes from `buildPageMetadata` in `lib/site.tsx`,
+  which takes a locale-independent `subpath` and emits the self-canonical plus
+  the full en/ar/x-default hreflang cluster. It declares the home share cards
+  as OG images by default; the English `/work` and `/services` segments have
+  their own `opengraph-image.tsx` and **must pass `images: null`** — a
+  declared list *replaces* the generated card, and `undefined` would just
+  trigger the default. The Arabic routes keep the default: satori can't set
+  Arabic. `buildWorkMetadata` / `buildServiceMetadata` encode this.
+- **The hero `<h1>`** contains the role/city pill (`hero.eyebrow`) as a
+  kicker span plus the tagline — visually the old eyebrow + headline, but one
+  heading that names the role. Don't move the pill back out to a `<p>`. The
+  flag emoji is rendered in `Hero.tsx`, not stored in the string. Its
+  entrance animation is **transform-only** (`heroRiseSolid` in
+  `globals.css`): text that starts at `opacity: 0` is excluded from LCP, and
+  fading the headline in made the topbar name the LCP element with a 2.3 s
+  render delay on mobile. Never put opacity back on the `h1`. The hero h1 also
+  has **its own font-size clamp**, smaller than the display `h1` scale — the
+  headline names the specialty now, and at display size it filled the viewport
+  by itself.
+- **The hero has two labelled CTA rows, not one** (`hero.ctaRows`): "for
+  companies hiring" (CV, experience, LinkedIn) and "for a project" (book a
+  call, services). The site serves two audiences and the single row was
+  written for the buyer. **The proof stats render inside the hero**
+  (`.hero-proof`, second column on desktop) rather than as a section below it,
+  so the numbers are in the first viewport. There is no `.proof-grid` section
+  any more.
+- **Structured data** lives in `app/lib/jsonld.ts` as one `@graph` per page
+  type, rendered by `<JsonLd>` in the page (not the root layout). The locale
+  layouts emit the site-wide `Person` / `WebSite` / `ProfessionalService`;
+  the home page adds `ProfilePage` + `FAQPage`, `/work` adds
+  `CollectionPage`/`Article` + breadcrumbs, `/services` adds `Service` +
+  `Offer` + its own `FAQPage`. **FAQPage only where the FAQ is on that URL.**
+  Prices come from `Plan.minPrice` (number) and `Plan.price` (string) — change
+  both together.
 - **Social cards.** The locale home pages (`/`, `/ar/`) declare two candidates
   via `SHARE_IMAGES` in `lib/site.tsx`, both static files under `public/`:
   `og-card.png` (the designed card — what everyone actually sees) then
@@ -93,13 +146,22 @@ considering a change done.
     delete the route again — leaving it in place would override `SHARE_IMAGES`
     and drop the second candidate. `renderSiteOgImage` in `lib/og.tsx` is kept
     for exactly this.
-- SEO/crawl files: `app/robots.txt/route.ts`, `app/sitemap.ts` (both locales +
-  hreflang alternates; `/work` entries carry no alternates), `public/llms.txt`,
-  and `app/icon.svg` / `app/apple-icon.png`.
+- SEO/crawl files: `app/robots.txt/route.ts`, `app/sitemap.ts` (every page
+  in both locales, each with the full hreflang alternate set and a `lastmod`
+  of `BUILD_DATE` from `lib/jsonld.ts` — the same constant as every page's
+  `dateModified`, so the two can't disagree),
+  `public/llms.txt` (hand-written index — update it when prices, pages, or the
+  availability line change), `app/llms-full.txt/route.ts` (every English
+  Markdown twin in one file, generated), `public/<indexnow-key>.txt` +
+  `scripts/indexnow.sh` (Bing/ChatGPT-search pings; run after a deploy), and
+  `app/icon.svg` / `app/apple-icon.png`.
 
   robots.txt is a **route handler, not `app/robots.ts`** — Next's
   `MetadataRoute.Robots` convention can only emit directives it models, and the
   `Content-Signal` line is not one of them. Don't "restore" the convention.
+  It lists the AI *search* crawlers as explicit `Allow` groups; training-only
+  bots (GPTBot, ClaudeBot, Google-Extended) are deliberately absent — adding
+  them would opt in to training against the `ai-train=no` signal.
 - **Agent discovery.** See `docs/agent-readiness.md` for the whole picture and
   the post-deploy `curl` checks. The load-bearing parts:
   - **Markdown twins.** Every page has one at `<page path>index.md`, rendered
@@ -116,6 +178,16 @@ considering a change done.
     extension-less catalog. Use **wildcard** sources: `trailingSlash: true`
     308s extension-less paths, and an exact-path rule then silently misses
     (the same trap as the OG images above).
+  - The `Link` header's hreflang entries must be the **full en/ar/x-default
+    set with absolute URLs** — a relative or partial set is invalid to Google
+    and Lighthouse (it shipped that way for months).
+  - `vercel.json`'s first `/(.*)` rule is the **security headers** (HSTS with
+    `includeSubDomains`, `nosniff`, `X-Frame-Options`, Referrer-Policy,
+    Permissions-Policy, and a CSP in **report-only** mode). The CSP is
+    report-only on purpose: Next inlines scripts a static export can't nonce,
+    Cloudflare injects its own, and nothing collects the reports yet — flip it
+    to enforcing only after a week of clean consoles on production. If a new
+    third-party script or fetch is added, add its origin to the policy.
   - `public/.well-known/agent-skills/index.json` carries a `sha256:` digest per
     `SKILL.md`. **Editing a skill without recomputing its digest ships a file
     that fails integrity checks** — the one-liner is in the doc.
@@ -163,15 +235,37 @@ data, not in components.**
   if a dictionary is missing a required field.
 - To add a new section: add it in `Portfolio.tsx` with a stable `id`, and add
   the matching `nav` entry (label + `#anchor`) to **both** dictionaries.
-- `nav` entries are normally `#anchor`s. The EN dictionary has one real path
-  (`["Work", "/work/"]`); `TopBar` and `Footer` run non-anchor hrefs through
-  `asset()`, since Next only applies `basePath` to `<Link>`.
+- `nav` entries are normally `#anchor`s. Each dictionary has one real path
+  (`["Work", "/work/"]` / `["أعمال", "/ar/work/"]`); `TopBar` and `Footer` run
+  non-anchor hrefs through `asset()`, since Next only applies `basePath` to
+  `<Link>`.
 - `CaseStudy.shots` is `Shot[]` (`{src, alt, caption}`), not bare paths — the
   caption is what makes an Arabic-only screenshot legible to an English
   reader on the `/work` page. `Product.shots` is still `string[]`;
   `ShotGallery` accepts either.
-- Anything the `/work` pages render comes from `Dictionary.work`, present in
-  both dictionaries even though only English is routed today.
+- **A case study needs `published` (ISO date) and should have `decisions`.**
+  `published` feeds `Article.datePublished`; without it a study had only the
+  build date and appeared to change on every deploy. `decisions` is the
+  "what I chose over what, and why" block — the part a hiring manager reads a
+  case study for, and the thing the original three studies lacked. Write a
+  decision only where there was a real alternative; a feature list is
+  `process`, not a decision. `appCategory`/`platforms` feed the
+  `SoftwareApplication` node.
+- **The homepage renders the first three studies** (`HOME_CASE_COUNT` in
+  `CaseStudies.tsx`), sorted by `workProjects` so its three and `/work`'s
+  first three agree. `/work` renders all of them.
+- A product belongs in `selectedWork` **or** in `caseStudies`, not both — the
+  "also shipped" strip exists for apps that have a store link and no write-up.
+- Anything the `/work` and `/services` pages render comes from
+  `Dictionary.work` / `Dictionary.servicePages`; both locales are routed, so
+  Arabic copy there is live, not a placeholder.
+- Meta titles: `meta.title` must keep a `|` — the part before it is the
+  suffix the layout template appends to every sub-page title. Sub-page titles
+  (`work.meta`, `servicePages.meta`, each `ServicePage.meta`) are the page's
+  own part only, or the suffix doubles.
+- `about.facts` is the quotable "at a glance" `<dl>`; one line per value,
+  only facts stated elsewhere on the page. The homepage FAQ is written for
+  recruiters as well as clients — each answer must stand alone.
 - `Dictionary.markdown` holds the section labels for the `Accept:
   text/markdown` twins. They're not in the HTML UI, but they're still copy a
   human reads through an agent — so they live in the dictionaries, and the
@@ -192,13 +286,19 @@ data, not in components.**
   links (`hrefLang` + `aria-current`). Do **not** reintroduce a `portfolio-lang`
   localStorage key or let a stored preference rewrite `<html lang>` — that would
   put the served markup out of sync with the URL a crawler indexed.
-- `Portfolio.tsx` owns `theme` (`dark`|`light`) and `palette` state. Effects
-  write them to `<html>` (`data-theme`, `data-palette`) and persist to
-  `localStorage` keys **`portfolio-theme`** and **`portfolio-palette`**. These
-  survive a locale switch because it is a normal navigation.
-- `lib/site.tsx`'s `noFlashScript` runs before paint to read those two keys and
-  set the `<html>` attributes, preventing a theme flash. State is initialised
-  **from** those attributes so the first client render already matches — don't
+- `Portfolio.tsx` owns `theme` (`dark`|`light`) via `useSiteTheme`. An effect
+  writes it to `<html data-theme>` and persists it to the `localStorage` key
+  **`portfolio-theme`**. It survives a locale switch because that is a normal
+  navigation.
+- **There is no palette picker any more.** The four-swatch selector, the
+  `data-palette` attribute, the `portfolio-palette` key, the `Palette` type
+  and the three alternate token sets were removed: a theme playground in the
+  header reads as a portfolio feature demo rather than a product, and it took
+  the most valuable header pixels on every page. Dark/light stays. Don't
+  reintroduce it.
+- `lib/site.tsx`'s `noFlashScript` runs before paint to read that key and set
+  `<html data-theme>`, preventing a theme flash. State is initialised **from**
+  that attribute so the first client render already matches — don't
   reintroduce a flash by initialising from a constant default instead.
 - `dir` comes from each dictionary (`en.dir = "ltr"`, `ar.dir = "rtl"`).
 
@@ -213,10 +313,18 @@ data, not in components.**
   glass/aurora vars) — **do not hardcode colors**, or you'll break light mode.
 - Theme scoping is driven by the `data-theme` attribute on `<html>` (and
   mirrored on `.site-shell`). RTL is handled via `dir`; prefer logical CSS
-  where you add layout so it flips correctly for Arabic.
+  where you add layout so it flips correctly for Arabic. **A directional glyph
+  is not logical** — "→", "←" and "↗" are LTR characters, so any one you add
+  needs `className="glyph-dir"` (flipped with `scaleX(-1)` under `[dir=rtl]`).
+  `.button-icon--go` has its own flip because its hover nudge has to compose
+  with the mirror.
 - Images use plain `<img>` with `loading="lazy"` and `.webp` assets from
   `public/images`. Decorative images use `alt=""`; meaningful ones have real
-  alt text.
+  alt text. Logos render at ≤60 px, so an app/company logo should be a real
+  WebP at **192 px** and a few KB — three "`.webp`" logos were 50–140 KB PNGs
+  with the wrong extension. Re-encode with `sharp` (in `node_modules` via
+  Next) rather than committing an export straight from a design tool, and
+  give logo `<img>`s the `width`/`height` of their CSS box.
 
 ## Accessibility (already established — preserve it)
 
@@ -234,7 +342,13 @@ The codebase already follows good a11y practice; keep it that way:
 - The **contact form submits via Web3Forms** (`ContactForm.tsx`, key in
   `shared.ts`) — client-side POST, no backend. If the key is emptied it falls
   back to the original `mailto:` flow. There's a honeypot field and
-  success/error strings in the dictionaries.
+  success/error strings in the dictionaries. It carries an **`intent` select**
+  (`hiring | project | other`) that becomes the email subject and a property
+  of the `contact_form_submit` event — without it a recruiter's message and a
+  client's were indistinguishable in the inbox and in analytics. Fields use
+  **visible labels**, not placeholders. The contact section itself is two
+  **lanes** (`contact.lanes`), one per audience; their buttons are built from
+  the CV path, `bookingHref` and `shared.socials`, so no label is duplicated.
 - The `--gold` token currently resolves to a purple (`#8b7cf0`); the comments
   still describe an "Obsidian & Gold" palette. Treat the token as the source
   of truth, not the comment, and change the token if adjusting the accent.
@@ -246,8 +360,17 @@ The codebase already follows good a11y practice; keep it that way:
   (`live | retired | private | unreleased`) per app. Only real https URLs
   render store buttons; non-live apps get a status badge. Never claim "live"
   in copy for the aggregate numbers — say "shipped".
-- Analytics is opt-in via `NEXT_PUBLIC_ANALYTICS_SRC` / `_ID` env vars at
-  build time (see `lib/site.tsx`); unset means no script is emitted.
+- **Analytics and conversion events** — see `docs/analytics.md`. Vercel Web
+  Analytics + Speed Insights load from `RootHtml`. A CTA declares its event
+  with `data-track="<event>"` + `data-track-<prop>` attributes and stays a
+  server component; `TrackClicks.tsx` (one delegated listener) reports them.
+  Page-view events use `<TrackPageView>`, which seeds the SDK's `window.va`
+  queue first because `<Analytics />` mounts *after* the page's effects in a
+  static export — a bare `track()` in a mount effect is a silent no-op. Add
+  events only from the catalogue in the doc; don't add scroll/theme events.
+  `TrackPageView` is also how `/cv/`-style pages could report a view.
+  The optional Umami hook (`NEXT_PUBLIC_ANALYTICS_SRC` / `_ID` at build time)
+  is unset; unset means no script is emitted.
 
 ## Design skills
 

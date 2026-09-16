@@ -8,6 +8,11 @@
           "href": "https://www.abdullahmohamed.dev/llms.txt",
           "type": "text/plain",
           "title": "llms.txt — who Abdullah Mohamed is, what he builds, and what it costs"
+        },
+        {
+          "href": "https://www.abdullahmohamed.dev/llms-full.txt",
+          "type": "text/plain",
+          "title": "llms-full.txt — every English page as one Markdown document"
         }
       ],
       "service-desc": [
@@ -37,6 +42,12 @@
           "title": "llms.txt — who Abdullah Mohamed is, what he builds, and what it costs"
         },
         {
+          "rel": "service-doc",
+          "href": "https://www.abdullahmohamed.dev/llms-full.txt",
+          "type": "text/plain",
+          "title": "llms-full.txt — every English page as one Markdown document"
+        },
+        {
           "rel": "service-desc",
           "href": "https://www.abdullahmohamed.dev/.well-known/agent-skills/index.json",
           "type": "application/json",
@@ -57,6 +68,24 @@
       ]
     },
     {
+      "anchor": "https://www.abdullahmohamed.dev/services/",
+      "service-doc": [
+        {
+          "href": "https://www.abdullahmohamed.dev/services/index.md",
+          "type": "text/markdown",
+          "title": "Every service, with starting prices, as Markdown"
+        }
+      ],
+      "links": [
+        {
+          "rel": "service-doc",
+          "href": "https://www.abdullahmohamed.dev/services/index.md",
+          "type": "text/markdown",
+          "title": "Every service, with starting prices, as Markdown"
+        }
+      ]
+    },
+    {
       "anchor": "https://www.abdullahmohamed.dev/work/",
       "service-doc": [
         {
@@ -71,6 +100,109 @@
           "href": "https://www.abdullahmohamed.dev/work/index.md",
           "type": "text/markdown",
           "title": "Every written case study as Markdown"
+        }
+      ]
+    },
+    {
+      "anchor": "https://www.abdullahmohamed.dev/cv/",
+      "service-doc": [
+        {
+          "href": "https://www.abdullahmohamed.dev/cv/index.md",
+          "type": "text/markdown",
+          "title": "Full CV as Markdown: roles with dates, graded skills, education"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://www.abdullahmohamed.dev/Abdullah_Mohamed_CV.pdf",
+          "type": "application/pdf",
+          "title": "The same CV as a PDF"
+        }
+      ],
+      "links": [
+        {
+          "rel": "service-doc",
+          "href": "https://www.abdullahmohamed.dev/cv/index.md",
+          "type": "text/markdown",
+          "title": "Full CV as Markdown: roles with dates, graded skills, education"
+        },
+        {
+          "rel": "describedby",
+          "href": "https://www.abdullahmohamed.dev/Abdullah_Mohamed_CV.pdf",
+          "type": "application/pdf",
+          "title": "The same CV as a PDF"
+        }
+      ]
+    },
+    {
+      "anchor": "https://www.abdullahmohamed.dev/ar/",
+      "service-doc": [
+        {
+          "href": "https://www.abdullahmohamed.dev/ar/index.md",
+          "type": "text/markdown",
+          "title": "The full Arabic homepage as Markdown"
+        }
+      ],
+      "links": [
+        {
+          "rel": "service-doc",
+          "href": "https://www.abdullahmohamed.dev/ar/index.md",
+          "type": "text/markdown",
+          "title": "The full Arabic homepage as Markdown"
+        }
+      ]
+    },
+    {
+      "anchor": "https://www.abdullahmohamed.dev/ar/cv/",
+      "service-doc": [
+        {
+          "href": "https://www.abdullahmohamed.dev/ar/cv/index.md",
+          "type": "text/markdown",
+          "title": "Full CV as Arabic Markdown"
+        }
+      ],
+      "links": [
+        {
+          "rel": "service-doc",
+          "href": "https://www.abdullahmohamed.dev/ar/cv/index.md",
+          "type": "text/markdown",
+          "title": "Full CV as Arabic Markdown"
+        }
+      ]
+    },
+    {
+      "anchor": "https://www.abdullahmohamed.dev/ar/services/",
+      "service-doc": [
+        {
+          "href": "https://www.abdullahmohamed.dev/ar/services/index.md",
+          "type": "text/markdown",
+          "title": "Every service, with starting prices, as Arabic Markdown"
+        }
+      ],
+      "links": [
+        {
+          "rel": "service-doc",
+          "href": "https://www.abdullahmohamed.dev/ar/services/index.md",
+          "type": "text/markdown",
+          "title": "Every service, with starting prices, as Arabic Markdown"
+        }
+      ]
+    },
+    {
+      "anchor": "https://www.abdullahmohamed.dev/ar/work/",
+      "service-doc": [
+        {
+          "href": "https://www.abdullahmohamed.dev/ar/work/index.md",
+          "type": "text/markdown",
+          "title": "Every written case study as Arabic Markdown"
+        }
+      ],
+      "links": [
+        {
+          "rel": "service-doc",
+          "href": "https://www.abdullahmohamed.dev/ar/work/index.md",
+          "type": "text/markdown",
+          "title": "Every written case study as Arabic Markdown"
         }
       ]
     }

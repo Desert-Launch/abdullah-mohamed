@@ -30,11 +30,6 @@
   --aurora-2: rgba(217, 164, 65, 0.16);
   --aurora-3: rgba(139, 124, 240, 0.16);
   --aurora-4: rgba(120, 190, 200, 0.10);
-  /* Palette-selector preview swatches — fixed identities, mode-independent. */
-  --swatch-current: #8b7cf0;
-  --swatch-terracotta: #ea580c;
-  --swatch-teal: #14b8a6;
-  --swatch-gold: #d9b26a;
   /* Form feedback (contact form success/error lines) */
   --success: #6ee7a0;
   --danger: #f8867f;
@@ -72,246 +67,6 @@
   --aurora-2: rgba(184, 134, 40, 0.12);
   --aurora-3: rgba(91, 75, 196, 0.09);
   --aurora-4: rgba(70, 150, 160, 0.07);
-}
-
-/* ========================================================================
-   PALETTE SYSTEM
-   Palette (data-palette) is orthogonal to mode (data-theme). The bare
-   :root / :root[data-theme="light"] blocks above ARE the "current" palette
-   (default), so no [data-palette="current"] selector is needed. Each new
-   palette below fully overrides the token set — anchored on seven semantic
-   seed colors that are also exposed as the portable contract tokens
-   (--bg / --surface / --border / --text / --muted / --accent / --accent-fg)
-   for any future component that wants to consume them directly.
-   Base (no [data-theme]) = dark; the [data-theme="light"] variant overrides,
-   mirroring the current-palette pattern. --accent-fg is each palette's
-   off-white/near-ink rather than pure #fff/#000 (non-negotiable).
-   ======================================================================== */
-
-/* --- Terracotta: warm neutral + burnt terracotta --- */
-:root[data-palette="terracotta"] {
-  color-scheme: dark;
-  --ink: #faf8f3;
-  --ink-soft: #d9d2c7;
-  --muted: #a8a29e;
-  --paper: #1c1917;
-  --surface: rgba(41, 37, 36, 0.86);
-  --surface-solid: #292524;
-  --surface-soft: #211d1b;
-  --line: rgba(250, 248, 243, 0.12);
-  --gold: #ea580c;
-  --gold-soft: rgba(234, 88, 12, 0.16);
-  --teal: #faf8f3;
-  --teal-soft: rgba(250, 248, 243, 0.06);
-  --coral: #ea580c;
-  --button-ink: #1c1917;
-  --shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
-  --topbar-bg: rgba(28, 25, 23, 0.55);
-  --hero-bg: #1c1917;
-  --glass: rgba(41, 37, 36, 0.66);
-  --glass-strong: rgba(41, 37, 36, 0.78);
-  --glass-border: rgba(250, 248, 243, 0.14);
-  --glass-blur: 22px;
-  --aurora-1: rgba(234, 88, 12, 0.3);
-  --aurora-2: rgba(217, 164, 65, 0.14);
-  --aurora-3: rgba(234, 88, 12, 0.16);
-  --aurora-4: rgba(120, 190, 200, 0.08);
-  /* contract tokens */
-  --bg: #1c1917;
-  --text: #faf8f3;
-  --border: #44403c;
-  --accent: #ea580c;
-  --accent-fg: #1c1917;
-}
-
-:root[data-palette="terracotta"][data-theme="light"] {
-  color-scheme: light;
-  --ink: #1c1917;
-  --ink-soft: #3d3833;
-  --muted: #78716c;
-  --paper: #faf8f3;
-  --surface: rgba(255, 255, 255, 0.94);
-  --surface-solid: #ffffff;
-  --surface-soft: #f1ece3;
-  --line: rgba(28, 25, 23, 0.12);
-  --gold: #c2410c;
-  --gold-soft: rgba(194, 65, 12, 0.1);
-  --teal: #1c1917;
-  --teal-soft: rgba(28, 25, 23, 0.045);
-  --coral: #c2410c;
-  --button-ink: #faf8f3;
-  --shadow: 0 24px 70px rgba(60, 45, 15, 0.1);
-  --topbar-bg: rgba(250, 248, 243, 0.7);
-  --hero-bg: #faf8f3;
-  --glass: rgba(255, 255, 255, 0.72);
-  --glass-strong: rgba(255, 255, 255, 0.82);
-  --glass-border: rgba(28, 25, 23, 0.1);
-  --glass-blur: 22px;
-  --aurora-1: rgba(194, 65, 12, 0.16);
-  --aurora-2: rgba(184, 134, 40, 0.12);
-  --aurora-3: rgba(194, 65, 12, 0.09);
-  --aurora-4: rgba(70, 150, 160, 0.07);
-  /* contract tokens */
-  --bg: #faf8f3;
-  --text: #1c1917;
-  --border: #e7e1d6;
-  --accent: #c2410c;
-  --accent-fg: #faf8f3;
-}
-
-/* --- Teal: cool slate + deep teal --- */
-:root[data-palette="teal"] {
-  color-scheme: dark;
-  --ink: #f1f5f9;
-  --ink-soft: #cbd5e1;
-  --muted: #94a3b8;
-  --paper: #0f172a;
-  --surface: rgba(30, 41, 59, 0.86);
-  --surface-solid: #1e293b;
-  --surface-soft: #18233a;
-  --line: rgba(241, 245, 249, 0.12);
-  --gold: #14b8a6;
-  --gold-soft: rgba(20, 184, 166, 0.15);
-  --teal: #f1f5f9;
-  --teal-soft: rgba(241, 245, 249, 0.06);
-  --coral: #14b8a6;
-  --button-ink: #0f172a;
-  --shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
-  --topbar-bg: rgba(15, 23, 42, 0.55);
-  --hero-bg: #0f172a;
-  --glass: rgba(30, 41, 59, 0.66);
-  --glass-strong: rgba(30, 41, 59, 0.78);
-  --glass-border: rgba(241, 245, 249, 0.14);
-  --glass-blur: 22px;
-  --aurora-1: rgba(20, 184, 166, 0.28);
-  --aurora-2: rgba(56, 189, 248, 0.14);
-  --aurora-3: rgba(20, 184, 166, 0.16);
-  --aurora-4: rgba(120, 190, 200, 0.1);
-  /* contract tokens */
-  --bg: #0f172a;
-  --text: #f1f5f9;
-  --border: #334155;
-  --accent: #14b8a6;
-  --accent-fg: #0f172a;
-}
-
-:root[data-palette="teal"][data-theme="light"] {
-  color-scheme: light;
-  --ink: #0f172a;
-  --ink-soft: #334155;
-  --muted: #64748b;
-  --paper: #f8fafc;
-  --surface: rgba(255, 255, 255, 0.94);
-  --surface-solid: #ffffff;
-  --surface-soft: #eef2f6;
-  --line: rgba(15, 23, 42, 0.12);
-  --gold: #0f766e;
-  --gold-soft: rgba(15, 118, 110, 0.1);
-  --teal: #0f172a;
-  --teal-soft: rgba(15, 23, 42, 0.045);
-  --coral: #0f766e;
-  --button-ink: #f8fafc;
-  --shadow: 0 24px 70px rgba(15, 40, 60, 0.1);
-  --topbar-bg: rgba(248, 250, 252, 0.7);
-  --hero-bg: #f8fafc;
-  --glass: rgba(255, 255, 255, 0.72);
-  --glass-strong: rgba(255, 255, 255, 0.82);
-  --glass-border: rgba(15, 23, 42, 0.1);
-  --glass-blur: 22px;
-  --aurora-1: rgba(15, 118, 110, 0.16);
-  --aurora-2: rgba(56, 150, 180, 0.12);
-  --aurora-3: rgba(15, 118, 110, 0.09);
-  --aurora-4: rgba(70, 150, 160, 0.07);
-  /* contract tokens */
-  --bg: #f8fafc;
-  --text: #0f172a;
-  --border: #e2e8f0;
-  --accent: #0f766e;
-  --accent-fg: #f8fafc;
-}
-
-/* --- Gold: warm obsidian + champagne gold (the "Elegant & High-End" model:
-   near-black warm base, one restrained metallic accent). Dark gold #d9b26a
-   is 9.4:1 on the paper; light bronze #7a5a14 is 5.9:1 on ivory — both pass
-   WCAG AA for the small eyebrow/label text the accent is used for. --- */
-:root[data-palette="gold"] {
-  color-scheme: dark;
-  --ink: #f5f1e6;
-  --ink-soft: #d9d2c0;
-  --muted: #a39274;
-  --paper: #14110c;
-  --surface: rgba(26, 22, 15, 0.86);
-  --surface-solid: #1a160f;
-  --surface-soft: #201a12;
-  --line: rgba(245, 241, 230, 0.12);
-  --gold: #d9b26a;
-  --gold-soft: rgba(217, 178, 106, 0.15);
-  --teal: #f5f1e6;
-  --teal-soft: rgba(245, 241, 230, 0.06);
-  --coral: #d9b26a;
-  --button-ink: #14110c;
-  --shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
-  --topbar-bg: rgba(20, 17, 12, 0.55);
-  --hero-bg: #14110c;
-  --glass: rgba(26, 22, 15, 0.66);
-  --glass-strong: rgba(26, 22, 15, 0.78);
-  --glass-border: rgba(245, 241, 230, 0.14);
-  --glass-blur: 22px;
-  --aurora-1: rgba(217, 178, 106, 0.24);
-  --aurora-2: rgba(190, 120, 60, 0.13);
-  --aurora-3: rgba(217, 178, 106, 0.13);
-  --aurora-4: rgba(120, 190, 200, 0.07);
-  /* contract tokens */
-  --bg: #14110c;
-  --text: #f5f1e6;
-  --border: #3d3627;
-  --accent: #d9b26a;
-  --accent-fg: #14110c;
-}
-
-:root[data-palette="gold"][data-theme="light"] {
-  color-scheme: light;
-  --ink: #1b160d;
-  --ink-soft: #3c3423;
-  --muted: #6f6552;
-  --paper: #faf7ef;
-  --surface: rgba(255, 253, 246, 0.94);
-  --surface-solid: #fffdf6;
-  --surface-soft: #f1ead9;
-  --line: rgba(27, 22, 13, 0.12);
-  --gold: #7a5a14;
-  --gold-soft: rgba(122, 90, 20, 0.1);
-  --teal: #1b160d;
-  --teal-soft: rgba(27, 22, 13, 0.045);
-  --coral: #7a5a14;
-  --button-ink: #faf7ef;
-  --shadow: 0 24px 70px rgba(70, 50, 10, 0.1);
-  --topbar-bg: rgba(250, 247, 239, 0.7);
-  --hero-bg: #faf7ef;
-  --glass: rgba(255, 253, 246, 0.72);
-  --glass-strong: rgba(255, 253, 246, 0.82);
-  --glass-border: rgba(27, 22, 13, 0.1);
-  --glass-blur: 22px;
-  --aurora-1: rgba(122, 90, 20, 0.14);
-  --aurora-2: rgba(190, 120, 60, 0.1);
-  --aurora-3: rgba(122, 90, 20, 0.08);
-  --aurora-4: rgba(70, 150, 160, 0.06);
-  /* contract tokens */
-  --bg: #faf7ef;
-  --text: #1b160d;
-  --border: #e5dcc6;
-  --accent: #7a5a14;
-  --accent-fg: #faf7ef;
-}
-
-/* Expose the seven contract tokens on the current palette too, so every
-   palette answers the same interface (values mapped from existing tokens). */
-:root {
-  --bg: var(--paper);
-  --text: var(--ink);
-  --border: var(--line);
-  --accent: var(--gold);
-  --accent-fg: var(--button-ink);
 }
 
 * {
@@ -681,72 +436,6 @@ img {
   opacity: 1;
 }
 
-/* Palette selector — a segmented control of preview swatches. The swatch fill
-   colors are fixed palette identities (they must read the same regardless of
-   the active palette), defined as tokens so no hex lives in the component. */
-.palette-select {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px;
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  background: var(--glass);
-  backdrop-filter: blur(12px) saturate(140%);
-  -webkit-backdrop-filter: blur(12px) saturate(140%);
-}
-
-.palette-swatch {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  padding: 0;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  background: transparent;
-  cursor: pointer;
-}
-
-.palette-swatch span {
-  width: 16px;
-  height: 16px;
-  border-radius: 999px;
-  border: 1px solid var(--glass-border);
-  background: var(--swatch);
-}
-
-.palette-swatch--current {
-  --swatch: var(--swatch-current);
-}
-.palette-swatch--terracotta {
-  --swatch: var(--swatch-terracotta);
-}
-.palette-swatch--teal {
-  --swatch: var(--swatch-teal);
-}
-.palette-swatch--gold {
-  --swatch: var(--swatch-gold);
-}
-
-.palette-swatch span {
-  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.palette-swatch:hover span {
-  transform: scale(1.18);
-}
-
-.palette-swatch:active span {
-  transform: scale(0.92);
-}
-
-.palette-swatch.is-active {
-  border-color: var(--gold);
-  background: var(--gold-soft);
-}
-
 .site-nav {
   display: flex;
   align-items: center;
@@ -844,9 +533,21 @@ img {
   position: relative;
   min-height: auto;
   display: grid;
+  /* Two columns from 1100px: the copy, then the proof numbers in what used to
+     be ~50% dead space on a desktop hero. Below that they stack, which puts
+     the numbers directly under the CTAs on a phone. */
   grid-template-columns: minmax(0, 1fr);
+  gap: 34px;
   align-items: start;
   padding: 18px 0 22px;
+}
+
+@media (min-width: 1100px) {
+  .hero {
+    grid-template-columns: minmax(0, 1.55fr) minmax(250px, 0.45fr);
+    align-items: center;
+    gap: 48px;
+  }
 }
 
 /* Faint dot grid behind the hero copy, masked so it dissolves before it can
@@ -890,6 +591,19 @@ img {
   }
 }
 
+/* Transform-only variant for the headline. Chrome excludes text painted at
+   opacity 0 from Largest Contentful Paint, so fading the H1 in meant the
+   biggest text on the page was never the LCP candidate — the topbar name was,
+   with a ~2.3 s render delay on mobile. The H1 still rises; it never hides. */
+@keyframes heroRiseSolid {
+  from {
+    transform: translateY(18px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 .hero-copy > * {
   animation: heroRise 760ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -898,6 +612,7 @@ img {
   animation-delay: 60ms;
 }
 .hero-copy > h1 {
+  animation-name: heroRiseSolid;
   animation-delay: 150ms;
 }
 .hero-copy > .hero-lead {
@@ -940,17 +655,17 @@ img {
 
 /* Gentle cascade for cards that share a grid — later cards trail the first. */
 :root[data-reveal-ready]
-  :is(.proof-grid, .case-grid, .work-grid, .service-grid)
+  :is(.case-grid, .work-grid, .service-grid)
   > [data-reveal]:nth-child(2) {
   transition-delay: 90ms;
 }
 :root[data-reveal-ready]
-  :is(.proof-grid, .case-grid, .work-grid, .service-grid)
+  :is(.case-grid, .work-grid, .service-grid)
   > [data-reveal]:nth-child(3) {
   transition-delay: 180ms;
 }
 :root[data-reveal-ready]
-  :is(.proof-grid, .case-grid, .work-grid, .service-grid)
+  :is(.case-grid, .work-grid, .service-grid)
   > [data-reveal]:nth-child(4) {
   transition-delay: 270ms;
 }
@@ -1001,6 +716,33 @@ img {
   flex: 0 0 auto;
 }
 
+/* The pill lives inside the <h1> now (it is the role + city, i.e. the part of
+   the heading a search engine cares about). It keeps the .eyebrow look and
+   resets what it would otherwise inherit from the display-size h1. */
+.hero-kicker {
+  /* Block-level flex, not inline-flex: an inline box inside the h1 would sit
+     in a line box sized by the h1's display-size strut and add ~1 line of
+     empty space under the pill. */
+  display: flex;
+  line-height: 1.4;
+  font-family: var(--font-sans), var(--font-cairo), system-ui, sans-serif;
+}
+
+.site-shell[dir="rtl"] .hero-kicker {
+  font-family: var(--font-cairo), "Tahoma", system-ui, sans-serif;
+}
+
+.hero-flag {
+  margin-inline-start: 8px;
+  letter-spacing: 0;
+}
+
+/* The tagline itself — a block so it starts on its own line under the pill,
+   carrying the h1's display size and tracking. */
+.hero-headline {
+  display: block;
+}
+
 h1,
 h2,
 h3 {
@@ -1026,7 +768,19 @@ h1 {
 
 .hero h1 {
   max-width: 100%;
-  margin-top: 8px;
+  /* The kicker inside carries the eyebrow's own 75px/24px margins. */
+  margin-top: 0;
+  /* Its own scale, not the display h1: the headline now names the specialty
+     ("Full-stack, real-time AI, and Flutter — …") instead of a five-word
+     tagline, and at the display size it filled the viewport on its own,
+     pushing the CTAs and the proof numbers below the fold — the opposite of
+     what the hero is for. This lands it at ~3 lines on a desktop. */
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  line-height: 1.05;
+}
+
+.site-shell[dir="rtl"] .hero h1 {
+  line-height: 1.35;
 }
 
 .site-shell[dir="rtl"] h1 {
@@ -1039,9 +793,9 @@ h1 {
 }
 
 h2 {
-  max-width: 13ch;
-  font-size: clamp(2.3rem, 5vw, 4.8rem);
-  line-height: 0.94;
+  max-width: 14ch;
+  font-size: clamp(2rem, 3.6vw, 3.4rem);
+  line-height: 1.04;
 }
 
 /* Arabic needs room for ascenders and diacritics — the Latin-display values
@@ -1052,7 +806,7 @@ h2 {
 }
 
 .site-shell[dir="rtl"] h2 {
-  max-width: 15ch;
+  max-width: 16ch;
   line-height: 1.08;
 }
 
@@ -1086,8 +840,8 @@ p {
 }
 
 .hero-lead {
-  max-width: 68ch;
-  margin-top: 28px;
+  max-width: 58ch;
+  margin-top: 26px;
   color: var(--ink-soft);
   font-size: clamp(1.05rem, 2vw, 1.2rem);
   line-height: 1.7;
@@ -1098,16 +852,32 @@ p {
   color: var(--gold);
 }
 
-.hero-em {
-  color: var(--ink);
-  font-style: italic;
+.hero-actions {
+  display: grid;
+  gap: 18px;
+  margin-top: 32px;
 }
 
-.hero-actions {
+.hero-cta-row {
+  display: grid;
+  gap: 10px;
+}
+
+/* The row label is what makes the split legible — without it the two rows
+   read as one long list of six buttons. */
+.hero-cta-label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-cta-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 34px;
+  gap: 10px;
 }
 
 /* Arrow/chevron glyphs inside buttons — nudge on hover in their own direction. */
@@ -1121,8 +891,26 @@ p {
   transform: translateX(4px);
 }
 
+/* "→" is an LTR character: in Arabic the forward arrow must point left. The
+   flip is a transform, so the hover nudge has to compose with it — after
+   scaleX(-1) a positive translateX moves the glyph visually leftward, which
+   is the direction of travel in RTL. */
+.site-shell[dir="rtl"] .button-icon--go {
+  transform: scaleX(-1);
+}
+
 .site-shell[dir="rtl"] .button:hover .button-icon--go {
-  transform: translateX(-4px);
+  transform: scaleX(-1) translateX(4px);
+}
+
+/* Same problem, everywhere else a glyph indicates direction: the "read the
+   case study →" links, back arrows, and the "↗" on external/store links. */
+.glyph-dir {
+  display: inline-block;
+}
+
+.site-shell[dir="rtl"] .glyph-dir {
+  transform: scaleX(-1);
 }
 
 .button:hover .button-icon--down {
@@ -1235,7 +1023,7 @@ p {
 
 .availability-card,
 .system-card,
-.proof-grid article,
+.hero-proof-item,
 .logo-section,
 .case-card,
 .project-tile,
@@ -1253,7 +1041,7 @@ p {
 
 /* Unified, gentle hover for content cards — a small lift, a warm border, and
    an accent ring bloom. Kept subtle so the page still feels calm. */
-.proof-grid article,
+.hero-proof-item,
 .case-card,
 .project-tile,
 .service-card,
@@ -1277,7 +1065,7 @@ p {
   }
 }
 
-.proof-grid article:hover,
+.hero-proof-item:hover,
 .case-card:hover,
 .project-tile:hover,
 .service-card:hover,
@@ -1380,33 +1168,42 @@ p {
   line-height: 1.4;
 }
 
-.proof-grid {
+/* Proof stats, in the hero rather than a section below it. A <dl>: each stat
+   is a value with a label, which is what a screen reader and a crawler should
+   both get. Two columns while the hero is single-column, one column once it
+   becomes the hero's narrow second column. */
+.hero-proof {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  margin: 70px 0 30px 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
 }
 
-.proof-grid article {
-  padding: 20px;
+@media (min-width: 1100px) {
+  .hero-proof {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
-.proof-grid strong {
-  display: block;
+.hero-proof-item {
+  padding: 18px 20px;
+}
+
+.hero-proof-item dt {
   color: var(--ink);
   font-family: var(--font-sans), var(--font-cairo), system-ui, sans-serif;
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 3vw, 1.9rem);
+  font-weight: 600;
   line-height: 1;
   /* Fixed-width digits so the CountUp animation doesn't jitter. */
   font-variant-numeric: tabular-nums;
 }
 
-/* Direct child only — the stat inside <strong> holds the CountUp span. */
-.proof-grid article > span {
-  display: block;
-  margin-top: 10px;
+.hero-proof-item dd {
+  margin: 9px 0 0;
   color: var(--muted);
-  line-height: 1.6;
+  font-size: 0.92rem;
+  line-height: 1.55;
 }
 
 .logo-section {
@@ -2892,10 +2689,6 @@ span.case-avatar {
   box-shadow: var(--shadow);
 }
 
-.contact-book {
-  margin-top: 18px;
-}
-
 .plans-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3119,8 +2912,10 @@ span.case-avatar {
   margin-top: 82px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.8fr);
-  gap: 24px;
-  align-items: center;
+  gap: 32px;
+  /* Start, not center: the intro column is taller than the form now that it
+     carries both audience lanes. */
+  align-items: start;
   padding: clamp(24px, 4vw, 44px);
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--paper) 82%, #000), color-mix(in srgb, var(--ink) 10%, var(--paper))),
@@ -3139,6 +2934,47 @@ span.case-avatar {
   line-height: 1.75;
 }
 
+/* The two audience lanes. Side by side on a wide screen, stacked on a phone —
+   each one a heading that names the reader and the two actions they want. */
+.contact-lanes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.contact-lane {
+  padding: 20px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+}
+
+.contact-lane h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.02rem;
+  font-weight: 500;
+}
+
+.contact-section .contact-lane p {
+  margin-top: 10px;
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.contact-lane-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.contact-lane-actions .button {
+  padding: 10px 15px;
+  font-size: 0.88rem;
+}
+
 .contact-form {
   display: grid;
   gap: 12px;
@@ -3146,6 +2982,34 @@ span.case-avatar {
 
 .contact-form label {
   display: block;
+}
+
+/* Visible field labels. A placeholder vanishes as soon as someone types, so
+   the label has to be its own element — better for sighted users mid-form,
+   and it clears axe's placeholder-as-label flag. */
+.contact-field-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.contact-form select {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.contact-form select:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 35%, transparent);
 }
 
 .contact-form input,
@@ -3459,7 +3323,6 @@ span.case-avatar {
     position: static;
   }
 
-  .proof-grid,
   .nested-app-grid,
   .project-catalog,
   .plans-grid,
@@ -3492,14 +3355,8 @@ span.case-avatar {
     width: min(100% - 20px, var(--max));
   }
 
-  /* The actions cluster (4 palette swatches + theme + language) needs ~252px,
-     which left the brand 19px and made the name overlap the swatches at 375px.
-     The palette selector is a nice-to-have, so it goes first; the role line
-     follows, leaving a single-line header: name · theme · language · menu. */
-  .palette-select {
-    display: none;
-  }
-
+  /* Width squeeze: the brand keeps the name, drops the role line, leaving a
+     single-line header — name · theme · language · menu. */
   .brand small {
     display: none;
   }
@@ -3652,7 +3509,7 @@ span.case-avatar {
     margin-top: 0;
   }
 
-  .hero-actions,
+  .hero-cta-buttons,
   .button {
     width: 100%;
   }
@@ -3666,7 +3523,6 @@ span.case-avatar {
     border-width: 6px;
   }
 
-  .proof-grid,
   .nested-app-grid,
   .project-catalog,
   .service-grid,
@@ -3943,7 +3799,7 @@ span.case-avatar {
     grid-template-columns: 1fr;
   }
 
-  .proof-grid {
+  .hero-proof {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -4171,6 +4027,18 @@ h2.case-label {
 
 .work-cta .button {
   margin-top: 6px;
+}
+
+/* Services that cite this case study, inside the closing CTA. */
+.work-cta-services {
+  width: 100%;
+  margin-top: 14px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.work-cta-services .case-label {
+  margin: 0 0 10px;
 }
 
 /* ---- "More work" links at the foot of a detail page ---- */
@@ -4407,7 +4275,11 @@ h2.case-label {
 
 .work-detail-head h1,
 .work-project-head h2,
-h2.case-label {
+h2.case-label,
+/* The RTL h2 rule (15ch) outranks the plain selectors above, so it needs
+   its own opt-out or Arabic section labels wrap at two words. */
+.site-shell[dir="rtl"] .work-project-head h2,
+.site-shell[dir="rtl"] h2.case-label {
   max-width: none;
 }
 
@@ -4417,7 +4289,8 @@ h2.case-label {
   line-height: 1.12;
 }
 
-.work-cta h2 {
+.work-cta h2,
+.site-shell[dir="rtl"] .work-cta h2 {
   max-width: 28ch;
   line-height: 1.2;
 }
@@ -4491,4 +4364,444 @@ h2.case-label {
 .section-link {
   min-height: 28px;
   padding-block: 4px;
+}
+
+/* ------------------------------------------------------------------------
+   About — "at a glance" facts
+   A real <dl> under the about copy: the one-screen, quotable summary a
+   recruiter skims and an assistant lifts. Two columns while there is room,
+   one on phones; the label column is fixed so values align.
+   ------------------------------------------------------------------------ */
+
+.about-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 10px 22px;
+  margin: 26px 0 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+
+.about-fact {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+  margin: 0;
+}
+
+.about-fact dt {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.site-shell[dir="rtl"] .about-fact dt {
+  letter-spacing: 0;
+}
+
+.about-fact dd {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+/* ------------------------------------------------------------------------
+   Pricing card → service landing page
+   ------------------------------------------------------------------------ */
+
+.plan-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: start;
+  min-height: 28px;
+  /* The card is a flex column, so `auto` pins the link to the bottom edge
+     and the four links line up across cards with different list lengths. */
+  margin-top: auto;
+  padding-block: 18px 4px;
+  color: var(--gold);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.plan-more span[aria-hidden] {
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.plan-more:hover span[aria-hidden],
+.plan-more:focus-visible span[aria-hidden] {
+  transform: translateX(3px);
+}
+
+.site-shell[dir="rtl"] .plan-more:hover span[aria-hidden] {
+  transform: translateX(-3px);
+}
+
+/* ------------------------------------------------------------------------
+   /services — index + per-service landing pages
+   Reuses the /work vocabulary (.work-shell, .work-project-card, .work-detail,
+   .work-block, .case-process, .work-cta, .work-more-links) and adds only the
+   price treatment, which /work has no equivalent for.
+   ------------------------------------------------------------------------ */
+
+/* Four services read as a 2×2 grid, not the /work index's 3+1 — the
+   auto-fit column count would orphan the fourth card at desktop width. */
+.service-index-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 720px) {
+  .service-index-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Index card: price sits above the stretched link, reading like the
+   homepage plan card's price line. `auto` pushes it to the bottom so prices
+   align across cards whose leads run to different lengths. */
+.service-price {
+  display: grid;
+  gap: 2px;
+  margin: auto 0 0;
+}
+
+.service-price strong {
+  color: var(--ink);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.service-price span {
+  color: var(--muted);
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+}
+
+.service-card-link h2 {
+  margin: 4px 0 0;
+  font-size: 1.35rem;
+  max-width: none;
+}
+
+.service-card-link .eyebrow {
+  margin: 0;
+}
+
+.service-index-cta {
+  margin-top: clamp(28px, 4vw, 44px);
+}
+
+/* Detail page head: no avatar, so it's just eyebrow + H1. */
+.service-head {
+  display: grid;
+  gap: 6px;
+}
+
+.service-head .eyebrow {
+  margin: 0;
+}
+
+.service-head h1 {
+  margin: 0;
+  max-width: 22ch;
+  font-size: clamp(2.1rem, 5vw, 3.2rem);
+  line-height: 1.08;
+}
+
+/* Price + CTA band under the lead — the number a buyer scrolled here for. */
+.service-pricing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px 28px;
+  padding: clamp(18px, 2.6vw, 26px) clamp(20px, 3vw, 30px);
+  border: 1px solid color-mix(in srgb, var(--gold) 45%, var(--line));
+  border-radius: var(--radius);
+  background:
+    linear-gradient(180deg, var(--gold-soft), transparent),
+    var(--surface);
+}
+
+.service-pricing .case-label {
+  margin-bottom: 6px;
+}
+
+.service-pricing-price {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.service-pricing-note {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+}
+
+/* Per-service FAQ: same accordion as the homepage, just no section chrome. */
+.service-faq {
+  max-width: none;
+}
+
+
+/* Decisions block on a case study — the "what I chose over what, and why"
+   section. Each is a claim plus its reason, so the claim carries the weight
+   of a heading and the reason reads as body text under it. */
+.case-decisions {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.case-decision {
+  padding: 20px 22px;
+  border: 1px solid var(--glass-border);
+  border-inline-start: 2px solid var(--gold);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+}
+
+.case-decision h3 {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--ink);
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.case-decision p {
+  margin: 10px 0 0;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+
+/* ------------------------------------------------------------------------
+   CV PAGE (/cv/)
+   The HTML resume. Reuses the /work chrome (.work-shell, .work-main) and adds
+   only the resume's own structures: the header block, graded skill groups,
+   and dated roles. Deliberately denser than the marketing pages — this is a
+   document someone scans, and sometimes prints.
+   ------------------------------------------------------------------------ */
+.cv-main {
+  max-width: 900px;
+}
+
+.cv-head {
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.cv-main .cv-head h1 {
+  max-width: 20ch;
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  line-height: 1.1;
+}
+
+.cv-lead {
+  margin-top: 14px;
+  color: var(--ink-soft);
+  font-size: 1.02rem;
+  line-height: 1.6;
+}
+
+.cv-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.cv-print-note {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.cv-section {
+  margin-top: 44px;
+}
+
+.cv-summary {
+  margin-top: 14px;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+
+.cv-roles {
+  display: grid;
+  gap: 26px;
+  margin-top: 20px;
+}
+
+.cv-role {
+  padding-inline-start: 18px;
+  border-inline-start: 2px solid var(--line);
+}
+
+.cv-role-head h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.08rem;
+  font-weight: 500;
+}
+
+.cv-role-company {
+  margin: 4px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.cv-role-date {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.cv-role-summary {
+  margin: 12px 0 0;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.cv-role-points {
+  margin: 10px 0 0;
+  padding-inline-start: 20px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.cv-role-points li {
+  margin-top: 6px;
+}
+
+.cv-role-products {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.cv-skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.cv-skill-group {
+  padding: 18px 20px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+}
+
+.cv-skill-group h3 {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: 0.98rem;
+  font-weight: 500;
+}
+
+.cv-skill-levels {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+}
+
+/* Label and value on one row, so the grading reads as a scale not a list. */
+.cv-skill-row {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 10px;
+  align-items: baseline;
+}
+
+.cv-skill-row dt {
+  color: var(--gold);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cv-skill-row dd {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.cv-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.cv-education h3 {
+  margin: 14px 0 0;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.cv-education p {
+  margin: 5px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.cv-languages {
+  margin: 14px 0 0;
+  padding-inline-start: 20px;
+  color: var(--ink-soft);
+  line-height: 1.9;
+}
+
+@media (max-width: 560px) {
+  .cv-skill-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}
+
+/* Printing a resume is a real use. Drop the page chrome and the decorative
+   layers, and keep each block from being split across a page break. */
+@media print {
+  .topbar,
+  .site-footer,
+  .aurora-field,
+  .back-to-top,
+  .cv-head-actions,
+  .cv-print-note,
+  .skip-link {
+    display: none !important;
+  }
+
+  .cv-main {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .cv-skill-group {
+    border-color: #ccc;
+    background: none;
+  }
+
+  .cv-role,
+  .cv-skill-group,
+  .cv-education {
+    break-inside: avoid;
+  }
 }

@@ -3,25 +3,31 @@ import type { Dictionary } from "./types";
 
 export const en: Dictionary = {
   dir: "ltr",
+  // The title leads with the name (it is the brand, and the template for
+  // every other page is derived from the part before "|") and then says what
+  // a searcher would type: role, stack, city. "Abdullah Mohamed" on its own is
+  // a very common name — the qualifiers are what make the entity findable.
   meta: {
-    title: "Abdullah Mohamed | Senior Software Engineer",
+    title: "Abdullah Mohamed | Senior Full-Stack & Flutter Engineer, Cairo",
     description:
-      "Abdullah Mohamed is a senior software engineer who builds full-stack web apps, real-time AI features, and mobile products end to end — frontend, backend, and the infrastructure they run on. Available for freelance projects and product roles.",
+      "Senior software engineer in Cairo: full-stack web (React, Node.js, PostgreSQL), Flutter apps, real-time AI. 10+ apps shipped. Open to freelance and senior remote roles.",
     cardEyebrow: "Senior Software Engineer · Cairo, Egypt · Open to freelance",
+    // "Shipped", never "live": not every shipped app is still on a store.
     social:
-      "Full-stack web, real-time AI, and mobile products shipped end to end. 10+ apps live across Egypt, the Gulf, Europe, and the US.",
+      "Senior engineer behind the real-time AI layer of a 200,000-student tutor. Full-stack, AI and Flutter apps shipped across Egypt, the Gulf, Europe, US.",
   },
   skipLink: "Skip to content",
-  // Mirrors the section order: commercial content first, then proof. Also
-  // rendered by the footer's "Sections" column and driven by the scrollspy.
+  // Mirrors the section order: proof first, then what it costs. Also rendered
+  // by the footer's "Sections" column and driven by the scrollspy.
   nav: [
+    ["Case studies", "#cases"],
     ["What I build", "#services"],
     ["Pricing", "#plans"],
-    ["Case studies", "#cases"],
     // The only non-anchor entry: /work is a real route with a page per
     // project. The homepage's own "#work" section is still there and still
     // links into it — it just isn't the nav destination any more.
     ["Work", "/work/"],
+    ["CV", "/cv/"],
     ["About", "#about"],
     ["Contact", "#contact"],
   ],
@@ -38,35 +44,41 @@ export const en: Dictionary = {
       ar: "العربية",
     },
   },
-  palette: {
-    label: "Color palette",
-    options: {
-      current: "Default",
-      terracotta: "Terracotta",
-      teal: "Teal",
-      gold: "Gold",
-    },
-  },
   hero: {
-    eyebrow: "Senior Software Engineer · Cairo, Egypt 🇪🇬",
-    title: "I build products that ship —",
-    titleAccent: "and survive production.",
+    // Rendered inside the H1 (see Hero.tsx); the flag is added there. "Remote"
+    // is in the kicker because it is the first thing a non-Egyptian recruiter
+    // needs to know, and it is true (the DIB and RevealSite roles were remote).
+    eyebrow: "Senior Software Engineer · Cairo, Egypt · Remote",
+    // Headline names the specialty, not an attitude: a reader used to get the
+    // "what" only from the lead paragraph.
+    title: "Full-stack, real-time AI, and Flutter —",
+    titleAccent: "products that ship and hold up in production.",
     roleLine: "Senior Software Engineer · Full-Stack, AI & Mobile Products",
-    lead: "Cairo-based senior engineer, 4+ years shipping production apps end to end. Right now I'm building Faheem — Egypt's Ministry of Education AI platform with real-time voice-to-voice tutoring and AI-generated lessons. 10+ apps shipped across Egypt, Germany, the UAE, and the US. React, Node.js, PostgreSQL, AWS, Flutter — and comfortable adapting to",
-    leadEmphasis: "whatever the product needs.",
-    primary: "Start a project",
-    work: "See selected work",
+    // Appenza and Faheem are here on purpose: "Abdullah Mohamed" collides with
+    // several other engineers of the same name and title, and these are the
+    // disambiguators a search engine can attach the entity to.
+    lead: "Senior engineer at Appenza Studio, building Faheem — the Egyptian Ministry of Education's AI tutor, 200,000+ students, real-time voice. 10+ apps in the App Store and Google Play for teams in Egypt, Germany, the UAE, and the US.",
+    ctaRows: {
+      hiringLabel: "For companies hiring",
+      projectLabel: "For a project",
+    },
+    primary: "Book a free call",
+    services: "See services & pricing",
     cv: "Download CV",
+    experience: "View experience",
     availability: "Open to freelance, contracts, and product partnerships",
     currently:
-      "Currently building Faheem & Talia at Appenza — open to new projects",
+      "Open to senior remote roles and freelance projects · replies within 24 hours",
     socialLabel: "Find me on",
+    proofLabel: "Proof points",
   },
+  // Scale and ownership, not tenure: "4+ years" next to "Senior" invited the
+  // wrong question, and the years are still in the FAQ and on /cv/.
   proof: [
-    ["10+", "apps shipped to stores"],
-    ["30,000+", "students on Faheem"],
-    ["4+", "years shipping production"],
-    ["4 regions", "Egypt, Gulf, Europe, US"],
+    ["200,000+", "students on Faheem"],
+    ["10+", "apps in the App Store and Google Play"],
+    ["4 companies", "in 3 countries"],
+    ["Since 2022", "shipping production software"],
   ],
   logosLabel: "Built with teams. Shipped for real users.",
   logosIntro: "Companies I have partnered with and products I have helped take from an idea to production.",
@@ -75,7 +87,7 @@ export const en: Dictionary = {
   caseStudiesHeading: {
     eyebrow: "Selected case studies",
     title: "Three products, from unclear problem to production.",
-    body: "Not just screenshots — the problem, my role, how I built it, and what shipped.",
+    body: "The problem, my role, how I built it — and the decisions I'd defend in an interview. Three more are on the work page.",
   },
   // This section exists for the one thing the experience timeline can't show:
   // a working store link. Products without one live in the timeline above, with
@@ -98,6 +110,7 @@ export const en: Dictionary = {
     challenge: "The challenge",
     role: "My role",
     process: "How I built it",
+    decisions: "Decisions, and why",
     results: "Results",
   },
   workHeading: {
@@ -145,12 +158,44 @@ export const en: Dictionary = {
   ],
   faqHeading: {
     eyebrow: "FAQ",
-    title: "Questions clients usually ask.",
+    title: "Questions clients and recruiters ask.",
   },
+  // Each answer is written to stand alone: an assistant that quotes one of
+  // these should be able to do so without the rest of the page. Every fact
+  // here is also stated elsewhere on the site — nothing is claimed only in the
+  // FAQ.
   faq: [
+    {
+      q: "What is your core stack?",
+      a: "Full-stack web: React, Next.js, SvelteKit, TypeScript, Node.js, Express, PostgreSQL, and Redis. Mobile: Flutter/Dart for iOS and Android from one codebase. AI: Azure OpenAI with streaming over WebSocket, plus speech-to-text and text-to-speech. Infrastructure: AWS, Docker, Nginx, and CI/CD.",
+    },
+    {
+      q: "How much experience do you have?",
+      a: "Shipping production software since 2022, at four companies (Appenza Studio, DIB GmbH, RevealSite, Zeyada) and as an independent engineer — 10+ apps shipped to the App Store and Google Play across Egypt, Germany, the UAE, and the US, and a real-time AI tutor used by 200,000+ students. B.Sc. in Computer Science & AI, Helwan University, Cairo (2023). The full CV is at /cv/.",
+    },
     {
       q: "Where are you based — does the timezone work for US, Europe, or Gulf teams?",
       a: "I'm in Cairo (GMT+2/+3): one to two hours from Europe, the same workday as the Gulf, and a solid morning overlap with the US East Coast. My clients so far have been in Germany, the US, Qatar, and Kuwait.",
+    },
+    {
+      q: "Are you open to full-time or senior product roles, or only freelance?",
+      a: "Both. Alongside my role at Appenza Studio I take freelance and contract projects, and I'm open to senior product roles — remote first. Send the role, the stack, and the team, and I'll reply honestly about fit.",
+    },
+    {
+      q: "Do you work with startups and MVPs?",
+      a: "Yes. The Web App and SaaS plans are shaped for it: one engineer owning frontend, backend, database, and deployment, with a written scope and milestone delivery so you see working software early. Jaweb and Xera Lab were built that way, from zero.",
+    },
+    {
+      q: "Can you take over an existing codebase?",
+      a: "Yes. Much of my employed work has been on products that already had users — cutting YOLO's app size from 86 MB to 51 MB, migrating IMOX's deep linking and analytics — so inheriting a codebase is normal. We start with a short audit, then agree a scoped plan before anything touches production.",
+    },
+    {
+      q: "How does pricing work?",
+      a: "Every product has a starting price, and every price is negotiable based on your scope and requirements. We start with a free call, then I send a written proposal with the final price, the timeline, and the payment phases. You approve it before any work begins.",
+    },
+    {
+      q: "Do you charge hourly or per project?",
+      a: "Per project. You get a fixed price, a timeline, and payment phases in writing, so there is no running meter and no surprise invoice. The only exception is ongoing maintenance after handoff, which we agree separately.",
     },
     {
       q: "How do we communicate during a project?",
@@ -162,11 +207,15 @@ export const en: Dictionary = {
     },
     {
       q: "Do you work in English or Arabic?",
-      a: "Both, fluently — including building fully bilingual, RTL-ready products. This site is one.",
+      a: "Both, fluently — including building fully bilingual, RTL-ready products. Faheem, Talia, and ICCD Hub are Arabic-first or bilingual, and so is this site.",
     },
     {
-      q: "How does pricing work?",
-      a: "Every product has a starting price, and every price is negotiable based on your scope and requirements. We start with a free call, then I send a written proposal with the final price, the timeline, and the payment phases. You approve it before any work begins.",
+      q: "What are you not a fit for?",
+      a: "Native iOS or Android in Swift/Kotlin, WordPress and other CMS theme work, Laravel/PHP backends, data science and ML model training, and pure design engagements. I'll say so on the call rather than learn it on your budget — and where I know someone who does that work well, I'll point you at them.",
+    },
+    {
+      q: "What is the fastest way to reach you?",
+      a: "Book a call from this page, or email hi@abdullahmohamed.dev. I reply within 24 hours on working days.",
     },
   ],
   testimonialsHeading: {
@@ -209,19 +258,46 @@ export const en: Dictionary = {
         },
       ],
       summary:
-        "The core of an Arabic-first AI tutor now used by 30,000+ K-12 students.",
+        "The real-time layer of an Arabic AI tutor for 200,000+ students: streamed answers, voice-to-voice at ~300–500 ms, and AI-generated lessons — on a 16-module clean architecture.",
       challenge:
-        "Students needed tutoring that felt live and trustworthy in Arabic — real-time answers, voice, and visuals — not a generic chatbot bolted onto a form.",
+        "Students needed tutoring that felt live and trustworthy in Arabic — real-time answers, voice, and visuals — not a generic chatbot bolted onto a form. A tutor that pauses to think reads as broken to a fourteen-year-old, so the latency budget was a product requirement, not an optimisation.",
       role: "Core engineer on the realtime tutoring layer and the app architecture the rest of the product is built on.",
       process: [
         "Built realtime AI tutoring over WebSocket with Azure OpenAI streaming so answers arrive token by token.",
-        "Shipped a voice tutor with STT/TTS and an AI board that generates educational visuals on the fly.",
-        "Structured 16 modules in clean architecture with localization, analytics, Crashlytics, FCM, and multi-environment builds.",
+        "Engineered a voice-to-voice tutor at ~300–500 ms round-trip with speech-to-text and text-to-speech.",
+        "Built the AI Board session engine: AI-generated lessons rendered as streamed multimodal scenes, synchronising TTS audio, live subtitles, and CustomPainter-animated diagrams into frame-accurate playback per curriculum topic.",
+        "Added an adaptive Smart Quiz with AI-generated questions, and a camera-based Solve feature for step-by-step maths and science problems.",
+        "Structured 16 modules in clean architecture (Data → Domain → Presentation) with Provider, flutter_modular DI, Dio interceptors and dartz Either, plus full Arabic RTL, ~52 analytics events across 14 modules, Crashlytics, FCM, and Dev/Staging/QA/Prod builds.",
+      ],
+      // Sourced from the work itself: each of these was a choice with an
+      // alternative, and the reason is the constraint that ruled it out.
+      decisions: [
+        {
+          title: "WebSocket, not request/response",
+          body: "A tutor that returns a finished paragraph feels broken even when it is fast — the student stares at a spinner. Streaming over a persistent socket puts the first token on screen in a fraction of the total generation time, and the same connection carries the voice session, so there is one transport to keep alive rather than two.",
+        },
+        {
+          title: "Native platform audio with VAD thresholds, to stop the model interrupting itself",
+          body: "In voice mode the tutor was reacting to its own output: its speech re-entered the microphone and was transcribed as a new student question. Routing capture and playback through native platform audio and setting voice-activity-detection thresholds for barge-in fixed it — the student can still cut the tutor off mid-sentence, which is what makes it feel like a conversation, but the tutor can no longer cut itself off.",
+        },
+        {
+          title: "~300–500 ms as a budget, not a target",
+          body: "The round-trip number was fixed first and every layer was built to fit inside it — streaming rather than batching, native audio rather than a plugin chain, and no post-processing between recognition and the model. Treating it as a budget is what kept it from drifting as features landed.",
+        },
+        {
+          title: "Frame-accurate sync instead of three independent players",
+          body: "A generated lesson plays audio, subtitles, and an animated diagram at once. Driven separately they drift, and a diagram that explains the wrong sentence is worse than no diagram. The Board engine plays them as one timeline, so the drawing, the caption, and the voice stay on the same beat.",
+        },
+        {
+          title: "Four build environments from the start",
+          body: "An app that is the Ministry of Education's official product cannot be tested against production. Dev, Staging, QA and Prod builds were set up before the feature work, which is why 200,000 students never saw a QA release.",
+        },
       ],
       results: [
-        { value: "30,000+", label: "K-12 students" },
+        { value: "200,000+", label: "K-12 students" },
         { value: "8,500+", label: "monthly active users" },
-        { value: "Realtime", label: "voice + chat tutoring" },
+        { value: "~300–500 ms", label: "voice round-trip" },
+        { value: "16", label: "modules in clean architecture" },
       ],
       stack: [
         "Flutter",
@@ -240,11 +316,11 @@ export const en: Dictionary = {
           href: "https://play.google.com/store/apps/details?id=com.moe.fahem",
         },
       ],
+      published: "2026-07-11",
+      appCategory: "EducationalApplication",
+      platforms: ["iOS", "Android"],
     },
     {
-      // TODO(abdullah): this copy is already live on the homepage, but
-      // /work/talia gives the Qatar Ministry of Education line its own
-      // indexed URL. Confirm that is fine with the client, or soften it.
       // TODO(abdullah): no screenshots for Talia — the detail page renders
       // without a "From the product" section until some exist.
       slug: "talia",
@@ -253,15 +329,29 @@ export const en: Dictionary = {
       context: "Appenza Studio · frontend & integration",
       image: appImages.talia,
       summary:
-        "An Arabic-first, multi-tenant education platform (LMS + SIS) built to run a whole ministry and every school under it. Live with its first school in Egypt, with further schools in rollout and a Qatar Ministry of Education deployment in requirements.",
+        "An Arabic-first, multi-tenant education platform (LMS + SIS) for Egyptian schools, built to run a full authority → school hierarchy. Live at its first school, Parkway, and in active development as the platform grows.",
       challenge:
-        "A ministry and every school beneath it needed one system for student records, learning, and operations — Arabic-first, RTL, and Hijri-aware — with confidential health, counseling, and special-needs data that not even school admins can override.",
+        "A school network needed one system for student records, learning, and operations — Arabic-first, RTL, and Hijri-aware — with confidential health, counseling, and special-needs data that not even school admins can override, and a data model that scales from one school to an authority running many.",
       role: "Frontend & integration engineer across the Talia 360 admin/ministry console and the Talia Learn app — wiring screens from mock data to a live Go/REST backend and verifying every one against the deployed environment.",
       process: [
         "Built and integrated screens for Talia 360 (ministry/admin console) and Talia Learn (learning app) as SvelteKit 5 + Tailwind CSS 4 SPAs over a typed Go/REST backend.",
         "Wired product screens from mock/seed data to live API reads and writes with a layered datasource → repository → query architecture using TanStack Query.",
         "Implemented RBAC-aware, role-based views (teacher / student / principal / admin) over a deny-by-default authorization model across a Ministry→School entity tree.",
         "Ran live in-browser QA to confirm real-data rendering, close mock-vs-live gaps, and file backend contract issues — holding a no-dummy-data standard.",
+      ],
+      decisions: [
+        {
+          title: "Deny by default, across a Ministry → School tree",
+          body: "The records in this system include health, counselling and special-needs notes, and the people most likely to be asked to “just check something” are school admins. So permission is not granted by role and then restricted — nothing is visible until a rule says it is, and a school administrator has no override for confidential records. The failure mode of an allow-by-default model is a quiet leak; the failure mode of this one is someone filing a ticket.",
+        },
+        {
+          title: "A datasource → repository → query layer, not fetch calls in components",
+          body: "Twenty-five modules were being built against a backend that was still moving. Putting every read and write behind a typed layer with TanStack Query on top meant a changed endpoint was a one-file fix rather than a search across screens, and caching and refetch behaviour were decided once instead of per component.",
+        },
+        {
+          title: "No dummy data, ever, past the first integration",
+          body: "Screens built against mock fixtures pass review and fail in production, because the mock is always tidier than the API. Every screen was re-verified in-browser against the deployed environment, and the gaps that surfaced were filed as backend contract issues rather than patched in the client.",
+        },
       ],
       results: [
         { value: "25", label: "functional modules" },
@@ -276,6 +366,218 @@ export const en: Dictionary = {
         "REST / JWT",
         "RBAC",
       ],
+      published: "2026-07-23",
+    },
+    {
+      // The most senior-sounding story on the site, and it was one paragraph
+      // in the timeline: two live consumer apps, measured before and after.
+      slug: "imox-yolo",
+      title: "IMOX & YOLO",
+      type: "Performance and platform migrations on live apps",
+      context: "DIB GmbH · product engineer",
+      featured: true,
+      image: appImages.imox,
+      shots: [
+        {
+          src: "/images/shots/imox1.webp",
+          alt: "IMOX discovery screen: a category rail down the left (Fashion, Beauty, Electronics, Groceries), and rows of products — men's shoes, women's shoes, accessories — each with a photo and an EGP price.",
+          caption:
+            "The discovery feed: categories down one side, priced product rows across, and the reel-backed catalogue this app is built around.",
+        },
+        {
+          src: "/images/shots/imox2.webp",
+          alt: "IMOX engage screen: a full-screen short video of a technician at work, with a product card overlaid at the bottom offering the service shown and a side rail of engagement actions.",
+          caption:
+            "A reel doubling as a storefront — the video plays full screen and the thing it shows is buyable from the card on top of it. This is the screen whose cold start had to come down.",
+        },
+        {
+          src: "/images/shots/yolo1.webp",
+          alt: "YOLO HR module: an employee list with a search field and rows showing photo, first name, last name, and a role dropdown set to Administrator or Doctor.",
+          caption:
+            "YOLO's HR module: staff records with per-row roles — one of five domains (HR, appointments, patients, inventory, billing) in a single clinic app.",
+        },
+        {
+          src: "/images/shots/yolo2.webp",
+          alt: "YOLO appointment details: tabs for Overview, Services, Medical Records and Payments, above a patient form with name, gender, date of birth, an international phone field and an address field with Google lookup.",
+          caption:
+            "Appointment detail, with the patient's clinical and payment history one tab away — and an address field wired to Google lookup, because the clinics span three countries.",
+        },
+        {
+          src: "/images/shots/yolo3.webp",
+          alt: "YOLO CRM module: a searchable patient list, each row expanding to show the patient's name and phone number.",
+          caption:
+            "The CRM side: the same patient records, reached the way front-desk staff actually look for them.",
+        },
+      ],
+      summary:
+        "Two live consumer apps at one company, in one year: a reels cold start cut from ~5–6 s to ~0.5–1.5 s, a deep-link migration completed before Firebase's shutdown, and a clinic app 41% smaller.",
+      challenge:
+        "Both products already had users, which is the hard version of this work: nothing could be rewritten, every change had to survive a store release, and one of them was racing a third-party deprecation with a fixed date.",
+      role: "Product engineer on both apps — owning the performance work, the deep-linking and analytics migration, and a run of client-requested features.",
+      process: [
+        "Redesigned IMOX's reel preloading: prime only the first two reels at splash, prefetch the next two after launch, then paginate ten at a time with a one-page buffer.",
+        "Migrated deep linking off the deprecated Firebase Dynamic Links to Airbridge — deferred deep links included — preserving attribution continuity ahead of the shutdown, and integrated Mixpanel identity, events and funnels.",
+        "Cut YOLO's install size by 41%, from 86 MB to 51 MB, through build optimisation, asset compression, and a dependency audit.",
+        "Delivered 10+ client-requested features across appointment scheduling, HR, patient records and inventory for a platform running in clinics in Egypt, Germany and the UAE.",
+      ],
+      decisions: [
+        {
+          title: "Fix the preloading budget, not the video pipeline",
+          body: "A reels app is slow at launch because it fetches too much before showing anything, not because decoding is slow. Priming exactly two reels at splash is the smallest amount that still lets someone swipe immediately; the next two arrive after first paint, and from there a ten-at-a-time page with one page buffered keeps the scroll ahead of the user without downloading a feed nobody will watch. The result — roughly 6 s to under 1.5 s — came from deciding what to leave unloaded.",
+        },
+        {
+          title: "Migrate deep links early, and carry deferred links across",
+          body: "Firebase Dynamic Links had an announced shutdown date, so the migration was going to happen either before it or during an outage. The part that is easy to drop is deferred deep linking — the case where someone taps a link, installs the app, and should still land on the thing they tapped. That path is invisible in testing until a real install breaks, so it was ported deliberately rather than discovered later, and attribution stayed continuous across the switch.",
+        },
+        {
+          title: "Audit dependencies before compressing assets",
+          body: "41% off an install size is not one trick. The order matters: a dependency audit removes whole libraries and their transitive weight first, then build configuration, then asset compression on what is genuinely left. Starting with image compression would have shaved a few megabytes off a bundle that was still carrying code nobody called.",
+        },
+      ],
+      results: [
+        { value: "~6 s → 1.5 s", label: "IMOX cold start" },
+        { value: "41%", label: "smaller install (86 → 51 MB)" },
+        { value: "3 countries", label: "clinics running YOLO" },
+        { value: "10+", label: "client features delivered" },
+      ],
+      stack: [
+        "Flutter",
+        "Airbridge",
+        "Mixpanel",
+        "Firebase",
+        "Performance profiling",
+      ],
+      links: [
+        {
+          label: "App Store",
+          href: "https://apps.apple.com/us/developer/yolo-gmbh-germany/id1644853629",
+        },
+        {
+          label: "Google Play",
+          href: "https://play.google.com/store/apps/developer?id=Dib+GmbH",
+        },
+      ],
+      published: "2026-09-16",
+      appCategory: "BusinessApplication",
+      platforms: ["iOS", "Android"],
+    },
+    {
+      slug: "xera-lab",
+      title: "Xera Lab",
+      type: "Dental case-management platform",
+      context: "Independent · sole engineer, full stack",
+      image: appImages.xera,
+      summary:
+        "A dental X-ray lab's whole workflow — intake, assignment, review, delivery — as one platform: portal, admin dashboard, API, database and the servers it runs on, all built by one engineer.",
+      challenge:
+        "A dental lab receives cases from clinics, routes them to technicians, has a doctor review the result, and sends it back. That ran on email and phone calls, so nobody could answer where a case was without asking someone. It needed to be one system with three different kinds of user in it — and there was no team to split the work across.",
+      role: "Sole engineer. Frontend, backend, database, deployment and the TLS certificate.",
+      process: [
+        "Built the customer portal and the admin dashboard, with role-based access for Admin, Doctor and Technician.",
+        "Modelled the full case lifecycle — intake → assignment → review → delivery — so a case's state is a fact in the database rather than a conversation.",
+        "Wrote the entire Node.js/Express + PostgreSQL backend with JWT authentication, and put X-ray uploads on AWS S3.",
+        "Deployed it with Docker Compose behind Nginx with TLS.",
+      ],
+      decisions: [
+        {
+          title: "Three roles in the data model, not three apps",
+          body: "Admin, Doctor and Technician see different things, but they see the same case. Splitting them into separate applications would have meant three codebases and a sync problem; putting the roles in the authorisation layer over one model meant a case has one state, and who can see or move it is a rule rather than a build.",
+        },
+        {
+          title: "The workflow is the schema",
+          body: "Intake, assignment, review and delivery are states a case moves between, so they live in the database with the transitions that are legal from each one. The alternative — a status string set by whichever screen was open — is how a case ends up delivered and unreviewed at the same time.",
+        },
+        {
+          title: "S3 for the X-rays, Postgres for everything else",
+          body: "Dental X-rays are large, numerous, and never queried by content. Keeping them out of the database kept backups small and restores fast, and meant the API serves references rather than proxying megabytes.",
+        },
+      ],
+      results: [
+        { value: "3 roles", label: "Admin, Doctor, Technician" },
+        { value: "4 stages", label: "intake → assignment → review → delivery" },
+        { value: "1 engineer", label: "frontend, backend, infra" },
+      ],
+      stack: [
+        "Flutter Web",
+        "Node.js / Express",
+        "PostgreSQL",
+        "JWT",
+        "Docker Compose",
+        "Nginx (TLS)",
+        "AWS S3",
+      ],
+      published: "2026-09-16",
+    },
+    {
+      slug: "btc",
+      title: "BTC",
+      type: "Gold & jewellery commerce, retail and wholesale",
+      context: "Appenza Studio · product engineer",
+      image: appImages.btc,
+      shots: [
+        {
+          src: "/images/shots/btc1.webp",
+          alt: "BTC storefront home: a Silver Collection banner, selectors for delivery country (Egypt, EGP) and language (English), a Gold/Silver toggle, category tiles for coins, ingots, bars and wearables, and a Calculate Your Savings panel taking an amount in EGP.",
+          caption:
+            "The storefront: metal and category up front, delivery country and language chosen per visit — and a savings calculator, because people buy gold by budget as often as by product.",
+        },
+        {
+          src: "/images/shots/btc2.webp",
+          alt: "BTC gift collections screen: Baby Gifting with 19 items and Happy Birthday with 153 items, above a Best Sellers row showing a wooden box of 25 cards at 1,200 EGP and a 50g Kaaba ingot at 338,852.48 EGP.",
+          caption:
+            "Curated collections above best sellers. Prices run from a 1,200 EGP gift to a 338,000 EGP ingot in the same list, which is the range the UI has to stay legible across.",
+        },
+        {
+          src: "/images/shots/btc3.webp",
+          alt: "BTC coins category: a two-column grid of gold coins — 40g and 8g Al Masjid Annabawi, 8g and 4g Angel — each with a photo, weight, price in EGP, and an Add To Cart button.",
+          caption:
+            "A category grid priced to the piastre. Gold prices move, so the number on the card is a live figure rather than a stored one.",
+        },
+      ],
+      summary:
+        "Two apps from one Flutter codebase for one of Egypt's largest gold and jewellery houses: a consumer storefront and a B2B wholesale ordering app, both over the same GraphQL API.",
+      challenge:
+        "The same business sells a 1,200 EGP gift to a walk-in customer and a 50-gram ingot to a merchant, on prices that move with the gold market. Two audiences, two buying flows, one catalogue — and a company that did not want two engineering efforts.",
+      role: "Product engineer on both apps and the shared codebase behind them.",
+      process: [
+        "Built the customer storefront — collections, categories, a savings calculator, cart and checkout — with per-visit delivery country and language.",
+        "Built the B2B merchant app for wholesale ordering from the same codebase and the same catalogue.",
+        "Integrated both against a GraphQL API so a price or a product exists once and both apps read it.",
+        "Shipped both to the App Store and Google Play.",
+      ],
+      decisions: [
+        {
+          title: "One codebase, two products — not one app with a switch",
+          body: "Retail and wholesale share a catalogue and nothing else: different prices, different quantities, different checkout. A single app gated on an account type would have put wholesale pricing one bug away from a consumer's screen. Two builds from one codebase keeps the shared model shared and the flows genuinely separate.",
+        },
+        {
+          title: "GraphQL, because the two apps ask different questions of the same catalogue",
+          body: "The storefront wants a product with images and a retail price; the merchant app wants the same product with tiers and stock. Against REST that is either two sets of endpoints or over-fetching on both sides. One graph lets each app ask for the shape it renders.",
+        },
+        {
+          title: "Country and language as a per-visit choice, not a device setting",
+          body: "Delivery country decides price and availability, and the buyer is not always in the country they are shipping to. Making both explicit selectors in the header — rather than inferring from the locale — avoids quoting someone a price that changes at checkout.",
+        },
+      ],
+      results: [
+        { value: "2 apps", label: "retail + B2B, one codebase" },
+        { value: "Live", label: "App Store and Google Play" },
+        { value: "GraphQL", label: "one catalogue, two shapes" },
+      ],
+      stack: ["Flutter", "GraphQL", "Clean Architecture", "E-commerce"],
+      links: [
+        {
+          label: "App Store",
+          href: "https://apps.apple.com/us/app/btc-e-shop/id6757194529",
+        },
+        {
+          label: "Google Play",
+          href: "https://play.google.com/store/apps/details?id=com.bulliontradingcenter.btc.eshop",
+        },
+      ],
+      published: "2026-09-16",
+      appCategory: "ShoppingApplication",
+      platforms: ["iOS", "Android"],
     },
     {
       slug: "jaweb",
@@ -319,13 +621,21 @@ export const en: Dictionary = {
         { value: "Automatic", label: "referee + scoring" },
       ],
       stack: ["Flutter", "Clean Architecture", "My Fatoorah", "Payments"],
+      published: "2026-07-11",
+      appCategory: "GameApplication",
+      platforms: ["iOS", "Android"],
     },
   ],
   work: {
     meta: {
-      title: "Work — case studies | Abdullah Mohamed",
+      title: "Case studies — products I built and shipped",
       description:
-        "Case studies from products I have built and shipped: what the problem was, what I owned, how it was built, and what it produced.",
+        "Case studies by Abdullah Mohamed, senior full-stack & Flutter engineer in Cairo: an Arabic AI tutor for 200,000+ students, a national multi-tenant LMS, and more.",
+    },
+    caseMeta: {
+      title: "{title} case study — {type}",
+      description:
+        "{summary} Case study by Abdullah Mohamed: the challenge, his role, how it was built with {stack}, and the results.",
     },
     eyebrow: "Work",
     title: "Products I built, written up end to end.",
@@ -336,6 +646,7 @@ export const en: Dictionary = {
     viewAll: "View all work",
     backToIndex: "All work",
     more: "More case studies",
+    relatedServices: "Hire me for the same thing",
     alsoShipped: {
       eyebrow: "Also shipped",
       title: "Other products in users' hands.",
@@ -343,7 +654,7 @@ export const en: Dictionary = {
     },
     screenshots: "From the product",
     screenshotsNote:
-      "The product interface is Arabic. Each caption describes what the screen is doing.",
+      "Each caption describes what the screen is doing — several of these products have an Arabic-only interface.",
     links: "See it live",
     cta: {
       title: "Building something like this?",
@@ -351,21 +662,10 @@ export const en: Dictionary = {
       button: "Start a project",
     },
   },
+  // Apps with a store link but no written case study. YOLO and BTC used to be
+  // here; both now have their own page under /work/, and listing a product in
+  // both places says the same thing twice.
   selectedWork: [
-    {
-      key: "yolo",
-      title: "YOLO",
-      tagline:
-        "Clinic operations: patients, appointments, inventory, and billing in one app.",
-      image: appImages.yolo,
-    },
-    {
-      key: "btc",
-      title: "BTC",
-      tagline:
-        "Storefront + B2B wholesale ordering for a major gold & jewelry house.",
-      image: appImages.btc,
-    },
     {
       key: "qfight",
       title: "Q-Fight Gym",
@@ -396,7 +696,7 @@ export const en: Dictionary = {
       location: "Full-time · Egypt",
       logo: "/images/company_logos/appenza.webp",
       summary:
-        "Building the core of Faheem, an Arabic AI tutoring product used by 30,000+ K-12 students.",
+        "Building the core of Faheem, an Arabic AI tutoring product used by 200,000+ K-12 students.",
       achievements: [
         "Developed realtime AI tutoring over WebSocket with Azure OpenAI streaming.",
         "Built voice tutor flows with STT/TTS and an AI board for generated educational visuals.",
@@ -416,7 +716,7 @@ export const en: Dictionary = {
             "Clean Architecture",
           ],
           metrics: [
-            { value: "30,000+", label: "K-12 students" },
+            { value: "200,000+", label: "K-12 students" },
             { value: "8,500+", label: "monthly active" },
             { value: "16", label: "modules shipped" },
           ],
@@ -425,7 +725,7 @@ export const en: Dictionary = {
           title: "Talia",
           type: "Multi-tenant school platform",
           image: appImages.talia,
-          body: "Arabic-first, multi-tenant national LMS + SIS platform. Live with its first school in Egypt, with additional schools in rollout and a Qatar Ministry of Education deployment in requirements. Building the SvelteKit web clients (Talia 360 admin console and Talia Learn) and integrating dozens of screens from mock data to a live Go/REST backend, with RBAC-aware role-based access across a Ministry→School entity tree.",
+          body: "Arabic-first, multi-tenant LMS + SIS platform for Egyptian schools. Live at its first school, Parkway, and in active development. Building the SvelteKit web clients (Talia 360 admin console and Talia Learn) and integrating dozens of screens from mock data to a live Go/REST backend, with RBAC-aware role-based access across a Ministry→School entity tree.",
           stack: ["SvelteKit 5", "TypeScript", "Tailwind CSS 4", "TanStack Query", "RBAC"],
         },
         {
@@ -677,7 +977,7 @@ export const en: Dictionary = {
     },
     {
       title: "Real-time AI features",
-      body: "Streaming AI chat, voice interaction (STT/TTS), and generated content wired into your product over WebSocket — the way Faheem serves 30,000+ students live.",
+      body: "Streaming AI chat, voice interaction (STT/TTS), and generated content wired into your product over WebSocket — the way Faheem serves 200,000+ students live.",
     },
     {
       title: "Mobile apps from one codebase",
@@ -689,17 +989,19 @@ export const en: Dictionary = {
   // is scoped per build.
   plans: [
     {
+      slug: "saas-development",
       name: "SaaS / Full System",
       icon: "layers",
       body: "A complete multi-tenant platform, end to end.",
       price: "from $6,000",
+      minPrice: 6000,
       priceNote: "starting price \u00b7 negotiable by scope",
       cta: "Book a call",
       featured: true,
       badge: "Most popular",
       items: [
         "Multi-tenant architecture with role-based access",
-        "Frontend, backend, database and infrastructure \u2014 all owned by one engineer",
+        "Frontend, backend, database and infrastructure — all owned by one engineer",
         "Auth, billing, admin panel and third-party integrations",
         "Dockerized deployment with CI/CD",
         "Documentation, runbooks and a clean handoff",
@@ -707,10 +1009,12 @@ export const en: Dictionary = {
       ],
     },
     {
+      slug: "web-app-development",
       name: "Web App",
       icon: "browser",
       body: "A focused web product or internal tool, shipped.",
       price: "from $3,500",
+      minPrice: 3500,
       priceNote: "starting price \u00b7 negotiable by scope",
       cta: "Book a call",
       items: [
@@ -722,24 +1026,28 @@ export const en: Dictionary = {
       ],
     },
     {
+      slug: "ai-integration",
       name: "AI Feature",
       icon: "spark",
       body: "Real-time AI wired into your product.",
       price: "from $3,000",
+      minPrice: 3000,
       priceNote: "starting price \u00b7 negotiable by scope",
       cta: "Book a call",
       items: [
         "Streaming AI chat, voice (STT/TTS), or generated content",
         "Wired into your existing product over WebSocket",
         "Model integration, fallbacks and guardrails",
-        "The kind of realtime AI layer that runs in Faheem for 30,000+ students",
+        "The kind of realtime AI layer that runs in Faheem for 200,000+ students",
       ],
     },
     {
+      slug: "flutter-app-development",
       name: "Mobile App",
       icon: "mobile",
       body: "iOS and Android from one codebase.",
       price: "from $5,000",
+      minPrice: 5000,
       priceNote: "starting price \u00b7 negotiable by scope",
       cta: "Book a call",
       items: [
@@ -777,31 +1085,384 @@ export const en: Dictionary = {
       linkedin: "https://www.linkedin.com/in/abdullah-mohamed-3010/details/recommendations/",
     },
   ],
+  // The heading no longer repeats the hero, and the first paragraph carries
+  // the entity disambiguators — employer, product, university, GitHub handle.
+  // "Abdullah Mohamed" collides with other engineers of the same name and
+  // title; these are the facts that separate them.
   about: {
     eyebrow: "About",
-    title: "I build products that have to survive real users.",
+    title: "Four companies, three countries, one habit: owning the thing until it runs in production.",
     paragraphs: [
-      "I'm a senior software engineer working across full-stack web apps, real-time AI features, mobile products, and the deployment pipelines that keep them running. Most of my work is the part teams underestimate: turning an unclear idea into something that actually ships and holds up in production.",
-      "Over the last few years I've put 10+ apps into stores across four regions, usually owning a feature from architecture through release. I care about clarity, momentum, and code the next engineer can maintain without a map.",
+      "I'm a senior software engineer at Appenza Studio in Cairo. I own the real-time AI layer of Faheem — the Egyptian Ministry of Education's tutoring app, used by 200,000+ students — and build the SvelteKit clients of Talia, a multi-tenant national LMS. Before Appenza I shipped social-commerce and clinic software for DIB GmbH (Germany), white-label pharmacy apps for RevealSite (US), and school payments and chat at Zeyada.",
+      "I work end to end — Flutter or React/SvelteKit on the front, Node.js and PostgreSQL behind it, Docker and Nginx underneath — and I measure the result: ~300–500 ms voice round-trips, a 41% smaller app, a cold start cut from ~6 s to under 1.5 s. B.Sc. in Computer Science & AI, Helwan University (2023). English and Arabic; every product I build is RTL-ready.",
+    ],
+    factsLabel: "At a glance",
+    // One line per value, and every fact is stated elsewhere on the page or on
+    // the CV. This is the block an assistant lifts when asked who he is.
+    facts: [
+      ["Role", "Senior Software Engineer — full-stack, AI, and mobile"],
+      ["Employer", "Appenza Studio, Cairo — Senior Software Engineer since Jan 2026"],
+      ["Based in", "Cairo, Egypt (GMT+2) · works remotely"],
+      ["Experience", "Since 2022 in production · 10+ apps shipped · 4 companies"],
+      ["Education", "B.Sc. Computer Science & AI, Helwan University (2023)"],
+      ["Stack", "React, Next.js, SvelteKit, Node.js, PostgreSQL, Flutter, Azure OpenAI, AWS"],
+      ["Languages", "English and Arabic · bilingual, RTL-ready products"],
+      ["Clients so far", "Egypt, Germany, the US, Qatar, and Kuwait"],
+      ["GitHub", "github.com/Abdullah3010"],
+      ["Open to", "Senior product roles (remote first), freelance projects, and contracts"],
     ],
   },
   contact: {
     eyebrow: "Contact",
-    title: "Need a product built, fixed, or launched?",
-    body: "Send me the product, deadline, and what is currently blocking you. I’ll reply with the next practical step.",
+    // Both audiences in the heading, in the order they appear below.
+    title: "Hiring, or building?",
+    body: "Two different questions, two answers. Pick the one that fits and I’ll reply within 24 hours on working days.",
     book: "Book a call",
+    lanes: {
+      hiring: {
+        title: "Hiring for a senior role?",
+        body: "The CV and LinkedIn are one click away. I'm open to senior product roles, remote first — send the role, the stack, and the team, and I'll reply honestly about fit.",
+      },
+      project: {
+        title: "Have a product to build?",
+        body: "Send the product, the deadline, and what is blocking you. You'll get an honest answer, and a written proposal if it fits.",
+      },
+    },
     form: {
       name: "Your name",
       email: "Your email",
-      message: "What do you need built, fixed, or launched?",
+      message: "Tell me about the role or the product",
+      intentLabel: "I'm writing about",
+      intentOptions: {
+        hiring: "A role I'm hiring for",
+        project: "A project I need built",
+        other: "Something else",
+      },
       send: "Send message",
       sending: "Sending…",
-      success: "Message sent — I'll reply within 24 hours.",
+      success: "Got it — I reply within 24 hours on working days.",
       error: "Couldn't send right now — please reach me directly below.",
       copyEmail: "Copy email",
       copied: "Copied!",
       directLabel: "Or reach me directly",
     },
+  },
+  // The four /services pages. Each is the long form of one pricing card
+  // (joined by slug) and is written to be read cold — by a searcher or by an
+  // assistant answering "who can build X" — without the rest of the site.
+  // Every claim here is backed by a case study or an experience entry above;
+  // nothing is promised that the timeline doesn't show.
+  servicePages: {
+    meta: {
+      title: "Services — full-stack, real-time AI & Flutter development",
+      description:
+        "Freelance software engineering from a senior engineer in Cairo: multi-tenant SaaS, web apps, real-time AI integration, and Flutter apps — with starting prices.",
+    },
+    eyebrow: "Services",
+    title: "What I build, what it costs, and how it runs.",
+    body: "Four ways to hire me, each with a starting price and a written scope. Most projects are a mix — start from the closest one and we'll shape it on the call.",
+    navLabel: "Service pages",
+    indexLabel: "Services",
+    readMore: "See what's included",
+    learnMore: "What's included",
+    viewAll: "All services",
+    backToIndex: "All services",
+    labels: {
+      fit: "Is this you?",
+      deliverables: "What you get",
+      approach: "How I build it",
+      proof: "Proof",
+      pricing: "Pricing",
+      faq: "Questions about this service",
+      more: "Other services",
+    },
+    cta: {
+      title: "Ready to scope it?",
+      body: "Book a free call or send a short brief: the product, the deadline, and what's blocking you. You'll get an honest answer and, if it fits, a written proposal with the price and timeline.",
+      button: "Book a call",
+    },
+    pages: [
+      {
+        slug: "saas-development",
+        meta: {
+          title: "Multi-tenant SaaS development, end to end",
+          description:
+            "Hire a senior full-stack engineer to build your multi-tenant SaaS end to end: auth, roles, billing, admin, PostgreSQL, Docker + CI/CD. From $6,000. Cairo, remote.",
+        },
+        name: "SaaS platform development",
+        eyebrow: "Services · SaaS",
+        title: "Multi-tenant SaaS platforms, built end to end by one engineer.",
+        lead: "A complete SaaS product — frontend, backend, database, and the infrastructure it runs on — delivered by a single accountable engineer. Multi-tenant architecture with role-based access, authentication, billing, an admin console, and a Dockerized deployment with CI/CD. Built the way Xera Lab and Talia were.",
+        fit: [
+          "You have a validated idea and need the whole platform built, not just a frontend.",
+          "Your product serves several organisations, each with its own users, data, and roles.",
+          "You want one engineer who owns the full stack and the deployment, working to a written scope.",
+          "You need an Arabic/English, RTL-ready product for Egypt or the Gulf.",
+        ],
+        deliverables: [
+          "Multi-tenant data model with tenant isolation and a deny-by-default RBAC layer",
+          "Authentication, roles, and permission-aware screens for every user type",
+          "Admin console, billing, and the third-party integrations your product depends on",
+          "A typed REST API over PostgreSQL, with background jobs where the product needs them",
+          "Docker Compose deployment on AWS or your cloud, with CI/CD and monitoring",
+          "Documentation, runbooks, and a handoff the next engineer can pick up",
+        ],
+        approach: [
+          "React/Next.js or SvelteKit on the frontend; Node.js on the backend; PostgreSQL and Redis underneath.",
+          "A layered architecture (datasource → repository → query) so every screen is verified against real data, never mock data.",
+          "Milestones that deliver working software — you use the product while it is being built.",
+          "Everything lives in your repositories from day one. No lock-in.",
+        ],
+        proof: ["xera-lab", "talia"],
+        faq: [
+          {
+            q: "What does \"from $6,000\" cover?",
+            a: "The starting price for a focused multi-tenant platform: one core workflow, authentication and roles, an admin console, and deployment. The final price depends on the number of modules, integrations, and roles, and goes in a written proposal after a free call.",
+          },
+          {
+            q: "How long does a SaaS build take?",
+            a: "It is scoped per proposal rather than quoted as a fixed number of weeks. You get a timeline with milestones in writing before we start, and working software at every milestone.",
+          },
+          {
+            q: "Can you model a hierarchy like ministry → school or company → branch?",
+            a: "Yes. Talia runs a Ministry→School entity tree with deny-by-default RBAC across 25 modules and 534 requirements, including confidential data that not even school admins can override. The same pattern fits company→branch or agency→client products.",
+          },
+        ],
+      },
+      {
+        slug: "web-app-development",
+        meta: {
+          title: "Full-stack web app development — React, Node.js, PostgreSQL",
+          description:
+            "Hire a senior full-stack developer for your web app, dashboard, or internal tool: React/Next.js, Node.js, PostgreSQL, auth, roles, deployed with CI/CD. From $3,500.",
+        },
+        name: "Web app development",
+        eyebrow: "Services · Web",
+        title: "Web apps and internal tools, owned end to end.",
+        lead: "A focused web product, dashboard, or internal tool — frontend, backend, and database built and deployed by one senior engineer. Authentication, roles, third-party integrations, and a production deployment with CI/CD, delivered with documentation the next engineer can maintain.",
+        fit: [
+          "You need a dashboard, customer portal, or internal tool that replaces spreadsheets and manual work.",
+          "You have a backend and need the frontend built against it — or the reverse.",
+          "You want one focused slice of a product in production quickly, to a written scope.",
+          "You need a bilingual, RTL-ready web app for an Arabic-speaking audience.",
+        ],
+        deliverables: [
+          "React/Next.js or SvelteKit frontend with a responsive, accessible UI",
+          "Node.js REST API over PostgreSQL — or integration with the backend you already have",
+          "Authentication, roles, and permission-aware screens",
+          "Third-party integrations: payments, email, maps, analytics",
+          "Production deployment with CI/CD and per-environment configuration",
+          "Documentation and a clean handoff",
+        ],
+        approach: [
+          "TypeScript across the stack, with typed API contracts.",
+          "Real data from the first milestone — no dummy-data screens.",
+          "Performance and accessibility treated as requirements, not polish.",
+          "Delivered in your repositories, with deployment access, from day one.",
+        ],
+        proof: ["xera-lab", "talia"],
+        faq: [
+          {
+            q: "Can you work with my existing backend or design?",
+            a: "Yes. On Talia I built the SvelteKit clients against a Go/REST backend owned by another team, wiring dozens of screens from mock data to live API reads and writes. Bring your API or your Figma and I'll build the rest.",
+          },
+          {
+            q: "Which frontend framework do you use?",
+            a: "React/Next.js by default, SvelteKit where it fits — Talia's admin console and learning app are SvelteKit 5, and this site is Next.js. The choice follows your team and product, not my preference.",
+          },
+          {
+            q: "What does \"from $3,500\" cover?",
+            a: "A focused web app: one primary workflow, authentication, a small admin surface, and deployment. Extra modules, roles, and integrations are scoped and priced in the written proposal.",
+          },
+        ],
+      },
+      {
+        slug: "ai-integration",
+        meta: {
+          title: "Real-time AI integration — streaming chat, voice (STT/TTS)",
+          description:
+            "Add real-time AI to your product: streaming chat, voice (STT/TTS), generated content — by the engineer behind an Arabic AI tutor for 200,000+ students. From $3,000.",
+        },
+        name: "Real-time AI integration",
+        eyebrow: "Services · AI",
+        title: "Real-time AI features, wired into your product.",
+        lead: "Streaming AI chat, voice interaction (speech-to-text and text-to-speech), and generated content, integrated into your existing app over WebSocket — with model fallbacks, guardrails, and the latency work that makes it feel live. The same layer that serves Faheem, an Arabic AI tutor used by 200,000+ K-12 students.",
+        fit: [
+          "You have a product with users and want an AI assistant, tutor, or copilot inside it — not a separate chatbot page.",
+          "You need voice: users speak, the product answers in real time.",
+          "You need Arabic or bilingual AI experiences that handle RTL properly.",
+          "You have a prototype and need it production-grade: streaming, retries, cost control, observability.",
+        ],
+        deliverables: [
+          "Streaming chat over WebSocket with token-by-token rendering",
+          "Voice flows: speech-to-text in, text-to-speech out, with interruption handling",
+          "Generated content: lessons, summaries, visuals, structured output",
+          "Model integration (Azure OpenAI or your provider) with fallbacks and guardrails",
+          "Prompt and context management, rate limits, and usage tracking",
+          "Analytics and monitoring for answer quality and cost",
+        ],
+        approach: [
+          "WebSocket or SSE transport chosen for your stack, with typed events end to end.",
+          "Built inside your existing app — mobile (Flutter) or web (React/SvelteKit) — as modules, not a bolt-on.",
+          "Tested with real users early: a small cohort, measured, then scaled.",
+          "Handed over with documentation on prompts, limits, and how to swap the model.",
+        ],
+        proof: ["faheem"],
+        faq: [
+          {
+            q: "Which AI providers do you work with?",
+            a: "Azure OpenAI in production, on Faheem. Any provider with a streaming API can be wired the same way, and the integration is built so the model can be swapped without rewriting the feature.",
+          },
+          {
+            q: "Can you add AI to an existing mobile app?",
+            a: "Yes — that is exactly what Faheem is: a Flutter app with real-time tutoring, voice, and an AI board added as modules in a clean architecture. Web apps work the same way.",
+          },
+          {
+            q: "Does it work in Arabic?",
+            a: "Yes. Faheem is Arabic-first: Arabic chat, Arabic voice, RTL UI. Bilingual products are the norm in my work, not an add-on.",
+          },
+        ],
+      },
+      {
+        slug: "flutter-app-development",
+        meta: {
+          title: "Flutter app development — iOS & Android from one codebase",
+          description:
+            "Hire a senior Flutter developer: iOS and Android from one codebase — auth, payments, push, offline, App Store and Google Play release. 10+ apps shipped. From $5,000.",
+        },
+        name: "Flutter mobile app development",
+        eyebrow: "Services · Mobile",
+        title: "iOS and Android apps from one Flutter codebase, shipped to the stores.",
+        lead: "A production mobile app, not just screens: authentication, payments, analytics, push notifications, offline support, and the App Store and Google Play release, on a clean-architecture Flutter codebase. 10+ apps shipped across Egypt, Germany, the UAE, and the US — including Faheem, BTC, YOLO, Q-Fight Gym, Al-Muslim, and ICCD Hub.",
+        fit: [
+          "You need a customer-facing app on both stores without paying for two native teams.",
+          "Your app depends on payments, bookings, real-time features, or maps — not just content.",
+          "You have an existing Flutter app that needs performance work, new features, or a rescue.",
+          "You need Arabic/English with full RTL for Egypt or the Gulf.",
+        ],
+        deliverables: [
+          "A Flutter app for iOS and Android from a single codebase",
+          "Clean architecture with state management (BLoC, Riverpod, or GetX) that scales with the team",
+          "Auth (OTP, social sign-in, JWT), payments (Stripe, MyFatoorah, PayTabs), push, and analytics",
+          "Offline-first caching and deep linking",
+          "App Store and Google Play submission, including review issues",
+          "Multi-environment builds, CI, and Crashlytics",
+        ],
+        approach: [
+          "One shared codebase, with white-label and multi-app variants where the business needs them — BTC's storefront and B2B apps, RevealSite's pharmacy apps.",
+          "Performance work that shows up in numbers: YOLO went from 86 MB to 51 MB.",
+          "Real store releases — 10+ apps published, and each one's current status is shown honestly on this site.",
+          "Handoff with documentation, and the apps published in your own developer accounts.",
+        ],
+        proof: ["faheem", "btc", "imox-yolo"],
+        faq: [
+          {
+            q: "Do you also build the backend for the app?",
+            a: "Yes. As a full-stack engineer I can build the API and database too (Node.js, PostgreSQL), or integrate with the backend you already have — REST, GraphQL, or Firebase.",
+          },
+          {
+            q: "Do you handle the App Store and Google Play release?",
+            a: "Yes, including store listings, review issues, and multi-environment builds. The apps are published in your developer accounts, so they stay yours.",
+          },
+          {
+            q: "What does \"from $5,000\" cover?",
+            a: "A focused app: the core flows, authentication, one payment or booking integration, push notifications, and both store releases. Larger scopes are priced in the written proposal.",
+          },
+        ],
+      },
+    ],
+  },
+  // The /cv/ page. Employment history is NOT repeated here — the page renders
+  // `experiences` above. What lives only here: the professional summary, the
+  // education the site never stated, and the graded skills block.
+  cv: {
+    meta: {
+      title: "CV — Senior Software Engineer (full-stack, AI, Flutter)",
+      description:
+        "CV of Abdullah Mohamed, senior software engineer in Cairo (remote): Appenza Studio, DIB GmbH, RevealSite, Zeyada. Flutter, React/SvelteKit, Node.js, PostgreSQL, real-time AI. B.Sc. CS & AI, Helwan 2023.",
+    },
+    eyebrow: "Curriculum vitae",
+    title: "Abdullah Mohamed — Senior Software Engineer",
+    lead: "Cairo, Egypt (GMT+2) · works remotely · open to senior product roles and freelance projects.",
+    indexLabel: "CV",
+    navLabel: "CV page",
+    summary:
+      "Senior software engineer building complete products end to end — web and mobile clients, Node.js/PostgreSQL backends, and the AWS/Docker infrastructure they run on. Currently building the core AI experience of Faheem, the Egyptian Ministry of Education's learning platform serving 200,000+ students: real-time voice-to-voice tutoring at ~300–500 ms round-trip and AI-generated animated lessons. 10+ products shipped to the App Store and Google Play across Egypt, Germany, the UAE, and the US, in EdTech, healthcare, and social commerce.",
+    downloadPdf: "Download PDF",
+    labels: {
+      summary: "Summary",
+      experience: "Experience",
+      education: "Education",
+      skills: "Technical skills",
+      core: "Core",
+      strong: "Strong",
+      used: "Used",
+      languages: "Languages",
+      contact: "Contact",
+      printNote:
+        "This page and the PDF are the same document — the page is the one search engines and assistants can read.",
+    },
+    languages: ["Arabic — native", "English — professional working proficiency"],
+    education: [
+      {
+        degree: "B.Sc. in Computer Science and Artificial Intelligence",
+        school: "Helwan University, Cairo",
+        detail: "GPA 3.48 / 4.0",
+        date: "2019 – 2023",
+      },
+    ],
+    // Graded by how deep the experience actually goes, not listed flat: "I
+    // have touched Django REST" and "I ship Flutter every day" are different
+    // claims and a reader deserves to see which is which.
+    skills: [
+      {
+        group: "Mobile",
+        core: ["Flutter", "Dart", "Clean Architecture", "BLoC / Provider"],
+        strong: ["Riverpod", "GetX", "Hive", "Deep linking", "NFC"],
+        used: ["Guardsquare app shielding"],
+      },
+      {
+        group: "Web frontend",
+        core: ["TypeScript", "SvelteKit 5", "React"],
+        strong: ["Next.js", "Tailwind CSS", "TanStack Query"],
+        used: ["Flutter Web"],
+      },
+      {
+        group: "Backend",
+        core: ["Node.js / Express", "PostgreSQL", "REST", "JWT"],
+        strong: ["GraphQL", "MySQL", "OAuth2", "Swagger / OpenAPI"],
+        used: ["Django REST (integration only)"],
+      },
+      {
+        group: "AI & real-time",
+        core: [
+          "LLM streaming over WebSocket",
+          "Speech-to-text / text-to-speech",
+          "VAD & barge-in control",
+          "Azure OpenAI",
+        ],
+        strong: ["AI image generation", "Animation synchronisation"],
+        used: [],
+      },
+      {
+        group: "Cloud & DevOps",
+        core: ["Docker", "Docker Compose", "Nginx (TLS)", "CI/CD — Codemagic, GitHub Actions"],
+        strong: ["AWS S3", "Vercel", "VPS"],
+        used: [],
+      },
+      {
+        group: "Analytics & payments",
+        core: ["Firebase suite", "Mixpanel", "Airbridge"],
+        strong: ["Stripe", "MyFatoorah", "PayTabs"],
+        used: ["Magento"],
+      },
+      {
+        group: "Practices",
+        core: ["RBAC & multi-tenancy", "Multi-environment delivery", "Performance work"],
+        strong: ["SOLID", "Code review", "Agile / Scrum"],
+        used: [],
+      },
+    ],
   },
   markdown: {
     note: "Markdown version of this page, served to clients that ask for `Accept: text/markdown`. Generated from the same content as the HTML.",
