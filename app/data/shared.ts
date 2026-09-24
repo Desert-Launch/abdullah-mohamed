@@ -128,13 +128,11 @@ export const stackTags = ["React", "Node.js", "PostgreSQL", "Flutter", "AWS"];
 /** The bare host, printed on the generated social card under the name. */
 export const siteDomain = "abdullahmohamed.dev";
 
-/** Web3Forms access key for the contact form (designed to be public — it only
- *  routes submissions to the owner's inbox). When empty, the form falls back
- *  to the mailto: flow. */
-export const web3formsKey = "5b4a9d2c-da3d-47d3-b267-a5ab12484b18";
-
 /** Primary contact address, reused by the mailto fallbacks. */
 export const contactEmail = "hi@abdullahmohamed.dev";
+
+/** The CV as a PDF, under `public/`. The `/cv/` page is the HTML version. */
+export const cvPdf = "/Abdullah_Mohamed_CV.pdf";
 
 /** The "Work with me" / "Book a call" target: the real booking link once set,
  *  otherwise a working mailto so the CTA is never dead. */

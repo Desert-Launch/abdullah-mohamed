@@ -12,8 +12,8 @@ import { LanguageMenu } from "./LanguageMenu";
 /**
  * Reduced header for the standalone /work and /services pages.
  *
- * The homepage `TopBar` is built around in-page anchors and a scrollspy, neither
- * of which exists here. This keeps the same chrome, the same theme toggle
+ * The homepage header (`home/HomeChrome.tsx`) is built around in-page anchors
+ * and a scrollspy, neither of which exists here. This keeps the same chrome, the same theme toggle
  * (`useSiteTheme` is shared, so a visitor's choice carries across the
  * navigation) and the same language menu — without it the Arabic version of
  * these pages was reachable only from `<head>` — but swaps the section nav for

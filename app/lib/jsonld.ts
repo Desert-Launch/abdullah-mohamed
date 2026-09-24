@@ -285,8 +285,9 @@ function faqPage(items: { q: string; a: string }[], lang: Lang) {
   };
 }
 
-/** The locale home page: a ProfilePage about the Person, plus the FAQ that is
- *  rendered on it. */
+/** The locale home page: a ProfilePage about the Person. No FAQPage — the
+ *  homepage has no FAQ (FAQPage markup is only valid where the FAQ is shown);
+ *  the per-service FAQs carry their own on /services/<slug>/. */
 export function homeJsonLd(lang: Lang) {
   const t = copy[lang];
   const url = abs(localePath[lang]);
@@ -308,7 +309,6 @@ export function homeJsonLd(lang: Lang) {
           ? { "@type": "ImageObject", url: abs(profilePhoto) }
           : undefined,
       },
-      faqPage(t.faq, lang),
     ],
   };
 }

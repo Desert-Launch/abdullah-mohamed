@@ -26,7 +26,7 @@ const LANGS: Lang[] = ["en", "ar"];
  * Closed, the panel is `visibility: hidden`, so its links leave the tab order
  * rather than lurking invisibly in it.
  */
-export function LanguageMenu({ t, lang }: { t: Dictionary; lang: Lang }) {
+export function LanguageMenu({ t, lang }: { t: Pick<Dictionary, "language">; lang: Lang }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);

@@ -98,8 +98,8 @@ function caseStudyBlock(t: Dictionary, study: CaseStudy, level: string): string 
   ]).trimEnd();
 }
 
-/** Store links / lifecycle badge for a "Selected work" card, mirroring
- *  `SelectedWork.tsx`: only a real https URL becomes a link. */
+/** Store links / lifecycle badge for an "also shipped" app, mirroring the
+ *  homepage strip and /work: only a real https URL becomes a link. */
 function appLinks(t: Dictionary, key: string): string {
   const entry = storeLinks[key];
   if (!entry) return "";
@@ -117,11 +117,13 @@ function appLinks(t: Dictionary, key: string): string {
   return ` — ${entry.year ? `${entry.year} · ` : ""}${status}`;
 }
 
-/** The locale home page. */
+/** The locale home page, section by section in page order. */
 export function homeMarkdown(lang: Lang): string {
   const t = copy[lang];
   const url = abs(localePath[lang]);
   const other = lang === "en" ? "ar" : "en";
+  const stack = t.home.stack;
+  const principles = t.home.principles;
 
   return join([
     `# ${t.meta.title}`,
@@ -129,36 +131,24 @@ export function homeMarkdown(lang: Lang): string {
     bullets([
       `${t.markdown.htmlVersion}: ${url}`,
       `${t.langToggle}: ${abs(localePath[other])}`,
-      t.hero.currently,
+      t.hero.status,
       t.hero.availability,
     ]),
     `_${t.markdown.note}_`,
 
     `## ${t.hero.title} ${t.hero.titleAccent}`,
+    `${t.hero.eyebrow} · ${t.hero.place}`,
     t.hero.lead,
+    bullets(t.hero.facts.map(([label, value]) => `**${label}:** ${value}`)),
+
+    `## ${t.home.proof.eyebrow}`,
     bullets(t.proof.map(([value, label]) => `**${value}** — ${label}`)),
-
-    `## ${t.servicesHeading.title}`,
-    t.servicesHeading.body,
-    t.services.map((service) => `### ${service.title}\n\n${service.body}`).join("\n\n"),
-
-    `## ${t.plansHeading.title}`,
-    t.plansHeading.body,
-    t.plans
-      .map((plan) =>
-        join([
-          `### ${plan.name} — ${plan.price}`,
-          `${plan.body} (${plan.priceNote})`,
-          plan.itemsIntro,
-          bullets(plan.items),
-          `[${t.servicePages.learnMore}](${abs(servicePath(plan.slug, lang))})`,
-        ]).trimEnd(),
-      )
-      .join("\n\n"),
+    `### ${t.logosLabel}`,
+    bullets(t.experiences.map((exp) => `**${exp.company}** — ${exp.role} · ${exp.date} · ${exp.location}`)),
 
     `## ${t.caseStudiesHeading.title}`,
     t.caseStudiesHeading.body,
-    t.caseStudies
+    workProjects(lang)
       .map((study) =>
         join([
           caseStudyBlock(t, study, "###"),
@@ -166,12 +156,30 @@ export function homeMarkdown(lang: Lang): string {
         ]).trimEnd(),
       )
       .join("\n\n"),
-
-    `## ${t.selectedWorkHeading.title}`,
-    t.selectedWorkHeading.body,
+    `### ${t.home.work.alsoShipped}`,
     bullets(
       t.selectedWork.map((app) => `**${app.title}** — ${app.tagline}${appLinks(t, app.key)}`),
     ),
+
+    `## ${stack.heading.title}`,
+    stack.heading.body,
+    stack.products
+      .map((product) =>
+        join([
+          `### ${product.name} — ${product.context}`,
+          bullets(
+            stack.layers
+              .filter((layer) => product.layers[layer.key])
+              .map((layer) => `**${layer.name}:** ${product.layers[layer.key]}`),
+          ),
+          product.slug && `[${t.work.readCase}](${abs(workPath(product.slug, lang))})`,
+        ]).trimEnd(),
+      )
+      .join("\n\n"),
+    `### ${stack.capabilitiesLabel}`,
+    stack.capabilities
+      .map((item) => `#### ${item.name}\n\n${item.body}\n\n${t.markdown.stack}: ${item.tech}`)
+      .join("\n\n"),
 
     `## ${t.workHeading.title}`,
     t.workHeading.body,
@@ -187,27 +195,42 @@ export function homeMarkdown(lang: Lang): string {
       )
       .join("\n\n"),
 
-    `## ${t.freelanceHeading.title}`,
-    t.freelanceHeading.body,
-    t.freelanceProjects.map((project) => productBlock(t, project, "###")).join("\n\n"),
-
-    `## ${t.processHeading.title}`,
-    t.processHeading.body,
-    t.process.map((step) => `### ${step.title}\n\n${step.body}`).join("\n\n"),
-
-    `## ${t.about.title}`,
-    t.about.paragraphs.join("\n\n"),
-    `### ${t.about.factsLabel}`,
-    bullets(t.about.facts.map(([label, value]) => `**${label}:** ${value}`)),
-
-    t.testimonials.length > 0 && `## ${t.testimonialsHeading.title}`,
+    t.testimonials.length > 0 && `## ${t.testimonialsHeading.eyebrow}`,
     t.testimonials.length > 0 &&
       t.testimonials
         .map((quote) => `> ${quote.quote}\n>\n> — ${quote.name}, ${quote.role}`)
         .join("\n\n"),
 
-    `## ${t.faqHeading.title}`,
-    t.faq.map((item) => `### ${item.q}\n\n${item.a}`).join("\n\n"),
+    `## ${t.about.title}`,
+    t.about.paragraphs.join("\n\n"),
+    `### ${t.about.factsLabel}`,
+    bullets(t.about.facts.map(([label, value]) => `**${label}:** ${value}`)),
+    `### ${principles.title}`,
+    principles.note,
+    bullets(
+      principles.items.map((item) => {
+        const study = t.caseStudies.find((entry) => entry.slug === item.slug);
+        return study ? `${item.text} — [${study.title}](${abs(workPath(study.slug, lang))})` : item.text;
+      }),
+    ),
+
+    `## ${t.servicesHeading.title}`,
+    t.servicesHeading.body,
+    t.plans
+      .map((plan) =>
+        join([
+          `### ${plan.name} — ${plan.price}`,
+          `${plan.body} (${plan.priceNote})`,
+          plan.itemsIntro,
+          bullets(plan.items),
+          `[${t.servicePages.learnMore}](${abs(servicePath(plan.slug, lang))})`,
+        ]).trimEnd(),
+      )
+      .join("\n\n"),
+    t.plansHeading.body,
+    `### ${t.processHeading.title}`,
+    t.processHeading.body,
+    t.process.map((step) => `#### ${step.title}\n\n${step.body}`).join("\n\n"),
 
     contactBlock(t),
   ]);

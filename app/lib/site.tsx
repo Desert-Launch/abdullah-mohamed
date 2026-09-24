@@ -242,11 +242,13 @@ export const siteViewport: Viewport = {
 const analyticsSrc = process.env.NEXT_PUBLIC_ANALYTICS_SRC;
 const analyticsId = process.env.NEXT_PUBLIC_ANALYTICS_ID;
 
-// Runs before paint to apply the saved theme and avoid a flash of the default
-// theme (FOUC). It deliberately does NOT touch lang/dir: the URL is the single
-// source of truth for language now, so a stored preference must never override
-// the locale the server rendered.
-const noFlashScript = `(function(){try{var d=document.documentElement;d.dataset.revealReady='1';var t=localStorage.getItem('portfolio-theme');d.dataset.theme=(t==='light'||t==='dark')?t:'dark';}catch(e){d.dataset.theme='dark';}})();`;
+// Runs before paint to apply the theme and avoid a flash of the wrong one
+// (FOUC). The stored value is a preference — "light", "dark", or "system"/unset,
+// which follows the OS — resolved exactly as `useSiteTheme` resolves it. It
+// deliberately does NOT touch lang/dir: the URL is the single source of truth
+// for language, so a stored preference must never override the locale the
+// server rendered.
+const noFlashScript = `(function(){var d=document.documentElement;d.dataset.revealReady='1';try{var t=localStorage.getItem('portfolio-theme');d.dataset.theme=(t==='light'||t==='dark')?t:(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');}catch(e){d.dataset.theme='dark';}})();`;
 
 /**
  * The `<html>` shell, parameterised by locale. `<html>` may only be rendered by

@@ -7,8 +7,8 @@ import { asset } from "../lib/asset";
 /**
  * Captioned screenshot figures for a /work detail page.
  *
- * The homepage `ShotGallery` is a compact three-across strip with no room for
- * text. Here the caption is the point: several of these products have an
+ * The homepage stages these screens as decoration, with no room for text.
+ * Here the caption is the point: several of these products have an
  * Arabic-only interface, so the caption is what lets an English reader follow
  * the screen. Orientation is measured from the file rather than duplicated into
  * the dictionaries, and a portrait shot is capped narrower than a landscape one

@@ -17,22 +17,17 @@ export const en: Dictionary = {
       "Senior engineer behind the real-time AI layer of a 200,000-student tutor. Full-stack, AI and Flutter apps shipped across Egypt, the Gulf, Europe, US.",
   },
   skipLink: "Skip to content",
-  // Mirrors the section order: proof first, then what it costs. Also rendered
-  // by the footer's "Sections" column and driven by the scrollspy.
+  // The homepage sections, in page order. Also rendered by the sub-page
+  // footer's "Sections" column and driven by the homepage scrollspy.
   nav: [
-    ["Case studies", "#cases"],
-    ["What I build", "#services"],
-    ["Pricing", "#plans"],
-    // The only non-anchor entry: /work is a real route with a page per
-    // project. The homepage's own "#work" section is still there and still
-    // links into it — it just isn't the nav destination any more.
-    ["Work", "/work/"],
-    ["CV", "/cv/"],
+    ["Work", "#work"],
+    ["Experience", "#experience"],
     ["About", "#about"],
     ["Contact", "#contact"],
   ],
+  name: "Abdullah Mohamed",
   role: "Senior Software Engineer",
-  menuLabel: "Toggle menu",
+  place: "Cairo, Egypt",
   backToTop: "Back to top",
   themeToggle: "Light",
   darkToggle: "Dark",
@@ -45,32 +40,258 @@ export const en: Dictionary = {
     },
   },
   hero: {
-    // Rendered inside the H1 (see Hero.tsx); the flag is added there. "Remote"
-    // is in the kicker because it is the first thing a non-Egyptian recruiter
-    // needs to know, and it is true (the DIB and RevealSite roles were remote).
-    eyebrow: "Senior Software Engineer · Cairo, Egypt · Remote",
-    // Headline names the specialty, not an attitude: a reader used to get the
-    // "what" only from the lead paragraph.
-    title: "Full-stack, real-time AI, and Flutter —",
-    titleAccent: "products that ship and hold up in production.",
+    // The first two meta items are rendered inside the H1 (see HomeHero.tsx),
+    // so the page's one heading names the person and the role. "Remote" is
+    // there because it is the first thing a non-Egyptian recruiter needs to
+    // know, and it is true (the DIB and RevealSite roles were remote).
+    eyebrow: "Abdullah Mohamed — Senior Software Engineer",
+    place: "Cairo, Egypt · Remote",
+    status: "Open to senior remote roles and freelance projects",
+    title: "Products that ship,",
+    titleAccent: "and hold up in production.",
     roleLine: "Senior Software Engineer · Full-Stack, AI & Mobile Products",
     // Appenza and Faheem are here on purpose: "Abdullah Mohamed" collides with
     // several other engineers of the same name and title, and these are the
-    // disambiguators a search engine can attach the entity to.
+    // disambiguators a search engine can attach the entity to. The specialty
+    // (full-stack, real-time AI, Flutter) lives here and in the meta title
+    // now that the headline is a claim rather than a list.
     lead: "Senior engineer at Appenza Studio, building Faheem — the Egyptian Ministry of Education's AI tutor, 200,000+ students, real-time voice. 10+ apps in the App Store and Google Play for teams in Egypt, Germany, the UAE, and the US.",
-    ctaRows: {
-      hiringLabel: "For companies hiring",
-      projectLabel: "For a project",
-    },
-    primary: "Book a free call",
-    services: "See services & pricing",
+    explore: "Explore selected work",
+    talk: "Let's talk",
     cv: "Download CV",
-    experience: "View experience",
+    primary: "Book a free call",
     availability: "Open to freelance, contracts, and product partnerships",
-    currently:
-      "Open to senior remote roles and freelance projects · replies within 24 hours",
-    socialLabel: "Find me on",
-    proofLabel: "Proof points",
+    facts: [
+      ["Now", "Senior Software Engineer, Appenza Studio"],
+      ["Previously", "DIB GmbH (Germany) · RevealSite (US) · Zeyada"],
+      ["Works across", "Web, mobile, backend, real-time AI, infrastructure"],
+    ],
+    factsLabel: "Current role and background",
+  },
+  home: {
+    chrome: {
+      primaryNav: "Primary",
+      stickyNav: "Sections",
+      menu: "Menu",
+      openMenu: "Open menu",
+      closeMenu: "Close menu",
+    },
+    theme: {
+      label: "Colour theme",
+      system: "Auto",
+      light: "Light",
+      dark: "Dark",
+    },
+    // Faheem drawn as the layers it runs on — every line is stated in the
+    // Faheem case study.
+    strata: {
+      label: "Faheem — the real-time layer",
+      stat: "200,000+ students",
+      ariaLabel: "Faheem: the real-time layer — read the case study",
+      cursor: "Read the Faheem case study",
+      layers: [
+        { layer: "Client", detail: "Flutter · 16 modules in clean architecture · full Arabic RTL" },
+        { layer: "Transport", detail: "WebSocket — answers arrive token by token" },
+        { layer: "Model", detail: "Azure OpenAI streaming · AI-generated lessons" },
+        { layer: "Voice", detail: "Speech-to-text → model → text-to-speech in ~300–500 ms" },
+        { layer: "Environments", detail: "Dev · Staging · QA · Prod — students never see a QA build" },
+      ],
+    },
+    proof: {
+      eyebrow: "In production",
+      body: "students on Faheem, the Egyptian Ministry of Education's AI tutor. I work on its real-time layer: streamed answers, and voice at a ~300–500 ms round-trip.",
+      products: "Products",
+    },
+    work: {
+      role: "Role",
+      stack: "Stack",
+      cursor: "View case study",
+      alsoShipped: "Also shipped to the stores",
+    },
+    talia: {
+      label: "System diagram",
+      products: "Talia 360 · Talia Learn",
+      authority: "Authority",
+      ministry: "Ministry",
+      school: "School",
+      live: "Live",
+      pilot: "Parkway",
+      roles: ["Teacher", "Student", "Principal", "Admin"],
+      nextTenant: "Next tenant",
+      notes: [
+        {
+          label: "Authorization",
+          title: "Deny by default",
+          body: "Health, counselling and special-needs records — no admin override.",
+        },
+        {
+          label: "Data layer",
+          title: "datasource → repository → query",
+          body: "Every screen verified against the live Go/REST backend.",
+        },
+      ],
+    },
+    // Each point on the map is a layer built or integrated on that product,
+    // taken from its case study or experience entry — nothing appears here
+    // that the rest of the site doesn't show.
+    stack: {
+      heading: {
+        eyebrow: "Across the stack",
+        title: "One engineer, every layer of the product.",
+        body: "Nine products, six layers. Each point is a layer I built or integrated on that product. Select a product to see what it took.",
+      },
+      layerLabel: "Layer",
+      pickerLabel: "Products by layer",
+      layers: [
+        { key: "mobile", name: "Mobile" },
+        { key: "web", name: "Web" },
+        { key: "api", name: "APIs & backend" },
+        { key: "rt", name: "Real-time & AI" },
+        { key: "data", name: "Data" },
+        { key: "infra", name: "Infrastructure" },
+      ],
+      products: [
+        {
+          name: "Faheem",
+          context: "Appenza Studio · AI tutor",
+          slug: "faheem",
+          layers: {
+            mobile: "Flutter · 16 modules in clean architecture · full Arabic RTL",
+            rt: "Azure OpenAI streaming over WebSocket · STT/TTS voice at ~300–500 ms",
+            data: "Firebase · ~52 analytics events across 14 modules",
+            infra: "Dev / Staging / QA / Prod builds · Crashlytics · FCM",
+          },
+        },
+        {
+          name: "Talia",
+          context: "Appenza Studio · national LMS + SIS",
+          slug: "talia",
+          layers: {
+            web: "SvelteKit 5 · TypeScript · Tailwind CSS 4",
+            api: "Typed Go/REST integration · JWT · deny-by-default RBAC",
+            data: "TanStack Query over a datasource → repository → query layer",
+          },
+        },
+        {
+          name: "IMOX · YOLO",
+          context: "DIB GmbH · social commerce, clinics",
+          slug: "imox-yolo",
+          layers: {
+            mobile: "Flutter · cold start ~6 s → 1.5 s · install 86 → 51 MB",
+            api: "Airbridge deep links (deferred included) · Mixpanel funnels",
+            data: "Reel caching, lazy initialisation, pagination prefetch",
+          },
+        },
+        {
+          name: "Xera Lab",
+          context: "Independent · sole engineer",
+          slug: "xera-lab",
+          layers: {
+            web: "Flutter Web customer portal and admin dashboard",
+            api: "Node.js / Express · JWT role access",
+            data: "PostgreSQL · X-rays on AWS S3",
+            infra: "Docker Compose behind Nginx with TLS",
+          },
+        },
+        {
+          name: "BTC",
+          context: "Appenza Studio · gold commerce",
+          slug: "btc",
+          layers: {
+            mobile: "Two Flutter apps, one codebase — retail and B2B",
+            api: "GraphQL — one catalogue, two shapes",
+          },
+        },
+        {
+          name: "RevealSite",
+          context: "RevealSite · US pharmacies",
+          layers: {
+            mobile: "White-label Flutter apps provisioned by client ID",
+            api: "Django REST · OTP / JWT auth",
+            data: "Hive offline-first caching",
+          },
+        },
+        {
+          name: "Zeyada",
+          context: "Zeyada · school operations",
+          layers: {
+            mobile: "Flutter · Guardsquare shielding",
+            rt: "Realtime 1-to-1 and group chat with moderation",
+            api: "PayTabs fees · Magento GraphQL store",
+          },
+        },
+        {
+          name: "Ezhal",
+          context: "Independent · car-service platform",
+          layers: {
+            mobile: "Three role-specific Flutter apps · Riverpod",
+            rt: "Live technician tracking",
+            api: "MyFatoorah · Stripe · Apple PassKit",
+            data: "Firebase",
+          },
+        },
+        {
+          name: "FasTap",
+          context: "Independent · NFC business card",
+          layers: {
+            mobile: "Flutter app that writes profiles to NFC cards",
+            web: "Flutter Web profile page for tap-to-share links",
+            infra: "Firebase · Nginx",
+          },
+        },
+      ],
+      capabilitiesLabel: "Capabilities",
+      capabilities: [
+        {
+          name: "Mobile",
+          body: "iOS and Android from one clean-architecture codebase — auth, payments, analytics, push, offline, and the store release.",
+          tech: "Flutter · Dart · BLoC / Provider · Riverpod · GetX · Hive · deep linking · NFC",
+        },
+        {
+          name: "Web frontend",
+          body: "Typed SPAs and admin consoles wired to live APIs and verified against the deployed environment.",
+          tech: "TypeScript · SvelteKit 5 · React · Next.js · Tailwind CSS · TanStack Query",
+        },
+        {
+          name: "Backend & APIs",
+          body: "Services and business logic over PostgreSQL, with JWT auth, role-based access, and third-party integrations.",
+          tech: "Node.js / Express · PostgreSQL · REST · GraphQL · JWT · OAuth2 · OpenAPI",
+        },
+        {
+          name: "Real-time & AI",
+          body: "LLM streaming over WebSocket, voice with speech-to-text and text-to-speech, and barge-in control that holds up in a live session.",
+          tech: "Azure OpenAI · WebSocket · STT / TTS · VAD · animation sync",
+        },
+        {
+          name: "Data & infrastructure",
+          body: "Databases, deployment, and environments — Docker Compose behind Nginx with TLS, CI/CD, and separate Dev/Staging/QA/Prod.",
+          tech: "Docker · Nginx (TLS) · AWS S3 · Codemagic · GitHub Actions · Vercel",
+        },
+        {
+          name: "Product engineering",
+          body: "Multi-tenancy, deny-by-default RBAC, and performance work measured in numbers — owned from requirement to production.",
+          tech: "RBAC & multi-tenancy · multi-environment delivery · Firebase · Mixpanel · Airbridge",
+        },
+      ],
+    },
+    experience: {
+      tabsLabel: "Roles",
+      products: "Products",
+      fullCv: "Full CV",
+    },
+    // Each principle is the one-line version of a decision written up in the
+    // cited case study.
+    principles: {
+      title: "Principles",
+      note: "Taken from the decisions written up in the case studies.",
+      items: [
+        { text: "Latency is a budget, not a target.", slug: "faheem" },
+        { text: "Deny by default.", slug: "talia" },
+        { text: "The workflow is the schema.", slug: "xera-lab" },
+        { text: "Speed comes from deciding what to leave unloaded.", slug: "imox-yolo" },
+        { text: "No dummy data, ever, past the first integration.", slug: "talia" },
+      ],
+    },
   },
   // Scale and ownership, not tenure: "4+ years" next to "Senior" invited the
   // wrong question, and the years are still in the FAQ and on /cv/.
@@ -81,21 +302,11 @@ export const en: Dictionary = {
     ["Since 2022", "shipping production software"],
   ],
   logosLabel: "Built with teams. Shipped for real users.",
-  logosIntro: "Companies I have partnered with and products I have helped take from an idea to production.",
-  companiesLabel: "Companies",
   appsLabel: "Apps & products",
   caseStudiesHeading: {
-    eyebrow: "Selected case studies",
+    eyebrow: "Selected work",
     title: "Three products, from unclear problem to production.",
-    body: "The problem, my role, how I built it — and the decisions I'd defend in an interview. Three more are on the work page.",
-  },
-  // This section exists for the one thing the experience timeline can't show:
-  // a working store link. Products without one live in the timeline above, with
-  // full context, instead of being listed twice.
-  selectedWorkHeading: {
-    eyebrow: "Shipped to stores",
-    title: "Apps you can download today.",
-    body: "Every build detail — and the products that never shipped publicly — sits in the experience timeline above.",
+    body: "The problem, my role, how I built it — and the decisions I'd defend in an interview.",
   },
   selectedWorkLabels: {
     products: "products",
@@ -114,24 +325,19 @@ export const en: Dictionary = {
     results: "Results",
   },
   workHeading: {
-    eyebrow: "Experience and apps",
+    eyebrow: "Experience",
     title: "Professional roles, grouped by the products I shipped.",
     body: "Each role below shows the company context, the products I worked on there, and the engineering outcomes instead of repeating the same apps across multiple sections.",
   },
-  freelanceHeading: {
-    eyebrow: "2022 – Present · Independent and freelance work",
-    title: "Standalone products and platforms.",
-    body: "These projects were built outside the main employment timeline or as separate product engagements.",
-  },
   servicesHeading: {
-    eyebrow: "Services",
-    title: "Full-stack web apps, real-time AI, and mobile — what clients hire me to build.",
+    eyebrow: "For a project",
+    title: "Ways I can help.",
     body: "The value is not only writing code. It is turning unclear product needs into shipped systems with fewer moving parts.",
   },
   plansHeading: {
     eyebrow: "Pricing",
     title: "What I build. Starting prices.",
-    body: "Pick the closest to what you need — most projects are a mix. Every price below is a starting point and negotiable based on your scope and requirements. We start with a free call, then I send a written proposal with the final price, the timeline, and the payment phases. Nothing starts until you approve it.",
+    body: "Every price is a starting point and negotiable based on your scope and requirements. We start with a free call, then I send a written proposal with the final price, the timeline, and the payment phases.",
   },
   processHeading: {
     eyebrow: "Process",
@@ -156,70 +362,8 @@ export const en: Dictionary = {
       body: "Deployment, documentation and a codebase the next engineer can maintain. The code is yours.",
     },
   ],
-  faqHeading: {
-    eyebrow: "FAQ",
-    title: "Questions clients and recruiters ask.",
-  },
-  // Each answer is written to stand alone: an assistant that quotes one of
-  // these should be able to do so without the rest of the page. Every fact
-  // here is also stated elsewhere on the site — nothing is claimed only in the
-  // FAQ.
-  faq: [
-    {
-      q: "What is your core stack?",
-      a: "Full-stack web: React, Next.js, SvelteKit, TypeScript, Node.js, Express, PostgreSQL, and Redis. Mobile: Flutter/Dart for iOS and Android from one codebase. AI: Azure OpenAI with streaming over WebSocket, plus speech-to-text and text-to-speech. Infrastructure: AWS, Docker, Nginx, and CI/CD.",
-    },
-    {
-      q: "How much experience do you have?",
-      a: "Shipping production software since 2022, at four companies (Appenza Studio, DIB GmbH, RevealSite, Zeyada) and as an independent engineer — 10+ apps shipped to the App Store and Google Play across Egypt, Germany, the UAE, and the US, and a real-time AI tutor used by 200,000+ students. B.Sc. in Computer Science & AI, Helwan University, Cairo (2023). The full CV is at /cv/.",
-    },
-    {
-      q: "Where are you based — does the timezone work for US, Europe, or Gulf teams?",
-      a: "I'm in Cairo (GMT+2/+3): one to two hours from Europe, the same workday as the Gulf, and a solid morning overlap with the US East Coast. My clients so far have been in Germany, the US, Qatar, and Kuwait.",
-    },
-    {
-      q: "Are you open to full-time or senior product roles, or only freelance?",
-      a: "Both. Alongside my role at Appenza Studio I take freelance and contract projects, and I'm open to senior product roles — remote first. Send the role, the stack, and the team, and I'll reply honestly about fit.",
-    },
-    {
-      q: "Do you work with startups and MVPs?",
-      a: "Yes. The Web App and SaaS plans are shaped for it: one engineer owning frontend, backend, database, and deployment, with a written scope and milestone delivery so you see working software early. Jaweb and Xera Lab were built that way, from zero.",
-    },
-    {
-      q: "Can you take over an existing codebase?",
-      a: "Yes. Much of my employed work has been on products that already had users — cutting YOLO's app size from 86 MB to 51 MB, migrating IMOX's deep linking and analytics — so inheriting a codebase is normal. We start with a short audit, then agree a scoped plan before anything touches production.",
-    },
-    {
-      q: "How does pricing work?",
-      a: "Every product has a starting price, and every price is negotiable based on your scope and requirements. We start with a free call, then I send a written proposal with the final price, the timeline, and the payment phases. You approve it before any work begins.",
-    },
-    {
-      q: "Do you charge hourly or per project?",
-      a: "Per project. You get a fixed price, a timeline, and payment phases in writing, so there is no running meter and no surprise invoice. The only exception is ongoing maintenance after handoff, which we agree separately.",
-    },
-    {
-      q: "How do we communicate during a project?",
-      a: "A shared channel (Slack or WhatsApp), a demo of what shipped every week, and a written summary at every milestone. You never have to ask what the status is.",
-    },
-    {
-      q: "Who owns the code?",
-      a: "You do. Everything is delivered in your repositories with documentation and deployment access. Handoff quality is part of the service — no lock-in.",
-    },
-    {
-      q: "Do you work in English or Arabic?",
-      a: "Both, fluently — including building fully bilingual, RTL-ready products. Faheem, Talia, and ICCD Hub are Arabic-first or bilingual, and so is this site.",
-    },
-    {
-      q: "What are you not a fit for?",
-      a: "Native iOS or Android in Swift/Kotlin, WordPress and other CMS theme work, Laravel/PHP backends, data science and ML model training, and pure design engagements. I'll say so on the call rather than learn it on your budget — and where I know someone who does that work well, I'll point you at them.",
-    },
-    {
-      q: "What is the fastest way to reach you?",
-      a: "Book a call from this page, or email hi@abdullahmohamed.dev. I reply within 24 hours on working days.",
-    },
-  ],
   testimonialsHeading: {
-    eyebrow: "What people say",
+    eyebrow: "Recommendations",
     title: "Feedback from teams and clients.",
     body: "Real words from people I have shipped with.",
   },
@@ -324,6 +468,8 @@ export const en: Dictionary = {
       // TODO(abdullah): no screenshots for Talia — the detail page renders
       // without a "From the product" section until some exist.
       slug: "talia",
+      // Second of the homepage's three featured studies (the system diagram).
+      featured: true,
       title: "Talia",
       type: "National LMS + SIS platform",
       context: "Appenza Studio · frontend & integration",
@@ -463,6 +609,8 @@ export const en: Dictionary = {
     },
     {
       slug: "xera-lab",
+      // The homepage row shows "1 engineer", not the first result.
+      highlight: 2,
       title: "Xera Lab",
       type: "Dental case-management platform",
       context: "Independent · sole engineer, full stack",
@@ -581,6 +729,7 @@ export const en: Dictionary = {
     },
     {
       slug: "jaweb",
+      highlight: 2,
       title: "Jaweb",
       type: "Competitive trivia game",
       context: "Independent build · shipped 2025 · retired",
@@ -866,124 +1015,6 @@ export const en: Dictionary = {
       ],
     },
   ],
-  freelanceProjects: [
-    {
-      title: "Voicers",
-      type: "Social audio platform",
-      image: appImages.voicers,
-      shots: [
-        "/images/shots/voicers1.webp",
-        "/images/shots/voicers2.webp",
-        "/images/shots/voicers3.webp",
-      ],
-      body: "Bilingual social audio platform for creators — voice notes (VNotes), playlists, live stages, competitions, and leaderboards, with a discovery feed and audience engagement. Built as an independent product; not yet published.",
-      stack: ["Flutter", "Clean Architecture", "Audio", "Realtime"],
-    },
-    {
-      title: "ICCD Hub",
-      type: "Community & productivity app",
-      image: appImages.iccd,
-      shots: [
-        "/images/shots/iccd1.webp",
-        "/images/shots/iccd2.webp",
-        "/images/shots/iccd3.webp",
-      ],
-      body: "Bilingual (EN/AR) members' companion app for the Islamic Corporation for the Development of the Private Sector. Blends organizational content — events, member countries, subsidiaries, and a knowledge center — with a personal productivity suite (tasks, notes, calendar, reminders) and Islamic utilities (prayer times, Qibla compass, and Hijri calendar). Built on a modular GetX architecture with Google/Apple sign-in, Firebase push, deep linking, rich-text notes, and full RTL.",
-      stack: ["Flutter", "GetX", "Firebase", "REST API", "RTL"],
-    },
-    {
-      title: "Al-Muslim",
-      type: "Islamic daily companion",
-      image: appImages.almuslim,
-      body: "A daily Muslim companion for reading the Quran, adhkar, and duas, with accurate prayer times, qibla direction, and smart reminders.",
-      stack: ["Flutter", "REST API", "Notifications", "Geolocation"],
-    },
-    {
-      title: "Q-Fight Gym",
-      type: "Muay Thai gym app",
-      image: appImages.qfight,
-      shots: [
-        "/images/shots/qfight1.webp",
-        "/images/shots/qfight2.webp",
-        "/images/shots/qfight3.webp",
-      ],
-      body: "The official app for a professional Muay Thai gym in Qatar, connecting members with a training program led by Thai world-title fighters. Members browse plans, book personal and group sessions with specific trainers, and manage their class schedule in-app.",
-      stack: ["Flutter", "Clean Architecture", "Firebase", "Payments"],
-    },
-    {
-      title: "Jaweb",
-      type: "Interactive quiz game",
-      image: appImages.jaweb,
-      shots: [
-        "/images/jaweb1.webp",
-        "/images/jaweb2.webp",
-        "/images/jaweb3.webp",
-      ],
-      body: "Competitive trivia product built from scratch with two teams, six categories, three difficulty levels, referee logic, automatic scoring, and My Fatoorah payments.",
-      stack: ["Flutter", "Clean Architecture", "My Fatoorah", "Payments"],
-      metrics: [
-        { value: "6", label: "categories" },
-        { value: "3", label: "difficulty levels" },
-        { value: "Auto", label: "referee + scoring" },
-      ],
-    },
-    {
-      title: "FasTap",
-      type: "NFC digital business card",
-      image: appImages.fastap,
-      shots: [
-        "/images/fastab1.webp",
-        "/images/fastab2.webp",
-        "/images/fastab3.webp",
-      ],
-      body: "Flutter app that writes profiles to NFC cards, plus a Flutter Web profile page opened from tap-to-share links and deployed with Firebase and Nginx.",
-      stack: ["Flutter", "Flutter Web", "Firebase", "NFC", "Nginx"],
-      metrics: [
-        { value: "1 tap", label: "to share a profile" },
-        { value: "App + Web", label: "single build" },
-      ],
-    },
-    {
-      title: "Xera Lab",
-      type: "Dental case management platform",
-      image: appImages.xera,
-      body: "Customer portal, admin dashboard, Node.js backend, PostgreSQL database, JWT role access, AWS S3 uploads, Docker Compose, and Nginx deployment.",
-      stack: ["Flutter Web", "Node.js", "PostgreSQL", "Docker", "AWS"],
-    },
-    {
-      title: "Ezhal",
-      type: "Multi-tenant car-service platform",
-      image: appImages.ezhal,
-      shots: [appImages.ezhalShot],
-      body: "Three role-specific Flutter apps for customers, employees, and managers with booking, live technician tracking, wallet, points, stamps, subscriptions, and Apple Wallet passes.",
-      stack: [
-        "Flutter",
-        "Riverpod",
-        "MyFatoorah",
-        "Stripe",
-        "Firebase",
-        "Apple PassKit",
-      ],
-      metrics: [
-        { value: "3 apps", label: "one codebase" },
-        { value: "Live", label: "technician tracking" },
-      ],
-    },
-  ],
-  services: [
-    {
-      title: "Full-stack web apps, end to end",
-      body: "Frontend, backend, database, and the infrastructure it runs on — one engineer, one accountable delivery. Auth, admin panels, role-based access, integrations, and the deployment pipeline. The way I built Xera Lab and Talia.",
-    },
-    {
-      title: "Real-time AI features",
-      body: "Streaming AI chat, voice interaction (STT/TTS), and generated content wired into your product over WebSocket — the way Faheem serves 200,000+ students live.",
-    },
-    {
-      title: "Mobile apps from one codebase",
-      body: "iOS and Android from a single clean-architecture codebase: auth, payments, analytics, push, offline support, and the store release — not just screens.",
-    },
-  ],
   // Prices are starting points, negotiable by scope; the final number is set
   // per project in the written proposal. Deliberately no durations — timeline
   // is scoped per build.
@@ -991,14 +1022,11 @@ export const en: Dictionary = {
     {
       slug: "saas-development",
       name: "SaaS / Full System",
-      icon: "layers",
-      body: "A complete multi-tenant platform, end to end.",
+      body: "A complete multi-tenant platform, end to end — built the way Xera Lab and Talia were.",
       price: "from $6,000",
       minPrice: 6000,
       priceNote: "starting price \u00b7 negotiable by scope",
       cta: "Book a call",
-      featured: true,
-      badge: "Most popular",
       items: [
         "Multi-tenant architecture with role-based access",
         "Frontend, backend, database and infrastructure — all owned by one engineer",
@@ -1011,8 +1039,7 @@ export const en: Dictionary = {
     {
       slug: "web-app-development",
       name: "Web App",
-      icon: "browser",
-      body: "A focused web product or internal tool, shipped.",
+      body: "A focused web product or internal tool, shipped — frontend, backend and database owned end to end.",
       price: "from $3,500",
       minPrice: 3500,
       priceNote: "starting price \u00b7 negotiable by scope",
@@ -1028,8 +1055,7 @@ export const en: Dictionary = {
     {
       slug: "ai-integration",
       name: "AI Feature",
-      icon: "spark",
-      body: "Real-time AI wired into your product.",
+      body: "Real-time AI wired into your product: streaming chat, voice (STT/TTS), or generated content.",
       price: "from $3,000",
       minPrice: 3000,
       priceNote: "starting price \u00b7 negotiable by scope",
@@ -1044,8 +1070,7 @@ export const en: Dictionary = {
     {
       slug: "flutter-app-development",
       name: "Mobile App",
-      icon: "mobile",
-      body: "iOS and Android from one codebase.",
+      body: "iOS and Android from one codebase — auth, payments, push, offline, and the store release.",
       price: "from $5,000",
       minPrice: 5000,
       priceNote: "starting price \u00b7 negotiable by scope",
@@ -1059,21 +1084,22 @@ export const en: Dictionary = {
     },
   ],
   // Excerpts from LinkedIn recommendations (full texts in assets/linkedin.json).
+  // The first is the homepage's featured quote.
   testimonials: [
-    {
-      quote:
-        "Abdullah demonstrated an impressive aptitude for grasping complex technical concepts swiftly. His analytical skills and thoughtful approach to problem-solving make him a key contributor to our team's success.",
-      name: "Mohamed Sayed",
-      role: "AI Lead · Appenza",
-      image: testimonialImages.mohamedSayed,
-      linkedin: "https://www.linkedin.com/in/abdullah-mohamed-3010/details/recommendations/",
-    },
     {
       quote:
         "Abdullah combines deep technical expertise with a clear, approachable leadership style. He has contributed significantly to our projects with his ability to solve complex problems efficiently and his commitment to quality.",
       name: "Ahmed Farid",
       role: "Senior Software Engineer · Recovery Advisers",
       image: testimonialImages.ahmedFarid,
+      linkedin: "https://www.linkedin.com/in/abdullah-mohamed-3010/details/recommendations/",
+    },
+    {
+      quote:
+        "Abdullah demonstrated an impressive aptitude for grasping complex technical concepts swiftly. His analytical skills and thoughtful approach to problem-solving make him a key contributor to our team's success.",
+      name: "Mohamed Sayed",
+      role: "AI Lead · Appenza",
+      image: testimonialImages.mohamedSayed,
       linkedin: "https://www.linkedin.com/in/abdullah-mohamed-3010/details/recommendations/",
     },
     {
@@ -1094,58 +1120,44 @@ export const en: Dictionary = {
     title: "Four companies, three countries, one habit: owning the thing until it runs in production.",
     paragraphs: [
       "I'm a senior software engineer at Appenza Studio in Cairo. I own the real-time AI layer of Faheem — the Egyptian Ministry of Education's tutoring app, used by 200,000+ students — and build the SvelteKit clients of Talia, a multi-tenant national LMS. Before Appenza I shipped social-commerce and clinic software for DIB GmbH (Germany), white-label pharmacy apps for RevealSite (US), and school payments and chat at Zeyada.",
-      "I work end to end — Flutter or React/SvelteKit on the front, Node.js and PostgreSQL behind it, Docker and Nginx underneath — and I measure the result: ~300–500 ms voice round-trips, a 41% smaller app, a cold start cut from ~6 s to under 1.5 s. B.Sc. in Computer Science & AI, Helwan University (2023). English and Arabic; every product I build is RTL-ready.",
+      "I work end to end — Flutter or React/SvelteKit on the front, Node.js and PostgreSQL behind it, Docker and Nginx underneath — and I measure the result: ~300–500 ms voice round-trips, a 41% smaller app, a cold start cut from ~6 s to under 1.5 s.",
     ],
+    photoAlt: "Portrait of Abdullah Mohamed",
+    photoCaption: "Cairo, Egypt · GMT+2 · works remotely",
     factsLabel: "At a glance",
     // One line per value, and every fact is stated elsewhere on the page or on
-    // the CV. This is the block an assistant lifts when asked who he is.
+    // the CV. This is the block an assistant lifts when asked who he is — role,
+    // employer and base are in the hero's own list and the photo caption.
     facts: [
-      ["Role", "Senior Software Engineer — full-stack, AI, and mobile"],
-      ["Employer", "Appenza Studio, Cairo — Senior Software Engineer since Jan 2026"],
-      ["Based in", "Cairo, Egypt (GMT+2) · works remotely"],
       ["Experience", "Since 2022 in production · 10+ apps shipped · 4 companies"],
       ["Education", "B.Sc. Computer Science & AI, Helwan University (2023)"],
-      ["Stack", "React, Next.js, SvelteKit, Node.js, PostgreSQL, Flutter, Azure OpenAI, AWS"],
       ["Languages", "English and Arabic · bilingual, RTL-ready products"],
       ["Clients so far", "Egypt, Germany, the US, Qatar, and Kuwait"],
-      ["GitHub", "github.com/Abdullah3010"],
       ["Open to", "Senior product roles (remote first), freelance projects, and contracts"],
+      ["GitHub", "github.com/Abdullah3010"],
     ],
   },
   contact: {
     eyebrow: "Contact",
     // Both audiences in the heading, in the order they appear below.
-    title: "Hiring, or building?",
+    title: "Hiring,",
+    titleAccent: "or building?",
     body: "Two different questions, two answers. Pick the one that fits and I’ll reply within 24 hours on working days.",
     book: "Book a call",
     lanes: {
       hiring: {
+        label: "For companies hiring",
         title: "Hiring for a senior role?",
         body: "The CV and LinkedIn are one click away. I'm open to senior product roles, remote first — send the role, the stack, and the team, and I'll reply honestly about fit.",
       },
       project: {
+        label: "For a project",
         title: "Have a product to build?",
         body: "Send the product, the deadline, and what is blocking you. You'll get an honest answer, and a written proposal if it fits.",
       },
     },
-    form: {
-      name: "Your name",
-      email: "Your email",
-      message: "Tell me about the role or the product",
-      intentLabel: "I'm writing about",
-      intentOptions: {
-        hiring: "A role I'm hiring for",
-        project: "A project I need built",
-        other: "Something else",
-      },
-      send: "Send message",
-      sending: "Sending…",
-      success: "Got it — I reply within 24 hours on working days.",
-      error: "Couldn't send right now — please reach me directly below.",
-      copyEmail: "Copy email",
-      copied: "Copied!",
-      directLabel: "Or reach me directly",
-    },
+    copyEmail: "Copy email",
+    copied: "Copied",
   },
   // The four /services pages. Each is the long form of one pricing card
   // (joined by slug) and is written to be read cold — by a searcher or by an

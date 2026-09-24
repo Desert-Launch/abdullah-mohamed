@@ -1,5 +1,8 @@
 export type Lang = "en" | "ar";
 export type Theme = "dark" | "light";
+/** What the visitor picked in the theme control. "system" follows the OS
+ *  (`prefers-color-scheme`); it is the default until they choose. */
+export type ThemePreference = "system" | Theme;
 
 export type NavItem = [label: string, href: string];
 export type Proof = [value: string, label: string];
@@ -106,6 +109,10 @@ export interface CaseStudy {
   platforms?: string[];
   /** Sorts first on the /work index. */
   featured?: boolean;
+  /** Index into `results` of the one metric the homepage's "More case
+   *  studies" row shows. Defaults to 0; set it where the first result is not
+   *  the one that says the most about the study. */
+  highlight?: number;
 }
 
 export interface Testimonial {
@@ -141,21 +148,13 @@ export interface Experience {
   apps: Product[];
 }
 
-export interface Service {
-  title: string;
-  body: string;
-}
-
-/** Glyph rendered in a plan card's header. */
-export type PlanIcon = "layers" | "browser" | "spark" | "mobile";
-
 export interface Plan {
   /** Stable id, shared with the matching `servicePages.pages` entry — the
    *  card links to `/services/<slug>/` and the Service JSON-LD is keyed on it. */
   slug: string;
   name: string;
-  /** One-line promise shown under the name, e.g. "A focused web product or
-   *  internal tool, shipped." */
+  /** The promise in a sentence — the middle column of the homepage's
+   *  "Ways I can help" row, and the Offer description. */
   body: string;
   /** Headline starting price, pre-formatted with symbol and grouping, e.g.
    *  "from $3,500". USD in both languages. */
@@ -167,15 +166,12 @@ export interface Plan {
   /** Small print under the price. States that the figure is a starting point
    *  and negotiable — never a duration; timeline is set per proposal. */
   priceNote: string;
-  /** Per-card CTA label, e.g. "Book a call". Links to #contact. */
+  /** CTA label on the service page's pricing card, e.g. "Book a call". */
   cta: string;
-  /** Which glyph to show in the card header. */
-  icon: PlanIcon;
-  featured?: boolean;
-  /** Badge above a featured card, e.g. "Most popular". */
-  badge?: string;
   /** Optional lead-in above the feature list, e.g. "Everything above, plus:". */
   itemsIntro?: string;
+  /** What the engagement includes — the service page and the Markdown twin
+   *  list these; the homepage row does not. */
   items: string[];
 }
 
@@ -404,92 +400,182 @@ export interface MarkdownCopy {
 }
 
 export interface HeroCopy {
+  /** First item of the meta row, and the start of the H1: who, and the role.
+   *  The row is part of the heading (see HomeHero.tsx) so the page's one H1
+   *  names the person and the role, not only the tagline. */
   eyebrow: string;
+  /** Second item of the meta row, also inside the H1: city and work mode. */
+  place: string;
+  /** Third item of the meta row, with a live dot. Not part of the heading. */
+  status: string;
   /** Headline lead-in, rendered in default ink. */
   title: string;
-  /** Tail of the headline, rendered in the accent color (gold). */
+  /** Tail of the headline, rendered in the muted ink. */
   titleAccent: string;
-  /** Role/positioning line. Rendered by the footer, not the hero. */
+  /** Role/positioning line. Rendered by the sub-page footer. */
   roleLine: string;
   /** Lead paragraph. Keep it to ~35 words: at 62 it was nine lines on a
-   *  phone, and the specialty never reached the first screen. */
+   *  phone. */
   lead: string;
-  /** The hero's two CTA rows, each labelled for the audience it serves.
-   *  The site has two: someone hiring for a role, and someone with a product
-   *  to build. Before this the hero had one undifferentiated row of three
-   *  buttons written for the buyer, and a recruiter's action ("Download CV")
-   *  sat third as a ghost button. */
-  ctaRows: {
-    hiringLabel: string;
-    projectLabel: string;
-  };
-  /** "Book a call" — the client row's primary action. */
-  primary: string;
-  /** "See services & pricing" — the client row's secondary action. */
-  services: string;
+  /** "Explore selected work" — the primary CTA, into #work. */
+  explore: string;
+  /** "Let's talk" — into #contact; also the floating nav's CTA. */
+  talk: string;
+  /** "Download CV" — the PDF. Also the hiring lane's primary action. */
   cv: string;
-  /** "View experience" — into the employment timeline. */
-  experience: string;
-  /** Availability line. Rendered by the footer, not the hero. */
+  /** "Book a free call" — the project lane's primary action. */
+  primary: string;
+  /** Availability line. Rendered by the sub-page footer. */
   availability: string;
-  /** Live status line ("Currently: … — taking new projects from …"),
-   *  rendered with a pulsing dot under the hero actions. */
-  currently: string;
-  socialLabel: string;
-  /** Heading over the proof stats, which sit in the hero's second column on
-   *  desktop and under the CTAs on mobile — so the numbers land in the first
-   *  viewport instead of a screen below it. Visually hidden. */
-  proofLabel: string;
+  /** The hero's second column: Now / Previously / Works across. */
+  facts: Fact[];
+  /** Accessible name for that list. */
+  factsLabel: string;
 }
 
-/** Who is writing. The site serves two audiences and the form could not tell
- *  them apart: every message arrived under the same subject, and analytics
- *  could not say whether a submission was a lead or an interview. */
-export type ContactIntent = "hiring" | "project" | "other";
-
-export interface ContactFormCopy {
-  name: string;
-  email: string;
-  message: string;
-  /** Visible label for the intent selector, and the option text. */
-  intentLabel: string;
-  intentOptions: Record<ContactIntent, string>;
-  send: string;
-  /** Submit button label while the request is in flight. */
-  sending: string;
-  /** Status line after a successful submit. */
-  success: string;
-  /** Status line when the submit fails (points at the direct links below). */
-  error: string;
-  /** "Copy email" button label and its transient copied-state label. */
-  copyEmail: string;
-  copied: string;
-  directLabel: string;
-}
-
-/** One audience's lane in the contact section: a heading that names them and
- *  a line telling them what happens next. The action buttons are built from
- *  data the site already holds (the CV path, `shared.socials`, the booking
- *  link), so a lane adds no duplicate labels. */
+/** One audience's lane in the contact section: a label and heading that name
+ *  them, and a line telling them what happens next. The action buttons are
+ *  built from data the site already holds (the CV path, `shared.socials`, the
+ *  booking link), so a lane adds no duplicate labels. */
 export interface ContactLane {
+  /** Small label above the heading, e.g. "For companies hiring". */
+  label: string;
   title: string;
   body: string;
 }
 
 export interface ContactCopy {
   eyebrow: string;
+  /** Heading lead-in ("Hiring,"), in default ink. */
   title: string;
+  /** Heading tail ("or building?"), in the muted ink. */
+  titleAccent: string;
   body: string;
   /** Label for the booking / "Book a call" button. */
   book: string;
-  /** The two doors. Before this the whole section — heading, form placeholder
-   *  and success copy — was addressed to a buyer, and a recruiter had no path
-   *  that named them. */
+  /** The two doors, one per audience. */
   lanes: {
     hiring: ContactLane;
     project: ContactLane;
   };
-  form: ContactFormCopy;
+  /** "Copy email" button label and its transient copied-state label. */
+  copyEmail: string;
+  copied: string;
+}
+
+/** One layer of the product stack, as the homepage's "Across the stack" map
+ *  draws it. The keys are shared by both locales; only the names are copy. */
+export type StackLayer = "mobile" | "web" | "api" | "rt" | "data" | "infra";
+
+/** One product column on the stack map: what was built at each layer. A layer
+ *  a product has no entry for renders as an empty point. */
+export interface StackProduct {
+  name: string;
+  /** "Company · what it is", shown above the name when selected. */
+  context: string;
+  /** Case-study slug, when the product has a written study. */
+  slug?: string;
+  layers: Partial<Record<StackLayer, string>>;
+}
+
+/** One labelled note in a homepage diagram: small label, title, one line. */
+export interface DiagramNote {
+  label: string;
+  title: string;
+  body: string;
+}
+
+/** Copy the redesigned homepage needs that has no other home in the
+ *  dictionary: its chrome, the hero's "production strata" card, the Talia
+ *  system diagram, the stack map, and the principles. Sections that already
+ *  had copy (case studies, experience, testimonials, plans, contact) keep
+ *  using it. */
+export interface HomeCopy {
+  chrome: {
+    /** aria-label of the header's section nav. */
+    primaryNav: string;
+    /** aria-label of the floating nav shown once the header scrolls away. */
+    stickyNav: string;
+    /** Name of the mobile menu dialog, and its button's visible label. */
+    menu: string;
+    openMenu: string;
+    closeMenu: string;
+  };
+  /** The Auto / Light / Dark control. */
+  theme: {
+    label: string;
+    system: string;
+    light: string;
+    dark: string;
+  };
+  /** The hero's card: one product drawn as the layers it runs on. */
+  strata: {
+    /** Top-left caption, e.g. "Faheem — the real-time layer". */
+    label: string;
+    /** Top-right figure, e.g. "200,000+ students". */
+    stat: string;
+    /** Accessible name of the card link. */
+    ariaLabel: string;
+    /** Pointer label that follows the cursor over the card. */
+    cursor: string;
+    layers: { layer: string; detail: string }[];
+  };
+  /** "02 In production": the proof numbers' own section. The first `proof`
+   *  entry is the big number; `body` is the sentence under it. */
+  proof: {
+    eyebrow: string;
+    body: string;
+    /** Label before the product logo strip. */
+    products: string;
+  };
+  work: {
+    /** "Role —" and "Stack —" lead-ins on the featured studies. */
+    role: string;
+    stack: string;
+    /** Pointer label over a case-study visual. */
+    cursor: string;
+    /** Label above the store-only apps strip. */
+    alsoShipped: string;
+  };
+  /** The Talia case's system diagram (Ministry → schools). */
+  talia: {
+    label: string;
+    products: string;
+    authority: string;
+    ministry: string;
+    school: string;
+    live: string;
+    /** The first school on the platform. */
+    pilot: string;
+    roles: string[];
+    nextTenant: string;
+    notes: DiagramNote[];
+  };
+  stack: {
+    heading: Heading;
+    /** Header of the layer column. */
+    layerLabel: string;
+    /** Accessible name of the product picker. */
+    pickerLabel: string;
+    layers: { key: StackLayer; name: string }[];
+    products: StackProduct[];
+    capabilitiesLabel: string;
+    capabilities: { name: string; body: string; tech: string }[];
+  };
+  experience: {
+    /** Accessible name of the role tabs. */
+    tabsLabel: string;
+    /** "Products" — prefixed to the count above a role's apps. */
+    products: string;
+    /** "Full CV" link beside the heading. */
+    fullCv: string;
+  };
+  principles: {
+    title: string;
+    note: string;
+    /** Each principle cites the case study it was taken from, by slug. */
+    items: { text: string; slug: string }[];
+  };
 }
 
 export interface Dictionary {
@@ -509,11 +595,18 @@ export interface Dictionary {
   };
   /** Visually-hidden skip link rendered first inside <body>. */
   skipLink: string;
+  /** Homepage section anchors, in page order. Also the sub-page footer's
+   *  "Sections" column. Must keep a "#contact" entry: the sub-page header
+   *  borrows its label. */
   nav: NavItem[];
+  /** The person's name as written in this locale. */
+  name: string;
   role: string;
-  menuLabel: string;
-  /** aria-label for the floating back-to-top button. */
+  /** City line in the homepage footer. */
+  place: string;
+  /** aria-label for the floating nav's back-to-top link. */
   backToTop: string;
+  /** The sub-page header's two-state theme button. */
   themeToggle: string;
   darkToggle: string;
   langToggle: string;
@@ -526,13 +619,14 @@ export interface Dictionary {
     options: Record<Lang, string>;
   };
   hero: HeroCopy;
+  /** The homepage redesign's own copy — see `HomeCopy`. */
+  home: HomeCopy;
   proof: Proof[];
+  /** Label over the company strip in "In production". */
   logosLabel: string;
-  logosIntro: string;
-  companiesLabel: string;
+  /** Label before a role's app list on the CV's Markdown twin. */
   appsLabel: string;
   caseStudiesHeading: Heading;
-  selectedWorkHeading: Heading;
   selectedWorkLabels: {
     products: string;
     productBuild: string;
@@ -546,13 +640,12 @@ export interface Dictionary {
     unreleased: string;
   };
   workHeading: Heading;
-  freelanceHeading: Heading;
   servicesHeading: Heading;
+  /** `title` names the Offer catalogue in structured data; `body` is the
+   *  pricing note under the homepage's plan rows. */
   plansHeading: Heading;
   processHeading: Heading;
   process: ProcessStep[];
-  faqHeading: Heading;
-  faq: FaqItem[];
   testimonialsHeading: Heading;
   testimonialLabels: {
     /** Trust badge shown on cards backed by a LinkedIn recommendation. */
@@ -564,10 +657,13 @@ export interface Dictionary {
     eyebrow: string;
     title: string;
     paragraphs: string[];
-    /** Heading over the "at a glance" list. */
+    photoAlt: string;
+    /** Line under the portrait: city, timezone, work mode. */
+    photoCaption: string;
+    /** Accessible name of the "at a glance" list. */
     factsLabel: string;
-    /** The at-a-glance rows: role, base, experience, stack, languages,
-     *  availability. Keep every value to one line. */
+    /** The at-a-glance rows. Keep every value to one line, and state only
+     *  facts found elsewhere on the page or on the CV. */
     facts: Fact[];
   };
   caseLabels: {
@@ -588,8 +684,6 @@ export interface Dictionary {
   cv: CvCopy;
   selectedWork: SelectedApp[];
   experiences: Experience[];
-  freelanceProjects: Product[];
-  services: Service[];
   plans: Plan[];
   testimonials: Testimonial[];
   contact: ContactCopy;

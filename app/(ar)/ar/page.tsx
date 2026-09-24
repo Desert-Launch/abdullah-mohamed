@@ -5,7 +5,7 @@ import { homeJsonLd } from "../../lib/jsonld";
 export default function ArabicHome() {
   return (
     <>
-      {/* ProfilePage + the (Arabic) FAQ rendered below — see app/lib/jsonld.ts. */}
+      {/* ProfilePage about the person, in Arabic — see app/lib/jsonld.ts. */}
       <JsonLd data={homeJsonLd("ar")} />
       <Portfolio lang="ar" />
     </>
