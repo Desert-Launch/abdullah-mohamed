@@ -26,6 +26,102 @@
       "permanent": false
     },
     {
+      "source": "/ar/cv",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/cv/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/ar/cv/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/cv/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/ar/services",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/services/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/ar/services/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/services/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/ar/services/:slug([a-z0-9-]+)",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/services/:slug/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/ar/services/:slug([a-z0-9-]+)/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/services/:slug/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/ar/work",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/work/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/ar/work/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/work/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/ar/work/:slug([a-z0-9-]+)",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/work/:slug/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/ar/work/:slug([a-z0-9-]+)/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/work/:slug/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/cv",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/cv/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/cv/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/cv/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/services",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/services/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/services/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/services/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/services/:slug([a-z0-9-]+)",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/services/:slug/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/services/:slug([a-z0-9-]+)/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/services/:slug/index.md",
+      "permanent": false
+    },
+    {
       "source": "/work",
       "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
       "destination": "/work/index.md",
@@ -52,6 +148,23 @@
   ],
   "headers": [
     {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "strict-transport-security", "value": "max-age=63072000; includeSubDomains" },
+        { "key": "x-content-type-options", "value": "nosniff" },
+        { "key": "x-frame-options", "value": "DENY" },
+        { "key": "referrer-policy", "value": "strict-origin-when-cross-origin" },
+        {
+          "key": "permissions-policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+        },
+        {
+          "key": "content-security-policy-report-only",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+        }
+      ]
+    },
+    {
       "source": "/(.*)opengraph-image-(.*)",
       "headers": [{ "key": "content-type", "value": "image/png" }]
     },
@@ -76,7 +189,7 @@
         { "key": "vary", "value": "accept" },
         {
           "key": "link",
-          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </index.md>; rel=\"describedby\"; type=\"text/markdown\", </index.md>; rel=\"alternate\"; type=\"text/markdown\", </ar/>; rel=\"alternate\"; hreflang=\"ar\", </sitemap.xml>; rel=\"index\"; type=\"application/xml\", <https://www.abdullahmohamed.dev/>; rel=\"canonical\""
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </index.md>; rel=\"describedby\"; type=\"text/markdown\", </index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.abdullahmohamed.dev/>; rel=\"alternate\"; hreflang=\"en\", <https://www.abdullahmohamed.dev/ar/>; rel=\"alternate\"; hreflang=\"ar\", <https://www.abdullahmohamed.dev/>; rel=\"alternate\"; hreflang=\"x-default\", </sitemap.xml>; rel=\"index\"; type=\"application/xml\", <https://www.abdullahmohamed.dev/>; rel=\"canonical\""
         }
       ]
     },
@@ -86,7 +199,67 @@
         { "key": "vary", "value": "accept" },
         {
           "key": "link",
-          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </ar/index.md>; rel=\"describedby\"; type=\"text/markdown\", </ar/index.md>; rel=\"alternate\"; type=\"text/markdown\", </>; rel=\"alternate\"; hreflang=\"en\", <https://www.abdullahmohamed.dev/ar/>; rel=\"canonical\""
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </ar/index.md>; rel=\"describedby\"; type=\"text/markdown\", </ar/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.abdullahmohamed.dev/>; rel=\"alternate\"; hreflang=\"en\", <https://www.abdullahmohamed.dev/ar/>; rel=\"alternate\"; hreflang=\"ar\", <https://www.abdullahmohamed.dev/>; rel=\"alternate\"; hreflang=\"x-default\", <https://www.abdullahmohamed.dev/ar/>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/ar/services/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </ar/services/index.md>; rel=\"describedby\"; type=\"text/markdown\", </ar/services/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.abdullahmohamed.dev/services/>; rel=\"alternate\"; hreflang=\"en\", <https://www.abdullahmohamed.dev/ar/services/>; rel=\"alternate\"; hreflang=\"ar\", <https://www.abdullahmohamed.dev/services/>; rel=\"alternate\"; hreflang=\"x-default\", <https://www.abdullahmohamed.dev/ar/services/>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/ar/services/:slug([a-z0-9-]+)/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </ar/services/index.md>; rel=\"alternate\"; type=\"text/markdown\""
+        }
+      ]
+    },
+    {
+      "source": "/ar/work/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </ar/work/index.md>; rel=\"describedby\"; type=\"text/markdown\", </ar/work/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.abdullahmohamed.dev/work/>; rel=\"alternate\"; hreflang=\"en\", <https://www.abdullahmohamed.dev/ar/work/>; rel=\"alternate\"; hreflang=\"ar\", <https://www.abdullahmohamed.dev/work/>; rel=\"alternate\"; hreflang=\"x-default\", <https://www.abdullahmohamed.dev/ar/work/>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/ar/work/:slug([a-z0-9-]+)/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </ar/work/index.md>; rel=\"alternate\"; type=\"text/markdown\""
+        }
+      ]
+    },
+    {
+      "source": "/services/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </services/index.md>; rel=\"describedby\"; type=\"text/markdown\", </services/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.abdullahmohamed.dev/services/>; rel=\"alternate\"; hreflang=\"en\", <https://www.abdullahmohamed.dev/ar/services/>; rel=\"alternate\"; hreflang=\"ar\", <https://www.abdullahmohamed.dev/services/>; rel=\"alternate\"; hreflang=\"x-default\", <https://www.abdullahmohamed.dev/services/>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/services/:slug([a-z0-9-]+)/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </services/index.md>; rel=\"alternate\"; type=\"text/markdown\""
         }
       ]
     },
@@ -96,7 +269,7 @@
         { "key": "vary", "value": "accept" },
         {
           "key": "link",
-          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </work/index.md>; rel=\"describedby\"; type=\"text/markdown\", </work/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.abdullahmohamed.dev/work/>; rel=\"canonical\""
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </work/index.md>; rel=\"describedby\"; type=\"text/markdown\", </work/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.abdullahmohamed.dev/work/>; rel=\"alternate\"; hreflang=\"en\", <https://www.abdullahmohamed.dev/ar/work/>; rel=\"alternate\"; hreflang=\"ar\", <https://www.abdullahmohamed.dev/work/>; rel=\"alternate\"; hreflang=\"x-default\", <https://www.abdullahmohamed.dev/work/>; rel=\"canonical\""
         }
       ]
     },
@@ -107,6 +280,26 @@
         {
           "key": "link",
           "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </work/index.md>; rel=\"alternate\"; type=\"text/markdown\""
+        }
+      ]
+    },
+    {
+      "source": "/cv/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </cv/index.md>; rel=\"describedby\"; type=\"text/markdown\", </cv/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.abdullahmohamed.dev/cv/>; rel=\"alternate\"; hreflang=\"en\", <https://www.abdullahmohamed.dev/ar/cv/>; rel=\"alternate\"; hreflang=\"ar\", <https://www.abdullahmohamed.dev/cv/>; rel=\"alternate\"; hreflang=\"x-default\", <https://www.abdullahmohamed.dev/cv/>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/ar/cv/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </ar/cv/index.md>; rel=\"describedby\"; type=\"text/markdown\", </ar/cv/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.abdullahmohamed.dev/cv/>; rel=\"alternate\"; hreflang=\"en\", <https://www.abdullahmohamed.dev/ar/cv/>; rel=\"alternate\"; hreflang=\"ar\", <https://www.abdullahmohamed.dev/cv/>; rel=\"alternate\"; hreflang=\"x-default\", <https://www.abdullahmohamed.dev/ar/cv/>; rel=\"canonical\""
         }
       ]
     }

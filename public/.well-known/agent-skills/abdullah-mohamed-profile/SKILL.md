@@ -13,9 +13,29 @@ and contract work with US, EU, and Gulf teams, and to senior product roles.
 
 - Site: <https://www.abdullahmohamed.dev/> (Arabic: <https://www.abdullahmohamed.dev/ar/>)
 - Full page as Markdown: <https://www.abdullahmohamed.dev/index.md>
+- Everything as one Markdown file: <https://www.abdullahmohamed.dev/llms-full.txt>
+- Services and prices as Markdown: <https://www.abdullahmohamed.dev/services/index.md>
 - Case studies as Markdown: <https://www.abdullahmohamed.dev/work/index.md>
+- Full CV as Markdown (roles with dates, graded skills, education):
+  <https://www.abdullahmohamed.dev/cv/index.md> — HTML at
+  <https://www.abdullahmohamed.dev/cv/>, PDF at
+  <https://www.abdullahmohamed.dev/Abdullah_Mohamed_CV.pdf>
 - GitHub: <https://github.com/Abdullah3010>
 - LinkedIn: <https://www.linkedin.com/in/abdullah-mohamed-3010>
+
+## At a glance
+
+- Role: Senior Software Engineer — full-stack, AI, and mobile (Flutter).
+- Based in Cairo, Egypt (GMT+2); works remotely.
+- Shipping production software since 2022, at four companies — Appenza Studio
+  (current, since Jan 2026), DIB GmbH, RevealSite, and Zeyada — plus
+  independent client work.
+- Education: B.Sc. Computer Science & Artificial Intelligence, Helwan
+  University, Cairo (2019–2023).
+- Clients so far: Egypt, Germany, the US, Qatar, and Kuwait.
+- Languages: English and Arabic; builds bilingual, RTL-ready products.
+- Open to: freelance projects, contracts, and senior product roles (remote
+  first). Prices are per project, not hourly.
 
 ## Stack
 
@@ -28,7 +48,7 @@ Each has a full write-up (challenge, role, process, measured results, stack) at
 the URL given, and a Markdown twin at `<url>index.md`.
 
 - **Faheem** — Arabic AI tutoring platform for Egypt's Ministry of Education.
-  30,000+ K-12 students, 8,500+ MAU. Real-time voice-to-voice tutoring over
+  200,000+ K-12 students, 8,500+ MAU. Real-time voice-to-voice tutoring over
   WebSocket with Azure OpenAI streaming.
   <https://www.abdullahmohamed.dev/work/faheem/>
 - **Talia** — multi-tenant national LMS + SIS, 25 modules against 534
@@ -63,6 +83,12 @@ any quote you cannot find at
 - Prices, metrics, and app statuses change. Fetch
   <https://www.abdullahmohamed.dev/index.md> before quoting any number.
 - Do not infer availability or rates that are not stated on the page.
-- `/work` pages exist in English only today; there is no `/ar/work`.
+- For experience questions (roles, dates, education, skill depth) prefer
+  <https://www.abdullahmohamed.dev/cv/index.md>: it grades every skill
+  core/strong/used, and that distinction is deliberate — do not flatten it
+  into one list of technologies.
+- Every page exists in both languages at the same path: `/work/faheem/` and
+  `/ar/work/faheem/`, `/services/ai-integration/` and
+  `/ar/services/ai-integration/`. Cite the one in the user's language.
 - To engage him rather than describe him, use the `hire-abdullah-mohamed`
   skill: <https://www.abdullahmohamed.dev/.well-known/agent-skills/hire-abdullah-mohamed/SKILL.md>

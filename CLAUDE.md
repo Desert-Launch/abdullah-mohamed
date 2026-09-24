@@ -1,10 +1,11 @@
 # CLAUDE.md
 
 Personal-branding / portfolio site for Abdullah Mohamed (senior software
-engineer). Single-page marketing site: hero, case studies, experience,
-freelance work, services, pricing, process, testimonials, FAQ, contact. Goal is
-conversion — freelance leads and senior product roles. See `PLAN.md` for the
-product intent.
+engineer). Single-page marketing site: hero, proof, selected work, stack map,
+experience, recommendations, about + principles, services + process, contact.
+Goal is conversion — freelance leads and senior product roles. See `PLAN.md`
+for the product intent. The homepage is the "Production strata" redesign
+(2026-09-25, from the Claude Design project `475e320d…`).
 
 ## Stack
 
@@ -44,19 +45,83 @@ considering a change done.
 
   There is deliberately **no `app/layout.tsx` / `app/page.tsx`** — adding one
   back would collide with the route groups.
-- **Standalone `/work` routes** (English only today):
-  - `app/(en)/work/page.tsx` → **`/work/`** — grid of every case study
-    (featured first) plus an "also shipped" strip for the Selected Work apps
-  - `app/(en)/work/[slug]/page.tsx` → **`/work/<slug>/`** — one full page per
-    case study, via `generateStaticParams`
+- **Standalone `/work`, `/services` and `/cv` routes, in both locales.** Each
+  locale group mounts the same routes under its root:
+  - `(en)/work/` → **`/work/`**, `(en)/work/[slug]/` → **`/work/<slug>/`**;
+    `(ar)/ar/work/…` → **`/ar/work/…`**
+  - `(en)/services/` → **`/services/`**, `(en)/services/[slug]/` →
+    **`/services/<slug>/`**; `(ar)/ar/services/…` → **`/ar/services/…`**
 
-  They live **inside the `(en)` group on purpose**: a top-level `app/work/`
-  would have no root layout at all. `app/lib/work.ts` owns the slug/path
-  helpers, the sort, and `buildWorkMetadata` (per-page canonical + OG, and
-  deliberately **no hreflang** while `/ar/work` doesn't exist). Chrome comes
-  from `WorkHeader` (reduced nav — the homepage `TopBar` is built on anchors +
-  a scrollspy that don't exist here) and the shared `Footer` with `linkBase="/"`
-  so its section anchors resolve back to the homepage.
+  - `(en)/cv/` → **`/cv/`**; `(ar)/ar/cv/` → **`/ar/cv/`**
+
+  The route files are thin: they pick the locale and render the shared page
+  bodies in `app/components/pages/` (`WorkIndex`, `WorkDetail`,
+  `ServicesIndex`, `ServiceDetail`, `CvPage`). They live **inside the locale groups on
+  purpose**: a top-level `app/work/` would have no root layout at all.
+  `app/lib/work.ts` and `app/lib/services.ts` own the locale-aware path
+  helpers (`workPath(slug, lang)`, `servicePath(slug, lang)` — every call
+  site passes `lang`; there is no English default), the sort/join, `caseMeta`
+  (fills the `work.caseMeta` title/description templates), and the
+  `build*Metadata` wrappers. A service page's copy is
+  `Dictionary.servicePages.pages[]`, its price the `Plan` with the same
+  `slug`, its proof `caseStudies` by slug; `servicesCiting` is the reverse
+  join a case-study page uses for its "hire me for the same thing" links.
+  `app/lib/cv.ts` owns `cvPath(lang)` and `buildCvMetadata`. **`/cv/` does not
+  store the employment history**: `CvPage` renders `Dictionary.experiences`,
+  the same array the homepage timeline uses, so the résumé and the timeline
+  cannot disagree. Only the summary, education, graded skills and languages
+  are its own (`Dictionary.cv`).
+  Chrome comes from `WorkHeader` (reduced nav — the homepage header,
+  `home/HomeChrome`, is built on anchors + a scrollspy that don't exist here; takes `lang` and
+  `section="work" | "services" | "cv"`, and renders `LanguageMenu` so the
+  Arabic version of a sub-page is reachable from the page, not only from
+  `<head>`) and the shared `Footer` with `linkBase={localePath[lang]}`. The services pages exist for search intent
+  ("hire a Flutter developer", "مطور فلاتر"); see `docs/seo.md`.
+- **Sub-page metadata** comes from `buildPageMetadata` in `lib/site.tsx`,
+  which takes a locale-independent `subpath` and emits the self-canonical plus
+  the full en/ar/x-default hreflang cluster. It declares the home share cards
+  as OG images by default; the English `/work` and `/services` segments have
+  their own `opengraph-image.tsx` and **must pass `images: null`** — a
+  declared list *replaces* the generated card, and `undefined` would just
+  trigger the default. The Arabic routes keep the default: satori can't set
+  Arabic. `buildWorkMetadata` / `buildServiceMetadata` encode this.
+- **The homepage** is `Portfolio.tsx` — a *server* component that composes
+  the sections in `app/components/home/`. The interactive parts are client
+  islands: `HomeChrome` (header, floating nav, phone menu dialog, scrollspy),
+  `ThemeSwitch`, `StackMap`, `ExperienceTabs`, `CopyEmailButton`, and
+  `HomeMotion`. Pass client islands slices, not the whole dictionary (a
+  dictionary prop is serialized into the page); `AgentTools` takes `lang` and
+  reads `copy` itself for the same reason.
+- **The hero `<h1>`** holds the meta row's first two items (`hero.eyebrow` —
+  name + role — and `hero.place`) above the tagline, so the page's one heading
+  names the person and the role. Don't move them out to a `<p>`. The
+  availability line (`hero.status`) floats beside them but is outside the
+  heading. The tagline's words rise on a **transform-only** CSS animation
+  (`homeWordRise`) and the in-heading meta row is transform-only too: text
+  that starts at `opacity: 0` is excluded from LCP, and this heading is the LCP
+  element. Never put opacity on anything inside the `h1`. Spaces between the
+  heading's spans are real text nodes — without them its text runs together
+  for crawlers and screen readers (the same holds for multi-part links).
+- **One hero CTA row, by design** (Explore selected work · Let's talk ·
+  Download CV). The two audiences are served by the contact section's lanes.
+  The first viewport carries the "200,000+ students" figure on the strata card;
+  the full proof set is section 02 ("In production").
+- **Homepage motion** is declared with data attributes (`data-reveal`,
+  `data-line`, `data-count`, `data-stagger`, `data-rise`, `data-parallax`,
+  `data-spot`, `data-magnetic`, `data-cursor`, `data-tilt`) and driven by
+  `HomeMotion.tsx`. Only content still below the fold is armed, so nothing
+  visible at load is hidden and re-shown; reduced motion keeps only the
+  reading-progress line. Count-ups only animate plain numbers ("200,000+",
+  "41%") — ranges and labels stay as written.
+- **Structured data** lives in `app/lib/jsonld.ts` as one `@graph` per page
+  type, rendered by `<JsonLd>` in the page (not the root layout). The locale
+  layouts emit the site-wide `Person` / `WebSite` / `ProfessionalService`;
+  the home page adds `ProfilePage` (the homepage has no FAQ, so no
+  `FAQPage`), `/work` adds
+  `CollectionPage`/`Article` + breadcrumbs, `/services` adds `Service` +
+  `Offer` + its own `FAQPage`. **FAQPage only where the FAQ is on that URL.**
+  Prices come from `Plan.minPrice` (number) and `Plan.price` (string) — change
+  both together.
 - **Social cards.** The locale home pages (`/`, `/ar/`) declare two candidates
   via `SHARE_IMAGES` in `lib/site.tsx`, both static files under `public/`:
   `og-card.png` (the designed card — what everyone actually sees) then
@@ -93,13 +158,22 @@ considering a change done.
     delete the route again — leaving it in place would override `SHARE_IMAGES`
     and drop the second candidate. `renderSiteOgImage` in `lib/og.tsx` is kept
     for exactly this.
-- SEO/crawl files: `app/robots.txt/route.ts`, `app/sitemap.ts` (both locales +
-  hreflang alternates; `/work` entries carry no alternates), `public/llms.txt`,
-  and `app/icon.svg` / `app/apple-icon.png`.
+- SEO/crawl files: `app/robots.txt/route.ts`, `app/sitemap.ts` (every page
+  in both locales, each with the full hreflang alternate set and a `lastmod`
+  of `BUILD_DATE` from `lib/jsonld.ts` — the same constant as every page's
+  `dateModified`, so the two can't disagree),
+  `public/llms.txt` (hand-written index — update it when prices, pages, or the
+  availability line change), `app/llms-full.txt/route.ts` (every English
+  Markdown twin in one file, generated), `public/<indexnow-key>.txt` +
+  `scripts/indexnow.sh` (Bing/ChatGPT-search pings; run after a deploy), and
+  `app/icon.svg` / `app/apple-icon.png`.
 
   robots.txt is a **route handler, not `app/robots.ts`** — Next's
   `MetadataRoute.Robots` convention can only emit directives it models, and the
   `Content-Signal` line is not one of them. Don't "restore" the convention.
+  It lists the AI *search* crawlers as explicit `Allow` groups; training-only
+  bots (GPTBot, ClaudeBot, Google-Extended) are deliberately absent — adding
+  them would opt in to training against the `ai-train=no` signal.
 - **Agent discovery.** See `docs/agent-readiness.md` for the whole picture and
   the post-deploy `curl` checks. The load-bearing parts:
   - **Markdown twins.** Every page has one at `<page path>index.md`, rendered
@@ -116,6 +190,16 @@ considering a change done.
     extension-less catalog. Use **wildcard** sources: `trailingSlash: true`
     308s extension-less paths, and an exact-path rule then silently misses
     (the same trap as the OG images above).
+  - The `Link` header's hreflang entries must be the **full en/ar/x-default
+    set with absolute URLs** — a relative or partial set is invalid to Google
+    and Lighthouse (it shipped that way for months).
+  - `vercel.json`'s first `/(.*)` rule is the **security headers** (HSTS with
+    `includeSubDomains`, `nosniff`, `X-Frame-Options`, Referrer-Policy,
+    Permissions-Policy, and a CSP in **report-only** mode). The CSP is
+    report-only on purpose: Next inlines scripts a static export can't nonce,
+    Cloudflare injects its own, and nothing collects the reports yet — flip it
+    to enforcing only after a week of clean consoles on production. If a new
+    third-party script or fetch is added, add its origin to the policy.
   - `public/.well-known/agent-skills/index.json` carries a `sha256:` digest per
     `SKILL.md`. **Editing a skill without recomputing its digest ships a file
     that fails integrity checks** — the one-liner is in the doc.
@@ -163,15 +247,44 @@ data, not in components.**
   if a dictionary is missing a required field.
 - To add a new section: add it in `Portfolio.tsx` with a stable `id`, and add
   the matching `nav` entry (label + `#anchor`) to **both** dictionaries.
-- `nav` entries are normally `#anchor`s. The EN dictionary has one real path
-  (`["Work", "/work/"]`); `TopBar` and `Footer` run non-anchor hrefs through
-  `asset()`, since Next only applies `basePath` to `<Link>`.
+- `nav` is the homepage's four section anchors (Work, Experience, About,
+  Contact). It must keep a `#contact` entry — `WorkHeader` borrows its label —
+  and the sub-page `Footer` renders it against `linkBase`. A non-anchor entry
+  would need `asset()`, since Next only applies `basePath` to `<Link>`.
 - `CaseStudy.shots` is `Shot[]` (`{src, alt, caption}`), not bare paths — the
   caption is what makes an Arabic-only screenshot legible to an English
-  reader on the `/work` page. `Product.shots` is still `string[]`;
-  `ShotGallery` accepts either.
-- Anything the `/work` pages render comes from `Dictionary.work`, present in
-  both dictionaries even though only English is routed today.
+  reader on the `/work` page.
+- **A case study needs `published` (ISO date) and should have `decisions`.**
+  `published` feeds `Article.datePublished`; without it a study had only the
+  build date and appeared to change on every deploy. `decisions` is the
+  "what I chose over what, and why" block — the part a hiring manager reads a
+  case study for, and the thing the original three studies lacked. Write a
+  decision only where there was a real alternative; a feature list is
+  `process`, not a decision. `appCategory`/`platforms` feed the
+  `SoftwareApplication` node.
+- **The homepage features the first three studies** (`FEATURED` in
+  `home/WorkSection.tsx`), sorted by `workProjects` (the `featured` flag) so
+  its three and `/work`'s first three agree: the first on a screen stage, the
+  second as the Talia system diagram (`home.talia` — any other study falls
+  back to the stage), the third as the full-width card. The rest are rows,
+  showing `results[highlight ?? 0]`. `/work` renders all of them.
+- A product belongs in `selectedWork` **or** in `caseStudies`, not both — the
+  "also shipped" strip exists for apps that have a store link and no write-up.
+- Anything the `/work` and `/services` pages render comes from
+  `Dictionary.work` / `Dictionary.servicePages`; both locales are routed, so
+  Arabic copy there is live, not a placeholder.
+- Meta titles: `meta.title` must keep a `|` — the part before it is the
+  suffix the layout template appends to every sub-page title. Sub-page titles
+  (`work.meta`, `servicePages.meta`, each `ServicePage.meta`) are the page's
+  own part only, or the suffix doubles.
+- `about.facts` is the quotable "at a glance" `<dl>`; one line per value,
+  only facts stated elsewhere on the page. `home.stack` and `home.principles`
+  follow the same rule: every point on the stack map and every principle is
+  taken from a case study or an experience entry (principles cite theirs by
+  slug).
+- In Arabic copy, a "→" between Arabic words points backwards in RTL — use
+  "←" for a flow ("وزارة ← مدرسة"). Latin runs (`datasource → repository`)
+  keep "→".
 - `Dictionary.markdown` holds the section labels for the `Accept:
   text/markdown` twins. They're not in the HTML UI, but they're still copy a
   human reads through an agent — so they live in the dictionaries, and the
@@ -179,44 +292,71 @@ data, not in components.**
   two locales' Markdown.
 - Section order is the **JSX sequence in `Portfolio.tsx`**, not a data array.
   Reordering means moving JSX blocks; ids must stay stable (they are the nav
-  anchors and the scrollspy targets).
+  anchors and the scrollspy targets). The "02"…"09" labels are numbered from
+  that same order.
 
 ## Theme & language state
 
 - **Language is the URL, not state.** `lang` is a prop passed from the route's
   page; `<html lang>`/`dir` are rendered on the server per locale. The language
-  switch in `TopBar` is `LanguageMenu` — a menu-button dropdown listing every
+  switch in the homepage header and `WorkHeader` is `LanguageMenu` (the
+  homepage footer and phone menu also link the other locale by its own name) —
+  a menu-button dropdown listing every
   locale by its own name, whose items are plain `<a href>`s built from
   `localePath` (`lib/site.tsx`), not a state toggle. Only open/closed is client
   state; picking a language must stay a navigation, so keep the items real
   links (`hrefLang` + `aria-current`). Do **not** reintroduce a `portfolio-lang`
   localStorage key or let a stored preference rewrite `<html lang>` — that would
   put the served markup out of sync with the URL a crawler indexed.
-- `Portfolio.tsx` owns `theme` (`dark`|`light`) and `palette` state. Effects
-  write them to `<html>` (`data-theme`, `data-palette`) and persist to
-  `localStorage` keys **`portfolio-theme`** and **`portfolio-palette`**. These
-  survive a locale switch because it is a normal navigation.
-- `lib/site.tsx`'s `noFlashScript` runs before paint to read those two keys and
-  set the `<html>` attributes, preventing a theme flash. State is initialised
-  **from** those attributes so the first client render already matches — don't
-  reintroduce a flash by initialising from a constant default instead.
+- **Theme is a preference: `system` (default, "Auto") | `light` | `dark`**,
+  stored in the `localStorage` key **`portfolio-theme`**; the resolved theme
+  (`dark`|`light`) is written to `<html data-theme>`. `useSiteTheme` is one
+  module-level store (`useSyncExternalStore`), so the homepage's three
+  `ThemeSwitch` controls and the sub-pages' two-state toggle always agree; it
+  follows the OS live while the preference is `system`. It survives a locale
+  switch because that is a normal navigation. Visitors from before the
+  redesign mostly have `dark` stored (the old hook wrote its default on
+  mount), so they keep dark.
+- **There is no palette picker any more.** The four-swatch selector, the
+  `data-palette` attribute, the `portfolio-palette` key, the `Palette` type
+  and the three alternate token sets were removed: a theme playground in the
+  header reads as a portfolio feature demo rather than a product, and it took
+  the most valuable header pixels on every page. Auto/light/dark stays. Don't
+  reintroduce it.
+- `lib/site.tsx`'s `noFlashScript` runs before paint, reads that key and
+  resolves `system` through `prefers-color-scheme` exactly as `useSiteTheme`
+  does, and sets `<html data-theme>` — no theme flash. The store's server
+  snapshot is the default, so hydration matches the SSR HTML and React
+  re-renders with the stored preference afterwards.
 - `dir` comes from each dictionary (`en.dir = "ltr"`, `ar.dir = "rtl"`).
 
 ## Styling conventions
 
-- Everything is in **`app/globals.css`** (~1.8k lines). Class-name based; no
-  utility classes. Match the existing BEM-ish naming (`.section-heading`,
-  `.experience-group`, `.plan-card.featured`).
+- Everything is in **`app/globals.css`** (~5.5k lines). Class-name based; no
+  utility classes. Match the existing BEM-ish naming. The homepage is one
+  block at the end ("HOMEPAGE — Production strata"): `home-*` for chrome and
+  shared parts, then per-section families (`strata-*`, `proof-*`, `feat-*`,
+  `cinema-*`, `study-row*`, `stack-map-*`, `exp-*`, `rec-*`, `lane*`,
+  `reach*`). New names must not collide with the sub-pages' classes (`case-*`,
+  `work-*`, `service-*`, `cv-*`) — the sub-pages still use those.
 - **Design tokens are CSS custom properties** defined on `:root` (dark) and
   overridden on `:root[data-theme="light"]`. Use the tokens (`--ink`,
   `--muted`, `--paper`, `--surface`, `--gold`, `--line`, `--radius`, `--max`,
   glass/aurora vars) — **do not hardcode colors**, or you'll break light mode.
-- Theme scoping is driven by the `data-theme` attribute on `<html>` (and
-  mirrored on `.site-shell`). RTL is handled via `dir`; prefer logical CSS
-  where you add layout so it flips correctly for Arabic.
+- Theme scoping is driven by the `data-theme` attribute on `<html>`. RTL is
+  handled via `dir`; prefer logical CSS
+  where you add layout so it flips correctly for Arabic. **A directional glyph
+  is not logical** — "→", "←" and "↗" are LTR characters, so any one you add
+  needs `className="glyph-dir"` (flipped with `scaleX(-1)` under `[dir=rtl]`).
+  `.button-icon--go` has its own flip because its hover nudge has to compose
+  with the mirror.
 - Images use plain `<img>` with `loading="lazy"` and `.webp` assets from
   `public/images`. Decorative images use `alt=""`; meaningful ones have real
-  alt text.
+  alt text. Logos render at ≤60 px, so an app/company logo should be a real
+  WebP at **192 px** and a few KB — three "`.webp`" logos were 50–140 KB PNGs
+  with the wrong extension. Re-encode with `sharp` (in `node_modules` via
+  Next) rather than committing an export straight from a design tool, and
+  give logo `<img>`s the `width`/`height` of their CSS box.
 
 ## Accessibility (already established — preserve it)
 
@@ -231,23 +371,33 @@ The codebase already follows good a11y practice; keep it that way:
 
 ## Notable specifics
 
-- The **contact form submits via Web3Forms** (`ContactForm.tsx`, key in
-  `shared.ts`) — client-side POST, no backend. If the key is emptied it falls
-  back to the original `mailto:` flow. There's a honeypot field and
-  success/error strings in the dictionaries.
+- **There is no contact form** (the Web3Forms form was removed with the
+  redesign, 2026-09-25, and `api.web3forms.com` left the CSP). The contact
+  section is two **lanes** (`contact.lanes`), one per audience — their
+  buttons are built from `cvPdf`, `bookingHref` and `shared.socials`, so no
+  label is duplicated — then the address with a copy button.
 - The `--gold` token currently resolves to a purple (`#8b7cf0`); the comments
   still describe an "Obsidian & Gold" palette. Treat the token as the source
   of truth, not the comment, and change the token if adjusting the accent.
 - Testimonials are real quotes (LinkedIn recommendations, excerpted; full
-  texts in `assets/linkedin.json`). The section hides itself if the list is
-  ever emptied. There is no placeholder/sample mechanism — don't add fake
+  texts in `assets/linkedin.json`). The first entry is the homepage's
+  featured quote. The section hides itself if the list is ever emptied. There is no placeholder/sample mechanism — don't add fake
   quotes.
 - **App lifecycle honesty**: `storeLinks` in `shared.ts` carries a `status`
   (`live | retired | private | unreleased`) per app. Only real https URLs
   render store buttons; non-live apps get a status badge. Never claim "live"
   in copy for the aggregate numbers — say "shipped".
-- Analytics is opt-in via `NEXT_PUBLIC_ANALYTICS_SRC` / `_ID` env vars at
-  build time (see `lib/site.tsx`); unset means no script is emitted.
+- **Analytics and conversion events** — see `docs/analytics.md`. Vercel Web
+  Analytics + Speed Insights load from `RootHtml`. A CTA declares its event
+  with `data-track="<event>"` + `data-track-<prop>` attributes and stays a
+  server component; `TrackClicks.tsx` (one delegated listener) reports them.
+  Page-view events use `<TrackPageView>`, which seeds the SDK's `window.va`
+  queue first because `<Analytics />` mounts *after* the page's effects in a
+  static export — a bare `track()` in a mount effect is a silent no-op. Add
+  events only from the catalogue in the doc; don't add scroll/theme events.
+  `TrackPageView` is also how `/cv/`-style pages could report a view.
+  The optional Umami hook (`NEXT_PUBLIC_ANALYTICS_SRC` / `_ID` at build time)
+  is unset; unset means no script is emitted.
 
 ## Design skills
 

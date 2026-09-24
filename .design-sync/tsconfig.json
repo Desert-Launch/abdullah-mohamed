@@ -1,0 +1,19 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "incremental": false,
+    "rootDir": "..",
+    "outDir": ".cache/dist",
+    "plugins": [],
+    "paths": {
+      "@/*": ["../*"],
+      "next/font/google": ["./shims/next-font-google.ts"],
+      "@vercel/analytics/next": ["./shims/vercel-next.tsx"],
+      "@vercel/speed-insights/next": ["./shims/vercel-next.tsx"]
+    }
+  },
+  "include": ["ds-entry.ts"]
+}

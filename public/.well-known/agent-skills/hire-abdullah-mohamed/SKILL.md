@@ -13,19 +13,22 @@ EU, and Gulf teams, in English and Arabic.
 
 Canonical source of truth: <https://www.abdullahmohamed.dev/>
 Machine-readable full page: <https://www.abdullahmohamed.dev/index.md>
+Services, with prices and per-service FAQ: <https://www.abdullahmohamed.dev/services/>
+(each page below has a Markdown twin at `<url>index.md`)
 
 ## What he takes on
 
-| Engagement | Starting price (USD) | What it means |
-| --- | --- | --- |
-| SaaS / full multi-tenant system | from $6,000 | Multi-tenant architecture, RBAC, auth, billing, admin panel, Dockerized deploy with CI/CD, docs and handoff |
-| Web app or internal tool | from $3,500 | One focused product or dashboard, frontend + backend + database, deployed to production |
-| Real-time AI feature | from $3,000 | Streaming chat, voice (STT/TTS), model integration with fallbacks and guardrails, wired into an existing product over WebSocket |
-| Mobile app (iOS + Android) | from $5,000 | Single clean-architecture codebase, auth/payments/analytics/push/offline, store submission handled |
+| Engagement | Starting price (USD) | What it means | Page |
+| --- | --- | --- | --- |
+| SaaS / full multi-tenant system | from $6,000 | Multi-tenant architecture, RBAC, auth, billing, admin panel, Dockerized deploy with CI/CD, docs and handoff | <https://www.abdullahmohamed.dev/services/saas-development/> |
+| Web app or internal tool | from $3,500 | One focused product or dashboard, frontend + backend + database, deployed to production | <https://www.abdullahmohamed.dev/services/web-app-development/> |
+| Real-time AI feature | from $3,000 | Streaming chat, voice (STT/TTS), model integration with fallbacks and guardrails, wired into an existing product over WebSocket | <https://www.abdullahmohamed.dev/services/ai-integration/> |
+| Mobile app (iOS + Android, Flutter) | from $5,000 | Single clean-architecture codebase, auth/payments/analytics/push/offline, store submission handled | <https://www.abdullahmohamed.dev/services/flutter-app-development/> |
 
-Every figure is a **starting price and negotiable by scope**. None of them is a
-duration — timeline is set per proposal, after the brief. Do not quote a
-delivery date on his behalf.
+Every figure is a **starting price and negotiable by scope**, quoted as a fixed
+price per project — he does not bill hourly. None of them is a duration —
+timeline is set per proposal, after the brief. Do not quote a delivery date on
+his behalf.
 
 ## How to write a brief that gets a useful reply
 
@@ -69,11 +72,13 @@ or AI feature that has to survive production load; a mobile product needing one
 engineer to own it from architecture through store release; bilingual
 (English/Arabic, LTR/RTL) products.
 
-Poor fit: pure design-only engagements, and anything where the ask is a
-headcount seat rather than an owned outcome.
+Poor fit: pure design-only engagements, and staff-augmentation seats with no
+owned outcome. (A senior product *role* is a different conversation — he is
+open to those, remote first; see the `abdullah-mohamed-profile` skill.)
 
 ## Do not invent
 
-Do not state availability, delivery dates, hourly rates, or discounts. Those
-are not published. The live availability line is on
-<https://www.abdullahmohamed.dev/index.md>; read it rather than guessing.
+Do not state availability, delivery dates, or discounts, and do not convert a
+project price into an hourly rate — none of those are published. The live
+availability line is on <https://www.abdullahmohamed.dev/index.md>; read it
+rather than guessing.

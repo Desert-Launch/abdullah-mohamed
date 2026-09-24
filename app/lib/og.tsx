@@ -180,6 +180,7 @@ export function renderSiteOgImage({
   domain: string;
   tags: string[];
 }) {
+  const headlineSize = title.length + titleAccent.length > 70 ? 58 : 72;
   return new ImageResponse(
     (
       <div
@@ -222,24 +223,39 @@ export function renderSiteOgImage({
               </div>
             </div>
 
+            {/* One run, not two stacked blocks: the accent tail continues the
+                sentence on the same line, which is what keeps a long headline
+                to three lines. Satori has no inline flow — a div with mixed
+                children must be flex — so each word is its own flex item in a
+                wrapping row, the usual satori idiom for inline styling. Sized
+                down a step when the headline runs long: the specialty
+                headline is ~85 characters where the old tagline was ~50. */}
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
-                marginTop: 34,
-                fontSize: 72,
-                lineHeight: 1.14,
-                letterSpacing: -2.4,
+                flexWrap: "wrap",
+                columnGap: headlineSize * 0.26,
+                marginTop: 30,
+                fontSize: headlineSize,
+                lineHeight: 1.12,
+                letterSpacing: -2,
+                fontWeight: 500,
               }}
             >
-              <div style={{ fontWeight: 500 }}>{title}</div>
-              <div style={{ color: ACCENT, fontWeight: 500 }}>{titleAccent}</div>
+              {title.split(" ").map((word, index) => (
+                <span key={`t${index}`}>{word}</span>
+              ))}
+              {titleAccent.split(" ").map((word, index) => (
+                <span key={`a${index}`} style={{ color: ACCENT }}>
+                  {word}
+                </span>
+              ))}
             </div>
 
             <div
               style={{
                 marginTop: 30,
-                maxWidth: 880,
+                maxWidth: 1000,
                 fontSize: 27,
                 lineHeight: 1.5,
                 color: MUTED,

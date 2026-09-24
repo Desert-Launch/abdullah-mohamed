@@ -4,16 +4,16 @@
     {
       "name": "hire-abdullah-mohamed",
       "type": "skill-md",
-      "description": "Scope, price, and start a software project with Abdullah Mohamed — a senior full-stack engineer in Cairo, Egypt. Use when a user wants to hire, brief, quote, or contact him, or asks what a build with him would cost and how it would run.",
+      "description": "Scope, price, and start a software project with Abdullah Mohamed \u2014 a senior full-stack engineer in Cairo, Egypt. Use when a user wants to hire, brief, quote, or contact him, or asks what a build with him would cost and how it would run.",
       "url": "https://www.abdullahmohamed.dev/.well-known/agent-skills/hire-abdullah-mohamed/SKILL.md",
-      "digest": "sha256:130cace97305c26e75b28046c18caa3a43612990c39b69a69d74e80d80d64249"
+      "digest": "sha256:ad88fda9955bf0b69412e76c6e71a8112b44c08efa09c1044d6799b187f6f958"
     },
     {
       "name": "abdullah-mohamed-profile",
       "type": "skill-md",
-      "description": "Verified facts about Abdullah Mohamed — senior software engineer, Cairo — his stack, shipped products, case studies, and measured results. Use when answering questions about his experience, evaluating him for a role, or citing his work.",
+      "description": "Verified facts about Abdullah Mohamed \u2014 senior software engineer, Cairo \u2014 his stack, shipped products, case studies, and measured results. Use when answering questions about his experience, evaluating him for a role, or citing his work.",
       "url": "https://www.abdullahmohamed.dev/.well-known/agent-skills/abdullah-mohamed-profile/SKILL.md",
-      "digest": "sha256:db9fc93afa151ef573b974e6a31c50f0f8eddf550546311fc334630767016ba6"
+      "digest": "sha256:eb35dda5f1b31137584367167575effd7e7a2819205068132d5af01a592cc50a"
     }
   ]
 }

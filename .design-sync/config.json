@@ -1,0 +1,97 @@
+{
+  "projectId": "453659fe-1f58-4fca-95e1-0c84f065f10c",
+  "pkg": "abdullah-portfolio",
+  "globalName": "AbdullahPortfolio",
+  "shape": "package",
+  "buildCmd": "node .design-sync/build.mjs",
+  "entry": ".design-sync/ds-entry.ts",
+  "srcDir": "../app/components",
+  "tsconfig": "tsconfig.json",
+  "cssEntry": ".cache/ds.css",
+  "extraFonts": [
+    "fonts/fonts.css"
+  ],
+  "overrides": {
+    "Hero": {
+      "cardMode": "column",
+      "viewport": "1280x820"
+    },
+    "LanguageMenu": {
+      "viewport": "900x240"
+    },
+    "SocialLinks": {
+      "viewport": "480x140"
+    },
+    "Portfolio": {
+      "cardMode": "single",
+      "primaryStory": "English",
+      "viewport": "1280x1800"
+    },
+    "CvPage": {
+      "cardMode": "single",
+      "primaryStory": "English",
+      "viewport": "1280x1800"
+    },
+    "WorkIndex": {
+      "cardMode": "single",
+      "primaryStory": "English",
+      "viewport": "1280x1800"
+    },
+    "WorkDetail": {
+      "cardMode": "single",
+      "primaryStory": "English",
+      "viewport": "1280x1800"
+    },
+    "ServicesIndex": {
+      "cardMode": "single",
+      "primaryStory": "English",
+      "viewport": "1280x1800"
+    },
+    "ServiceDetail": {
+      "cardMode": "single",
+      "primaryStory": "English",
+      "viewport": "1280x1800"
+    },
+    "TopBar": {
+      "cardMode": "column",
+      "viewport": "1280x180"
+    },
+    "WorkHeader": {
+      "cardMode": "column",
+      "viewport": "1280x180"
+    },
+    "Footer": {
+      "cardMode": "column",
+      "viewport": "1280x560"
+    },
+    "CaseStudies": {
+      "cardMode": "column",
+      "viewport": "1280x1400"
+    },
+    "ExperienceTimeline": {
+      "cardMode": "column",
+      "viewport": "1280x1400"
+    },
+    "SelectedWork": {
+      "cardMode": "column",
+      "viewport": "1280x1200"
+    },
+    "ContactForm": {
+      "cardMode": "column",
+      "viewport": "1280x1000"
+    },
+    "ShotGallery": {
+      "cardMode": "column",
+      "viewport": "900x760"
+    },
+    "WorkShots": {
+      "cardMode": "column",
+      "viewport": "1100x1000"
+    },
+    "CountUp": {
+      "viewport": "900x320"
+    }
+  },
+  "docsDir": "component-docs",
+  "readmeHeader": ".design-sync/conventions.md"
+}

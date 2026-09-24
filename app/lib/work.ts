@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { copy } from "../data/copy";
 import type { CaseStudy, Lang } from "../data/types";
-import { SITE_URL } from "./site";
+import { buildPageMetadata, localePath } from "./site";
 
 /**
- * The /work index and its detail pages.
+ * The /work index and its detail pages, in both locales.
  *
  * Projects are the dictionary's `caseStudies` — the only on-site work that has
  * a written challenge / role / process / results. The "Selected work" cards are
@@ -12,73 +12,67 @@ import { SITE_URL } from "./site";
  * nothing else, so giving them a detail page would mean inventing the content.
  * They appear on the index as an "also shipped" strip that links to the stores.
  *
- * English only for now. `/ar/work` is deferred — the copy exists in both
- * dictionaries, but the routes below are mounted inside the (en) route group.
- *
- * TODO(abdullah): decide whether to mirror these at /ar/work. It needs an (ar)
- * route group copy of both pages, hreflang restored in buildWorkMetadata and
- * sitemap.ts, and the homepage links in CaseStudies/SelectedWork ungated.
+ * Routing mirrors the home pages: English at `/work/…`, Arabic at
+ * `/ar/work/…`, each mounted in its own route group so it gets that locale's
+ * root layout. The page bodies are shared components (`WorkIndex`,
+ * `WorkDetail`); the route files only pick the locale.
  */
-export const WORK_LANG: Lang = "en";
 
 /** Trailing slashes throughout: `trailingSlash: true` in next.config.mjs, so
  *  these are the canonical forms and must not redirect. */
-export const WORK_INDEX_PATH = "/work/";
+export function workIndexPath(lang: Lang): string {
+  return `${localePath[lang]}work/`;
+}
 
-export function workPath(slug: string): string {
-  return `/work/${slug}/`;
+export function workPath(slug: string, lang: Lang): string {
+  return `${workIndexPath(lang)}${slug}/`;
 }
 
 /** Featured projects first; original dictionary order within each group. */
-export function workProjects(lang: Lang = WORK_LANG): CaseStudy[] {
+export function workProjects(lang: Lang): CaseStudy[] {
   return [...copy[lang].caseStudies].sort(
     (a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)),
   );
 }
 
-export function findProject(slug: string, lang: Lang = WORK_LANG): CaseStudy | undefined {
+export function findProject(slug: string, lang: Lang): CaseStudy | undefined {
   return copy[lang].caseStudies.find((study) => study.slug === slug);
+}
+
+/** Fills `{title}`, `{type}`, `{summary}`, `{stack}` in a `work.caseMeta`
+ *  template from the study. */
+export function caseMeta(study: CaseStudy, lang: Lang): {
+  title: string;
+  description: string;
+} {
+  const fill = (template: string) =>
+    template
+      .replaceAll("{title}", study.title)
+      .replaceAll("{type}", study.type)
+      .replaceAll("{summary}", study.summary)
+      .replaceAll("{stack}", study.stack.join(", "));
+  const { title, description } = copy[lang].work.caseMeta;
+  return { title: fill(title), description: fill(description) };
 }
 
 /**
  * Metadata for a /work route.
  *
- * Next merges metadata shallowly, so `openGraph` and `alternates` here replace
- * the locale layout's versions wholesale rather than extending them — every
- * field a page needs must be declared. Deliberately omitted:
- * - `alternates.languages`: these pages have no Arabic counterpart yet, so
- *   claiming an hreflang cluster would point crawlers at a URL that 404s.
- * - `openGraph.images`: og:image comes from the route's `opengraph-image.tsx`
- *   via the file convention, which wins over anything declared here.
+ * English declares no images so the route's own `opengraph-image.tsx` is the
+ * card (a declared list would replace it — see `buildPageMetadata`). Arabic
+ * gets the static home cards: the generated card is Latin-only, because
+ * satori reverses Arabic word order.
  */
-export function buildWorkMetadata({
-  title,
-  description,
-  path,
-  type = "website",
-}: {
+export function buildWorkMetadata(args: {
+  lang: Lang;
   title: string;
   description: string;
-  path: string;
+  /** Locale-independent path suffix: "work/" or "work/<slug>/". */
+  subpath: string;
   type?: "website" | "article";
 }): Metadata {
-  return {
-    title,
-    description,
-    alternates: { canonical: path },
-    openGraph: {
-      type,
-      url: `${SITE_URL}${path}`,
-      siteName: "Abdullah Mohamed",
-      title,
-      description,
-      locale: "en_US",
-    },
-    twitter: { card: "summary_large_image", title, description },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: { index: true, follow: true, "max-image-preview": "large" },
-    },
-  };
+  return buildPageMetadata({
+    ...args,
+    images: args.lang === "en" ? null : undefined,
+  });
 }

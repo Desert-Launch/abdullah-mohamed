@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
+import { copy } from "../data/copy";
 import { bookingHref, contactEmail, shared, storeLinks } from "../data/shared";
 import type { Dictionary, Lang } from "../data/types";
+import { servicePath } from "../lib/services";
 import { SITE_URL, localePath } from "../lib/site";
-import { WORK_LANG, workPath } from "../lib/work";
+import { workPath } from "../lib/work";
 
 /**
  * WebMCP — the site's own tools, offered to an AI agent driving the browser.
@@ -16,8 +18,8 @@ import { WORK_LANG, workPath } from "../lib/work";
  *
  * Deliberate limits:
  * - Nothing here writes. `draft_project_inquiry` composes a `mailto:` URL and
- *   hands it back; it does not submit the contact form. An agent that could
- *   silently post to Web3Forms is a spam pipe pointed at the owner's inbox.
+ *   hands it back for the user to send. An agent that could send on its own
+ *   is a spam pipe pointed at the owner's inbox.
  * - Tool *names and descriptions* are English in both locales — they are
  *   protocol identifiers, not display copy, and must stay stable across the
  *   language switch. The *content* they return is the visitor's language.
@@ -50,9 +52,9 @@ const NO_ARGS = { type: "object", properties: {}, additionalProperties: false };
 
 function buildTools(t: Dictionary, lang: Lang): WebMcpTool[] {
   const home = `${SITE_URL}${localePath[lang]}`;
-  // /work is English-only; the Arabic page must not hand out URLs that 404.
-  const caseUrl = (slug: string) =>
-    lang === WORK_LANG ? `${SITE_URL}${workPath(slug)}` : `${home}#cases`;
+  // Every URL handed out is this locale's own — both locales have the pages.
+  const caseUrl = (slug: string) => `${SITE_URL}${workPath(slug, lang)}`;
+  const serviceUrl = (slug: string) => `${SITE_URL}${servicePath(slug, lang)}`;
 
   return [
     {
@@ -67,7 +69,7 @@ function buildTools(t: Dictionary, lang: Lang): WebMcpTool[] {
           headline: `${t.hero.title} ${t.hero.titleAccent}`,
           summary: t.meta.description,
           availability: t.hero.availability,
-          currently: t.hero.currently,
+          currently: t.hero.status,
           proof: t.proof.map(([value, label]) => ({ value, label })),
           about: t.about.paragraphs,
           url: home,
@@ -81,16 +83,14 @@ function buildTools(t: Dictionary, lang: Lang): WebMcpTool[] {
       inputSchema: NO_ARGS,
       execute: () =>
         json({
-          services: t.services.map((service) => ({
-            title: service.title,
-            body: service.body,
-          })),
+          summary: t.servicesHeading.body,
           plans: t.plans.map((plan) => ({
             name: plan.name,
             summary: plan.body,
             startingPrice: plan.price,
             priceNote: plan.priceNote,
             includes: plan.items,
+            url: serviceUrl(plan.slug),
           })),
           note: t.plansHeading.body ?? t.plansHeading.title,
         }),
@@ -150,8 +150,8 @@ function buildTools(t: Dictionary, lang: Lang): WebMcpTool[] {
             label: social.label,
             href: social.href,
           })),
-          whatToInclude: t.contact.body,
-          expectedReply: t.contact.form.success,
+          whatToInclude: t.contact.lanes.project.body,
+          expectedReply: t.contact.body,
         }),
     },
     {
@@ -182,20 +182,22 @@ function buildTools(t: Dictionary, lang: Lang): WebMcpTool[] {
           sent: false,
           action: "Open this URL to review and send the message yourself.",
           mailto: `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
-          alternatives: { booking: bookingHref, form: `${home}#contact` },
+          alternatives: { booking: bookingHref, contactSection: `${home}#contact` },
         });
       },
     },
   ];
 }
 
-export function AgentTools({ t, lang }: { t: Dictionary; lang: Lang }) {
+/** Takes the locale, not the dictionary: the page around it is server-rendered,
+ *  and a dictionary prop would be serialized into the page payload. */
+export function AgentTools({ lang }: { lang: Lang }) {
   useEffect(() => {
     const context = (navigator as Navigator & { modelContext?: ModelContext })
       .modelContext;
     if (!context) return;
 
-    const tools = buildTools(t, lang);
+    const tools = buildTools(copy[lang], lang);
 
     // The spec's bulk call replaces the page's whole tool set, which is what we
     // want on a language switch. `registerTool` is the older per-tool shape
@@ -210,7 +212,7 @@ export function AgentTools({ t, lang }: { t: Dictionary; lang: Lang }) {
       const handles = tools.map((tool) => context.registerTool?.(tool));
       return () => handles.forEach((handle) => handle?.unregister?.());
     }
-  }, [t, lang]);
+  }, [lang]);
 
   return null;
 }

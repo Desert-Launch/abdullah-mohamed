@@ -1,0 +1,8 @@
+{
+  "name": "abdullah-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "design-sync package root: the converter walks up from ds-entry.ts to here. Not an npm package; nothing installs from this directory.",
+  "module": "ds-entry.ts",
+  "types": ".cache/dist/.design-sync/ds-entry.d.ts"
+}
