@@ -13,12 +13,22 @@
       "permanent": true
     },
     {
+      "source": "/services/flutter-app-development/",
+      "destination": "/services/mobile-app-development/",
+      "permanent": true
+    },
+    {
       "source": "/services/flutter-app-development/:path*",
       "destination": "/services/mobile-app-development/:path*",
       "permanent": true
     },
     {
       "source": "/ar/services/flutter-app-development",
+      "destination": "/ar/services/mobile-app-development/",
+      "permanent": true
+    },
+    {
+      "source": "/ar/services/flutter-app-development/",
       "destination": "/ar/services/mobile-app-development/",
       "permanent": true
     },
