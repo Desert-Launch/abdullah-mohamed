@@ -2,13 +2,15 @@ import { copy } from "../data/copy";
 import { bookingHref, contactEmail, shared, storeLinks } from "../data/shared";
 import type { CaseStudy, Dictionary, Lang, Product, ServicePage } from "../data/types";
 import {
-  planFor,
+  priceRange,
   proofFor,
   servicePages,
   servicePath,
+  servicePrice,
   servicesIndexPath,
 } from "./services";
 import { cvPath } from "./cv";
+import { inquiryPath } from "./inquiry";
 import { SITE_URL, localePath } from "./site";
 import { workIndexPath, workPath, workProjects } from "./work";
 
@@ -64,12 +66,14 @@ function productBlock(t: Dictionary, product: Product, level: string): string {
   ]).trimEnd();
 }
 
-/** The shared contact block. Same channels the contact section renders. */
-function contactBlock(t: Dictionary): string {
+/** The shared contact block. Same channels the contact section renders,
+ *  plus the brief page, which is the one an agent should send a user to. */
+function contactBlock(t: Dictionary, lang: Lang): string {
   return join([
     `## ${t.markdown.contact}`,
     t.contact.body,
     bullets([
+      `${t.inquiry.indexLabel}: ${abs(inquiryPath(lang))}`,
       `Email: <mailto:${contactEmail}>`,
       `${t.contact.book}: ${bookingHref}`,
       ...shared.socials
@@ -88,8 +92,14 @@ function caseStudyBlock(t: Dictionary, study: CaseStudy, level: string): string 
     study.context,
     study.summary,
     `**${t.caseLabels.challenge}:** ${study.challenge}`,
+    study.requirements.length &&
+      `**${t.caseLabels.requirements}:**\n${bullets(study.requirements)}`,
     `**${t.caseLabels.role}:** ${study.role}`,
     study.process.length && `**${t.caseLabels.process}:**\n${bullets(study.process)}`,
+    // The decisions are the most quotable part of a study — what was chosen
+    // over what, and why — so the twin carries them in full.
+    study.decisions?.length &&
+      `**${t.caseLabels.decisions}:**\n${bullets(study.decisions.map((d) => `**${d.title}.** ${d.body}`))}`,
     study.results.length &&
       `**${t.markdown.metrics}:**\n${bullets(study.results.map((m) => `**${m.value}** — ${m.label}`))}`,
     `**${t.markdown.stack}:** ${study.stack.join(", ")}`,
@@ -133,6 +143,7 @@ export function homeMarkdown(lang: Lang): string {
       `${t.langToggle}: ${abs(localePath[other])}`,
       t.hero.status,
       t.hero.availability,
+      `${t.hero.start}: ${abs(inquiryPath(lang))}`,
     ]),
     `_${t.markdown.note}_`,
 
@@ -145,6 +156,26 @@ export function homeMarkdown(lang: Lang): string {
     bullets(t.proof.map(([value, label]) => `**${value}** — ${label}`)),
     `### ${t.logosLabel}`,
     bullets(t.experiences.map((exp) => `**${exp.company}** — ${exp.role} · ${exp.date} · ${exp.location}`)),
+
+    `## ${t.servicesHeading.title}`,
+    t.servicesHeading.body,
+    servicePages(lang)
+      .map((page) => {
+        const price = servicePrice(page, lang);
+        return join([
+          `### ${page.name} — ${price.price}`,
+          `_${page.situation}_`,
+          page.lead,
+          `${price.note}`,
+          `[${t.servicePages.learnMore}](${abs(servicePath(page.slug, lang))})`,
+        ]).trimEnd();
+      })
+      .join("\n\n"),
+    t.plansHeading.body,
+    `${t.servicePages.notSure.title} ${t.servicePages.notSure.body} → ${abs(inquiryPath(lang))}`,
+    `### ${t.processHeading.title}`,
+    t.processHeading.body,
+    t.process.map((step) => `#### ${step.title}\n\n${step.body}`).join("\n\n"),
 
     `## ${t.caseStudiesHeading.title}`,
     t.caseStudiesHeading.body,
@@ -214,25 +245,7 @@ export function homeMarkdown(lang: Lang): string {
       }),
     ),
 
-    `## ${t.servicesHeading.title}`,
-    t.servicesHeading.body,
-    t.plans
-      .map((plan) =>
-        join([
-          `### ${plan.name} — ${plan.price}`,
-          `${plan.body} (${plan.priceNote})`,
-          plan.itemsIntro,
-          bullets(plan.items),
-          `[${t.servicePages.learnMore}](${abs(servicePath(plan.slug, lang))})`,
-        ]).trimEnd(),
-      )
-      .join("\n\n"),
-    t.plansHeading.body,
-    `### ${t.processHeading.title}`,
-    t.processHeading.body,
-    t.process.map((step) => `#### ${step.title}\n\n${step.body}`).join("\n\n"),
-
-    contactBlock(t),
+    contactBlock(t, lang),
   ]);
 }
 
@@ -259,7 +272,7 @@ export function workIndexMarkdown(lang: Lang): string {
     bullets(
       t.selectedWork.map((app) => `**${app.title}** — ${app.tagline}${appLinks(t, app.key)}`),
     ),
-    contactBlock(t),
+    contactBlock(t, lang),
   ]);
 }
 
@@ -289,27 +302,39 @@ export function caseStudyMarkdown(study: CaseStudy, lang: Lang): string {
     related.length > 0 && `**${t.work.relatedServices}:**`,
     related.length > 0 &&
       bullets(
-        related.map((page) => {
-          const plan = planFor(page.slug, lang);
-          return `[${page.name}](${abs(servicePath(page.slug, lang))})${plan ? ` — ${plan.price}` : ""}`;
-        }),
+        related.map(
+          (page) =>
+            `[${page.name}](${abs(servicePath(page.slug, lang))}) — ${servicePrice(page, lang).price}`,
+        ),
       ),
-    contactBlock(t),
+    contactBlock(t, lang),
   ]);
 }
 
 /** One service, rendered the same way on the index and on its own page. */
 function serviceBlock(t: Dictionary, page: ServicePage, level: string, lang: Lang): string {
-  const plan = planFor(page.slug, lang);
+  const price = servicePrice(page, lang);
   const labels = t.servicePages.labels;
   const sub = level + "#";
   return join([
     `${level} ${page.title}`,
+    `_${page.situation}_`,
     page.lead,
-    plan && `**${labels.pricing}:** ${plan.price} — ${plan.priceNote}`,
+    `**${labels.pricing}:** ${price.price} — ${price.note}`,
     `${sub} ${labels.fit}\n\n${bullets(page.fit)}`,
     `${sub} ${labels.deliverables}\n\n${bullets(page.deliverables)}`,
     `${sub} ${labels.approach}\n\n${bullets(page.approach)}`,
+    page.examples.length && `${sub} ${labels.examples}\n\n${bullets(page.examples)}`,
+    page.stack.length && `${sub} ${labels.stack}\n\n${page.stack.join(", ")}`,
+  ]).trimEnd();
+}
+
+/** How a project runs — the same four steps the homepage and every service
+ *  page render. */
+function processBlock(t: Dictionary, level: string): string {
+  return join([
+    `${level} ${t.servicePages.labels.process}`,
+    t.process.map((step, index) => `${index + 1}. **${step.title}** — ${step.body}`).join("\n"),
   ]).trimEnd();
 }
 
@@ -326,16 +351,25 @@ export function servicesIndexMarkdown(lang: Lang): string {
     `_${t.markdown.note}_`,
     t.servicePages.body,
     ...servicePages(lang).map((page) => {
-      const plan = planFor(page.slug, lang);
+      const price = servicePrice(page, lang);
       return join([
-        `## ${page.name}${plan ? ` — ${plan.price}` : ""}`,
+        `## ${page.name} — ${price.price}`,
+        `_${page.situation}_`,
         page.lead,
+        price.note,
         `[${t.servicePages.readMore}](${abs(servicePath(page.slug, lang))})`,
       ]).trimEnd();
     }),
+    `## ${t.servicePages.notSure.title}`,
+    t.servicePages.notSure.body,
+    `[${t.servicePages.cta.start}](${abs(inquiryPath(lang))})`,
+    processBlock(t, "##"),
+    t.plansHeading.body,
+    `## ${t.servicePages.faqTitle}`,
+    t.servicePages.faq.map((item) => `### ${item.q}\n\n${item.a}`).join("\n\n"),
     `## ${t.servicePages.cta.title}`,
     t.servicePages.cta.body,
-    contactBlock(t),
+    contactBlock(t, lang),
   ]);
 }
 
@@ -406,7 +440,7 @@ export function cvMarkdown(lang: Lang): string {
     `## ${labels.languages}`,
     bullets(cv.languages),
 
-    contactBlock(t),
+    contactBlock(t, lang),
   ]);
 }
 
@@ -430,19 +464,21 @@ export function servicePageMarkdown(page: ServicePage, lang: Lang): string {
           (study) => `[${study.title} — ${study.type}](${abs(workPath(study.slug, lang))}): ${study.summary}`,
         ),
       ),
+    processBlock(t, "##"),
     page.faq.length > 0 && `## ${labels.faq}`,
     page.faq.length > 0 && page.faq.map((item) => `### ${item.q}\n\n${item.a}`).join("\n\n"),
     others.length > 0 && `## ${labels.more}`,
     others.length > 0 &&
       bullets(
-        others.map((other) => {
-          const plan = planFor(other.slug, lang);
-          return `[${other.name}](${abs(servicePath(other.slug, lang))})${plan ? ` — ${plan.price}` : ""}`;
-        }),
+        others.map(
+          (other) =>
+            `[${other.name}](${abs(servicePath(other.slug, lang))}) — ${servicePrice(other, lang).price}`,
+        ),
       ),
     `## ${t.servicePages.cta.title}`,
     t.servicePages.cta.body,
-    contactBlock(t),
+    `[${t.servicePages.cta.start}](${abs(inquiryPath(lang, page.slug))})`,
+    contactBlock(t, lang),
   ]);
 }
 
@@ -460,9 +496,55 @@ export function llmsFullMarkdown(lang: Lang = "en"): string {
     workIndexMarkdown(lang),
     ...workProjects(lang).map((study) => caseStudyMarkdown(study, lang)),
     cvMarkdown(lang),
+    inquiryMarkdown(lang),
   ]
     .map((body) => body.trimEnd())
     .join(divider) + "\n";
+}
+
+/**
+ * `/start-a-project/`, per locale.
+ *
+ * The HTML page is a form; its twin is the brief spelled out, so an agent
+ * drafting a first message for a user knows exactly what to ask them and
+ * where to send it. The option lists are the same ones the form offers.
+ */
+export function inquiryMarkdown(lang: Lang): string {
+  const t = copy[lang];
+  const q = t.inquiry;
+  const f = q.fields;
+  const range = priceRange(lang);
+  const whatsapp = shared.socials.find((social) => social.label === "WhatsApp");
+  const options = (list: [string, string][]) => list.map(([, label]) => label).join(" · ");
+  return join([
+    `# ${q.meta.title}`,
+    `> ${q.meta.description}`,
+    bullets([
+      `${t.markdown.htmlVersion}: ${abs(inquiryPath(lang))}`,
+      `${t.work.home}: ${abs(localePath[lang])}`,
+    ]),
+    `_${t.markdown.note}_`,
+    q.lead,
+    `## ${q.brief.heading}`,
+    bullets([
+      `**${f.idea.label}** ${f.idea.hint}`,
+      `**${f.stage.legend}** ${options(f.stage.options)}`,
+      `**${f.platform.legend}** ${options(f.platform.options)}`,
+      `**${f.timeline.label}** (${q.optional}) ${options(f.timeline.options)}`,
+      `**${f.budget.label}** (${q.optional}) ${options(f.budget.options)} — ${f.budget.hint.replace("{min}", range.min).replace("{max}", range.max)}`,
+      `**${f.name.label}**, **${f.email.label}**, **${f.company.label}** (${q.optional})`,
+    ]),
+    bullets([
+      `${q.send.email}: <mailto:${contactEmail}>`,
+      whatsapp ? `${q.send.whatsapp}: ${whatsapp.href}` : "",
+      `${q.alternatives.book}: ${bookingHref}`,
+    ].filter(Boolean)),
+    q.privacy,
+    `## ${q.next.title}`,
+    q.next.steps.map((step, index) => `${index + 1}. ${step}`).join("\n"),
+    `## ${q.hiring.title}`,
+    `${q.hiring.body} ${abs(cvPath(lang))}`,
+  ]);
 }
 
 /**

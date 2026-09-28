@@ -39,8 +39,8 @@ export function findProject(slug: string, lang: Lang): CaseStudy | undefined {
   return copy[lang].caseStudies.find((study) => study.slug === slug);
 }
 
-/** Fills `{title}`, `{type}`, `{summary}`, `{stack}` in a `work.caseMeta`
- *  template from the study. */
+/** Fills `{title}`, `{type}`, `{summary}`, `{description}` (the study's
+ *  `metaDescription`) and `{stack}` in a `work.caseMeta` template. */
 export function caseMeta(study: CaseStudy, lang: Lang): {
   title: string;
   description: string;
@@ -50,6 +50,7 @@ export function caseMeta(study: CaseStudy, lang: Lang): {
       .replaceAll("{title}", study.title)
       .replaceAll("{type}", study.type)
       .replaceAll("{summary}", study.summary)
+      .replaceAll("{description}", study.metaDescription)
       .replaceAll("{stack}", study.stack.join(", "));
   const { title, description } = copy[lang].work.caseMeta;
   return { title: fill(title), description: fill(description) };

@@ -86,7 +86,18 @@ export interface CaseStudy {
   image?: string;
   shots?: Shot[];
   summary: string;
+  /** SERP description for the case-study page, ~150 characters, written for
+   *  the person who would hire for this kind of build. The summary above is
+   *  written for a reader already on the page and runs to 200+ characters,
+   *  which search results cut mid-sentence. Say nothing the page doesn't. */
+  metaDescription: string;
   challenge: string;
+  /** "What it had to do": the constraints and requirements the build was held
+   *  to, restated as a list from the challenge and decisions. This is the
+   *  Problem → Requirements step a client reads a case study for — did this
+   *  engineer build something under constraints like mine? Only requirements
+   *  stated elsewhere in the study; nothing new is claimed here. */
+  requirements: string[];
   role: string;
   process: string[];
   /** Decisions and their reasons — see `CaseDecision`. Optional only so a new
@@ -149,8 +160,9 @@ export interface Experience {
 }
 
 export interface Plan {
-  /** Stable id, shared with the matching `servicePages.pages` entry — the
-   *  card links to `/services/<slug>/` and the Service JSON-LD is keyed on it. */
+  /** Stable id, shared with the matching `servicePages.pages` entry. A
+   *  service page quotes this plan's price by default; a page with no plan of
+   *  its own lists the plans it is priced as (`ServicePage.pricing`). */
   slug: string;
   name: string;
   /** The promise in a sentence — the middle column of the homepage's
@@ -185,9 +197,11 @@ export interface WorkCopy {
     description: string;
   };
   /** SERP title/description templates for a `/work/<slug>/` page. Placeholders:
-   *  `{title}`, `{type}`, `{summary}`, `{stack}` (comma-joined). The description
-   *  is composed from the study rather than stored per study so it can never
-   *  say something the page doesn't. */
+   *  `{title}`, `{type}`, `{summary}`, `{description}` (the study's
+   *  `metaDescription`), `{stack}` (comma-joined). The description used to
+   *  be `{summary}` plus a sentence, which ran to 330–390 characters and was
+   *  cut mid-sentence in results; it is now the study's own ~150-character
+   *  `metaDescription`. */
   caseMeta: {
     title: string;
     description: string;
@@ -302,11 +316,16 @@ export interface CvCopy {
 
 /** One standalone `/services/<slug>/` landing page.
  *
- *  Each page is the long form of one pricing card (`Plan`, joined by `slug`):
- *  what the service is, who it is for, what is delivered, how it is built, the
- *  case studies that prove it, and the questions clients ask before booking.
- *  Written to be read on its own by someone who arrived from a search or an
- *  assistant's answer and has never seen the homepage. */
+ *  Each page answers one visitor situation ("I have an idea", "my app is
+ *  slow", "my business runs on spreadsheets"): what the service is, who it is
+ *  for, what is delivered, how it is built, real examples, the case studies
+ *  that prove it, what it costs, and the questions clients ask before
+ *  booking. Written to be read on its own by someone who arrived from a
+ *  search or an assistant's answer and has never seen the homepage.
+ *
+ *  Pages are listed in `pages` order everywhere (homepage rows, /services/,
+ *  sitemap), which is the order a visitor's situation usually progresses:
+ *  idea → platform → system → improving what exists. */
 export interface ServicePage {
   slug: string;
   /** SERP/social copy. Title is the page's own part — the layout appends
@@ -315,9 +334,20 @@ export interface ServicePage {
     title: string;
     description: string;
   };
-  /** Short noun-phrase name, e.g. "Flutter mobile apps" — breadcrumb, cards,
-   *  and the `Service.name` in structured data. */
+  /** Short noun-phrase name, e.g. "Mobile app development" — breadcrumb,
+   *  cards, the homepage row, and the `Service.name` in structured data. */
   name: string;
+  /** The visitor's situation in their own words, first person: "I have an
+   *  idea and need a first version built." Shown beside the name on the
+   *  homepage rows and the /services/ cards, so a non-technical visitor can
+   *  find their path without knowing what the service is called. */
+  situation: string;
+  /** Slugs of the `plans` whose starting prices apply. Omitted: the page's
+   *  own plan (same slug). Several: the service is priced as the build it
+   *  becomes (an MVP is a web or a mobile build), so it quotes those plans
+   *  rather than inventing a third number. Empty: priced per project after a
+   *  review — no starting price is published. */
+  pricing?: string[];
   /** Category eyebrow above the H1, e.g. "Services · Mobile". */
   eyebrow: string;
   /** The H1: what is built and for whom. */
@@ -330,6 +360,14 @@ export interface ServicePage {
   deliverables: string[];
   /** "How I build it" — stack, practices, and the working agreement. */
   approach: string[];
+  /** "What this looks like in practice": one line per real product that did
+   *  this job, named — including shipped products with no case study of their
+   *  own (they are on the homepage stack map or the timeline). Every line
+   *  must be traceable to a case study, an experience entry or the stack map. */
+  examples: string[];
+  /** The technologies this service is usually built with, as tags. Only
+   *  what the CV grades core or strong. */
+  stack: string[];
   /** Slugs of `caseStudies` entries that prove this service. Resolved at
    *  render time; an unknown slug is skipped, never a broken link. */
   proof: string[];
@@ -365,18 +403,110 @@ export interface ServicesCopy {
     fit: string;
     deliverables: string;
     approach: string;
+    examples: string;
+    stack: string;
     proof: string;
     pricing: string;
+    /** Heading over the engagement steps (`Dictionary.process`), rendered
+     *  on every service page and the index. */
+    process: string;
     faq: string;
     more: string;
   };
-  /** Closing CTA block on a detail page. */
+  /** Price shown for a page with `pricing: []`, and the note under it. */
+  scopedPrice: string;
+  scopedNote: string;
+  /** Joins a service's several starting prices: "{plan}: {price}". */
+  priceFrom: string;
+  /** Closing CTA block on a detail page. `start` is the brief (the
+   *  /start-a-project/ page), `button` the booking link. */
   cta: {
     title: string;
     body: string;
+    start: string;
     button: string;
   };
+  /** Index block for visitors who can't place themselves in a service. */
+  notSure: {
+    title: string;
+    body: string;
+  };
+  /** The engagement FAQ on the /services/ index — pricing, ownership,
+   *  timezone, fit. Rendered there and emitted as that page's FAQPage. */
+  faqTitle: string;
+  faq: FaqItem[];
   pages: ServicePage[];
+}
+
+/** One option of an inquiry question: a stable key (sent to analytics and
+ *  shared by both locales) and its label. */
+export type InquiryOption = [key: string, label: string];
+
+/** Copy for `/start-a-project/` — the project brief a non-technical visitor
+ *  can fill in without knowing the vocabulary. There is no backend: the brief
+ *  is composed into an email (or a WhatsApp message) the visitor sends
+ *  themselves, which is also how the page works without JavaScript. */
+export interface InquiryCopy {
+  meta: {
+    title: string;
+    description: string;
+  };
+  eyebrow: string;
+  title: string;
+  lead: string;
+  /** Header/breadcrumb label, and the short CTA label elsewhere. */
+  indexLabel: string;
+  navLabel: string;
+  /** "About:" prefix for the service the visitor came from. */
+  regarding: string;
+  /** Appended to optional field labels. */
+  optional: string;
+  fields: {
+    idea: { label: string; hint: string };
+    stage: { legend: string; options: InquiryOption[] };
+    platform: { legend: string; options: InquiryOption[] };
+    timeline: { label: string; options: InquiryOption[] };
+    budget: { label: string; hint: string; options: InquiryOption[] };
+    name: { label: string };
+    email: { label: string };
+    company: { label: string };
+  };
+  /** Placeholder option of the two selects. */
+  choose: string;
+  send: {
+    email: string;
+    whatsapp: string;
+    copy: string;
+    copied: string;
+  };
+  /** Live-region messages after each action. */
+  status: {
+    email: string;
+    whatsapp: string;
+    copy: string;
+  };
+  /** Small print under the buttons: nothing is stored on this site. */
+  privacy: string;
+  /** Labels inside the composed brief itself. */
+  brief: {
+    subject: string;
+    heading: string;
+    footer: string;
+  };
+  next: {
+    title: string;
+    steps: string[];
+  };
+  alternatives: {
+    title: string;
+    body: string;
+    book: string;
+    email: string;
+  };
+  hiring: {
+    title: string;
+    body: string;
+  };
 }
 
 /** Labels for the Markdown twin of a page — the body served to clients that
@@ -417,9 +547,13 @@ export interface HeroCopy {
   /** Lead paragraph. Keep it to ~35 words: at 62 it was nine lines on a
    *  phone. */
   lead: string;
-  /** "Explore selected work" — the primary CTA, into #work. */
+  /** "Tell me what you're building" — the primary CTA, into the
+   *  /start-a-project/ brief. Also the project lane's primary action. */
+  start: string;
+  /** "Explore selected work" — the second CTA, into #work. */
   explore: string;
-  /** "Let's talk" — into #contact; also the floating nav's CTA. */
+  /** "Let's talk" — the floating nav's and the phone menu's CTA, into
+   *  #contact, where both audiences have a lane. */
   talk: string;
   /** "Download CV" — the PDF. Also the hiring lane's primary action. */
   cv: string;
@@ -668,6 +802,8 @@ export interface Dictionary {
   };
   caseLabels: {
     challenge: string;
+    /** Heading over `CaseStudy.requirements`. */
+    requirements: string;
     role: string;
     process: string;
     /** Heading over `CaseStudy.decisions` — the block a hiring manager reads
@@ -682,6 +818,8 @@ export interface Dictionary {
   servicePages: ServicesCopy;
   /** Copy for the standalone /cv route. */
   cv: CvCopy;
+  /** Copy for the standalone /start-a-project route. */
+  inquiry: InquiryCopy;
   selectedWork: SelectedApp[];
   experiences: Experience[];
   plans: Plan[];

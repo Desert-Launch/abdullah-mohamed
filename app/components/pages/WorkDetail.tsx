@@ -8,7 +8,8 @@ import { shared, bookingHref } from "../../data/shared";
 import type { CaseStudy, Lang } from "../../data/types";
 import { asset } from "../../lib/asset";
 import { caseStudyJsonLd } from "../../lib/jsonld";
-import { planFor, servicePath, servicesCiting } from "../../lib/services";
+import { inquiryPath } from "../../lib/inquiry";
+import { servicePath, servicePrice, servicesCiting } from "../../lib/services";
 import { localePath } from "../../lib/site";
 import { workIndexPath, workPath, workProjects } from "../../lib/work";
 
@@ -83,13 +84,31 @@ export function WorkDetail({ study, lang }: { study: CaseStudy; lang: Lang }) {
               <p className="case-text">{study.challenge}</p>
             </section>
 
-            <section className="work-block" aria-labelledby={`heading-${study.slug}-role`}>
-              <h2 className="case-label" id={`heading-${study.slug}-role`}>
-                {t.caseLabels.role}
-              </h2>
-              <p className="case-text">{study.role}</p>
-            </section>
+            {/* Problem → requirements: what the build was held to, before
+                what was built. */}
+            {study.requirements.length > 0 ? (
+              <section
+                className="work-block"
+                aria-labelledby={`heading-${study.slug}-requirements`}
+              >
+                <h2 className="case-label" id={`heading-${study.slug}-requirements`}>
+                  {t.caseLabels.requirements}
+                </h2>
+                <ul className="case-process">
+                  {study.requirements.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
           </div>
+
+          <section className="work-block" aria-labelledby={`heading-${study.slug}-role`}>
+            <h2 className="case-label" id={`heading-${study.slug}-role`}>
+              {t.caseLabels.role}
+            </h2>
+            <p className="case-text">{study.role}</p>
+          </section>
 
           <section className="work-block" aria-labelledby={`heading-${study.slug}-process`}>
             <h2 className="case-label" id={`heading-${study.slug}-process`}>
@@ -121,11 +140,18 @@ export function WorkDetail({ study, lang }: { study: CaseStudy; lang: Lang }) {
             </section>
           ) : null}
 
-          <div className="tag-row compact work-tags">
-            {study.stack.map((item) => (
-              <span key={item}>{item}</span>
-            ))}
-          </div>
+          <section className="work-block" aria-labelledby={`heading-${study.slug}-stack`}>
+            <h2 className="case-label" id={`heading-${study.slug}-stack`}>
+              {t.markdown.stack}
+            </h2>
+            <ul className="tag-row compact work-tags" role="list">
+              {study.stack.map((item) => (
+                <li key={item}>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
 
           {study.shots && study.shots.length > 0 ? (
             <section className="work-block" aria-labelledby={`heading-${study.slug}-shots`}>
@@ -165,32 +191,41 @@ export function WorkDetail({ study, lang }: { study: CaseStudy; lang: Lang }) {
           <section className="work-cta" aria-labelledby={`heading-${study.slug}-cta`}>
             <h2 id={`heading-${study.slug}-cta`}>{t.work.cta.title}</h2>
             <p>{t.work.cta.body}</p>
-            <a
-              className="button primary"
-              href={bookingHref}
-              data-track="book_call_click"
-              data-track-source="work-detail"
-              data-track-slug={study.slug}
-            >
-              {t.work.cta.button}
-            </a>
+            <div className="service-actions">
+              <a
+                className="button primary"
+                href={asset(inquiryPath(lang))}
+                data-track="start_project_click"
+                data-track-source="work-detail"
+                data-track-slug={study.slug}
+              >
+                {t.work.cta.button}
+                <span className="glyph-dir" aria-hidden="true">→</span>
+              </a>
+              <a
+                className="button ghost"
+                href={bookingHref}
+                data-track="book_call_click"
+                data-track-source="work-detail"
+                data-track-slug={study.slug}
+              >
+                {t.servicePages.cta.button}
+              </a>
+            </div>
             {related.length > 0 ? (
               <div className="work-cta-services">
                 <p className="case-label">{t.work.relatedServices}</p>
                 <div className="work-more-links">
-                  {related.map((page) => {
-                    const plan = planFor(page.slug, lang);
-                    return (
-                      <a
-                        className="work-more-link"
-                        key={page.slug}
-                        href={asset(servicePath(page.slug, lang))}
-                      >
-                        <strong>{page.name}</strong>
-                        {plan ? <span>{plan.price}</span> : null}
-                      </a>
-                    );
-                  })}
+                  {related.map((page) => (
+                    <a
+                      className="work-more-link"
+                      key={page.slug}
+                      href={asset(servicePath(page.slug, lang))}
+                    >
+                      <strong>{page.name}</strong>
+                      <span>{servicePrice(page, lang).price}</span>
+                    </a>
+                  ))}
                 </div>
               </div>
             ) : null}

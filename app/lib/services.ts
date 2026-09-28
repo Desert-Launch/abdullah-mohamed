@@ -6,10 +6,12 @@ import { buildPageMetadata, localePath } from "./site";
 /**
  * The /services index and its landing pages, in both locales.
  *
- * One page per pricing card (`Plan`), joined by `slug`. The page copy is the
- * dictionary's `servicePages.pages`; the price is read from the matching plan
- * so the card, the landing page, and the Offer structured data can never quote
- * three different numbers.
+ * One page per visitor situation (`servicePages.pages`, in dictionary order).
+ * Prices are never typed into a page: each page quotes the `plans` it is
+ * priced as — its own by default, several for a service that becomes one of
+ * them (an MVP is a web or a mobile build), none for work that is scoped per
+ * project — so the homepage rows, the landing page, the social card and the
+ * Offer structured data can never quote different numbers.
  *
  * Routing mirrors `/work`: English at `/services/…`, Arabic at
  * `/ar/services/…`, with shared page bodies (`ServicesIndex`,
@@ -26,22 +28,58 @@ export function servicePath(slug: string, lang: Lang): string {
   return `${servicesIndexPath(lang)}${slug}/`;
 }
 
-/** In pricing-card order — the index reads like the homepage's plans grid. */
+/** In dictionary order — the order a visitor's situation usually progresses
+ *  (idea → platform → system → improving what exists). The homepage rows,
+ *  the index, the sitemap and the Markdown twins all read this list. */
 export function servicePages(lang: Lang): ServicePage[] {
-  const t = copy[lang];
-  const bySlug = new Map(t.servicePages.pages.map((page) => [page.slug, page]));
-  return t.plans
-    .map((plan) => bySlug.get(plan.slug))
-    .filter((page): page is ServicePage => page !== undefined);
+  return copy[lang].servicePages.pages;
 }
 
 export function findService(slug: string, lang: Lang): ServicePage | undefined {
   return copy[lang].servicePages.pages.find((page) => page.slug === slug);
 }
 
-/** The pricing card behind a service page. */
+/** A pricing card by slug. */
 export function planFor(slug: string, lang: Lang): Plan | undefined {
   return copy[lang].plans.find((plan) => plan.slug === slug);
+}
+
+/** The plans a service page is priced as, cheapest first. */
+export function plansFor(page: ServicePage, lang: Lang): Plan[] {
+  return (page.pricing ?? [page.slug])
+    .map((slug) => planFor(slug, lang))
+    .filter((plan): plan is Plan => plan !== undefined)
+    .sort((a, b) => a.minPrice - b.minPrice);
+}
+
+export interface ServicePrice {
+  /** The headline figure: the plan's price, the cheapest of several, or the
+   *  "priced per project" label. */
+  price: string;
+  /** The small print under it. */
+  note: string;
+  /** The plans behind the figure, cheapest first. Empty when scoped. */
+  plans: Plan[];
+  /** Lowest starting price in USD — the Offer's `minPrice`. Absent when the
+   *  service publishes no starting price. */
+  minPrice?: number;
+}
+
+/** What a service costs, as every surface shows it. */
+export function servicePrice(page: ServicePage, lang: Lang): ServicePrice {
+  const t = copy[lang].servicePages;
+  const plans = plansFor(page, lang);
+  if (plans.length === 0) {
+    return { price: t.scopedPrice, note: t.scopedNote, plans };
+  }
+  const [cheapest] = plans;
+  const note =
+    plans.length === 1
+      ? cheapest.priceNote
+      : plans
+          .map((plan) => t.priceFrom.replace("{plan}", plan.name).replace("{price}", plan.price))
+          .join(" · ");
+  return { price: cheapest.price, note, plans, minPrice: cheapest.minPrice };
 }
 
 /** The case studies a service page cites as proof, in the order the page
@@ -57,6 +95,14 @@ export function proofFor(page: ServicePage, lang: Lang): CaseStudy[] {
  *  so a case-study page can link to what it sells. */
 export function servicesCiting(studySlug: string, lang: Lang): ServicePage[] {
   return servicePages(lang).filter((page) => page.proof.includes(studySlug));
+}
+
+/** The lowest and highest published starting prices, as display strings —
+ *  the inquiry page's budget hint quotes them so it can't drift from `plans`. */
+export function priceRange(lang: Lang): { min: string; max: string } {
+  const plans = [...copy[lang].plans].sort((a, b) => a.minPrice - b.minPrice);
+  const bare = (plan: Plan) => `$${plan.minPrice.toLocaleString("en-US")}`;
+  return { min: bare(plans[0]), max: bare(plans[plans.length - 1]) };
 }
 
 /**

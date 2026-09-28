@@ -8,18 +8,22 @@ export const en: Dictionary = {
   // a searcher would type: role, stack, city. "Abdullah Mohamed" on its own is
   // a very common name — the qualifiers are what make the entity findable.
   meta: {
-    title: "Abdullah Mohamed | Senior Full-Stack & Flutter Engineer, Cairo",
+    title: "Abdullah Mohamed | Senior Software Engineer — Web, Mobile & AI",
+    // What he builds and for whom, before the stack: the searcher who needs
+    // an app built rarely types "PostgreSQL". Cairo stays as the
+    // disambiguator; "remote" says the market is not only Egypt.
     description:
-      "Senior software engineer in Cairo: full-stack web (React, Node.js, PostgreSQL), Flutter apps, real-time AI. 10+ apps shipped. Open to freelance and senior remote roles.",
+      "Senior software engineer building web and mobile apps, SaaS and AI products, from first MVP to production. 10+ apps shipped. Remote from Cairo; open to projects.",
     cardEyebrow: "Senior Software Engineer · Cairo, Egypt · Open to freelance",
     // "Shipped", never "live": not every shipped app is still on a store.
     social:
-      "Senior engineer behind the real-time AI layer of a 200,000-student tutor. Full-stack, AI and Flutter apps shipped across Egypt, the Gulf, Europe, US.",
+      "From first MVP to production, by the senior engineer behind a 200,000-student AI tutor. 10+ apps shipped across Egypt, the Gulf, Europe and the US.",
   },
   skipLink: "Skip to content",
   // The homepage sections, in page order. Also rendered by the sub-page
   // footer's "Sections" column and driven by the homepage scrollspy.
   nav: [
+    ["Services", "#services"],
     ["Work", "#work"],
     ["Experience", "#experience"],
     ["About", "#about"],
@@ -46,16 +50,21 @@ export const en: Dictionary = {
     // know, and it is true (the DIB and RevealSite roles were remote).
     eyebrow: "Abdullah Mohamed — Senior Software Engineer",
     place: "Cairo, Egypt · Remote",
-    status: "Open to senior remote roles and freelance projects",
-    title: "Products that ship,",
-    titleAccent: "and hold up in production.",
+    // Projects first: the site exists to bring in work, and the role line is
+    // one click away in the contact section and on /cv/.
+    status: "Available for new projects and senior remote roles",
+    // What gets built, then the claim. The tagline used to be the claim
+    // alone, so a visitor learned the specialty only from the lead.
+    title: "Web, mobile and AI products",
+    titleAccent: "that ship, and hold up in production.",
     roleLine: "Senior Software Engineer · Full-Stack, AI & Mobile Products",
     // Appenza and Faheem are here on purpose: "Abdullah Mohamed" collides with
     // several other engineers of the same name and title, and these are the
     // disambiguators a search engine can attach the entity to. The specialty
-    // (full-stack, real-time AI, Flutter) lives here and in the meta title
-    // now that the headline is a claim rather than a list.
-    lead: "Senior engineer at Appenza Studio, building Faheem — the Egyptian Ministry of Education's AI tutor, 200,000+ students, real-time voice. 10+ apps in the App Store and Google Play for teams in Egypt, Germany, the UAE, and the US.",
+    // and the range (first MVP → national scale) is the first sentence, so a
+    // client reads what they can hire him for before they read who employs him.
+    lead: "I build web and mobile apps, SaaS platforms and business software — from a first MVP to production at national scale. Now at Appenza Studio, on Faheem: the Egyptian Ministry of Education's AI tutor, 200,000+ students.",
+    start: "Tell me what you're building",
     explore: "Explore selected work",
     talk: "Let's talk",
     cv: "Download CV",
@@ -319,6 +328,7 @@ export const en: Dictionary = {
   },
   caseLabels: {
     challenge: "The challenge",
+    requirements: "What it had to do",
     role: "My role",
     process: "How I built it",
     decisions: "Decisions, and why",
@@ -330,9 +340,9 @@ export const en: Dictionary = {
     body: "Each role below shows the company context, the products I worked on there, and the engineering outcomes instead of repeating the same apps across multiple sections.",
   },
   servicesHeading: {
-    eyebrow: "For a project",
-    title: "Ways I can help.",
-    body: "The value is not only writing code. It is turning unclear product needs into shipped systems with fewer moving parts.",
+    eyebrow: "Services",
+    title: "What do you need built?",
+    body: "Start from where you are. Each page says who it's for, what you get, what it costs, and the work that proves it.",
   },
   plansHeading: {
     eyebrow: "Pricing",
@@ -405,6 +415,15 @@ export const en: Dictionary = {
         "The real-time layer of an Arabic AI tutor for 200,000+ students: streamed answers, voice-to-voice at ~300–500 ms, and AI-generated lessons — on a 16-module clean architecture.",
       challenge:
         "Students needed tutoring that felt live and trustworthy in Arabic — real-time answers, voice, and visuals — not a generic chatbot bolted onto a form. A tutor that pauses to think reads as broken to a fourteen-year-old, so the latency budget was a product requirement, not an optimisation.",
+      metaDescription:
+        "How the real-time layer of an Arabic AI tutor for 200,000+ students was built: streamed answers, ~300–500 ms voice, Flutter clean architecture.",
+      requirements: [
+        "Answers in Arabic that appear as they are generated, not after a pause",
+        "Voice conversation at a ~300–500 ms round-trip that the student can interrupt — and the tutor can't",
+        "AI-generated lessons whose narration, subtitles and diagrams stay in sync",
+        "A full Arabic, right-to-left interface",
+        "Separate Dev, Staging, QA and Prod builds: the Ministry's official app can't be tested against production",
+      ],
       role: "Core engineer on the realtime tutoring layer and the app architecture the rest of the product is built on.",
       process: [
         "Built realtime AI tutoring over WebSocket with Azure OpenAI streaming so answers arrive token by token.",
@@ -478,6 +497,15 @@ export const en: Dictionary = {
         "An Arabic-first, multi-tenant education platform (LMS + SIS) for Egyptian schools, built to run a full authority → school hierarchy. Live at its first school, Parkway, and in active development as the platform grows.",
       challenge:
         "A school network needed one system for student records, learning, and operations — Arabic-first, RTL, and Hijri-aware — with confidential health, counseling, and special-needs data that not even school admins can override, and a data model that scales from one school to an authority running many.",
+      metaDescription:
+        "Case study: a multi-tenant school platform (LMS + SIS) for Egyptian schools — SvelteKit 5, TypeScript, and deny-by-default RBAC across a Ministry → School tree.",
+      requirements: [
+        "One system for student records, learning, and school operations",
+        "Arabic-first, right-to-left, and Hijri-aware",
+        "Confidential health, counselling and special-needs records that not even school admins can override",
+        "A data model that scales from one school to an authority running many",
+        "25 functional modules and 534 requirements, built against a backend that was still moving",
+      ],
       role: "Frontend & integration engineer across the Talia 360 admin/ministry console and the Talia Learn app — wiring screens from mock data to a live Go/REST backend and verifying every one against the deployed environment.",
       process: [
         "Built and integrated screens for Talia 360 (ministry/admin console) and Talia Learn (learning app) as SvelteKit 5 + Tailwind CSS 4 SPAs over a typed Go/REST backend.",
@@ -559,6 +587,14 @@ export const en: Dictionary = {
         "Two live consumer apps at one company, in one year: a reels cold start cut from ~5–6 s to ~0.5–1.5 s, a deep-link migration completed before Firebase's shutdown, and a clinic app 41% smaller.",
       challenge:
         "Both products already had users, which is the hard version of this work: nothing could be rewritten, every change had to survive a store release, and one of them was racing a third-party deprecation with a fixed date.",
+      metaDescription:
+        "Case study: making two live Flutter apps faster and lighter — reels cold start ~6 s → 1.5 s, a 41% smaller install, and a deep-link migration off Firebase.",
+      requirements: [
+        "No rewrites: both apps already had users, and every change had to survive a store release",
+        "IMOX's reels had to play the moment the app opened",
+        "Deep links migrated before Firebase Dynamic Links' shutdown date — deferred links and attribution included",
+        "YOLO: one clinic app for HR, appointments, patients, inventory and billing, in clinics in three countries",
+      ],
       role: "Product engineer on both apps — owning the performance work, the deep-linking and analytics migration, and a run of client-requested features.",
       process: [
         "Redesigned IMOX's reel preloading: prime only the first two reels at splash, prefetch the next two after launch, then paginate ten at a time with a one-page buffer.",
@@ -619,6 +655,14 @@ export const en: Dictionary = {
         "A dental X-ray lab's whole workflow — intake, assignment, review, delivery — as one platform: portal, admin dashboard, API, database and the servers it runs on, all built by one engineer.",
       challenge:
         "A dental lab receives cases from clinics, routes them to technicians, has a doctor review the result, and sends it back. That ran on email and phone calls, so nobody could answer where a case was without asking someone. It needed to be one system with three different kinds of user in it — and there was no team to split the work across.",
+      metaDescription:
+        "Case study: a dental lab's whole case workflow built as one platform by one engineer — portal, admin dashboard, Node.js API, PostgreSQL, Docker, AWS S3.",
+      requirements: [
+        "One system for intake, assignment, review and delivery, replacing email and phone calls",
+        "Three kinds of user — Admin, Doctor, Technician — working on the same case",
+        "Large X-ray files stored and served without weighing down the database",
+        "Built, deployed and run by one engineer",
+      ],
       role: "Sole engineer. Frontend, backend, database, deployment and the TLS certificate.",
       process: [
         "Built the customer portal and the admin dashboard, with role-based access for Admin, Doctor and Technician.",
@@ -686,6 +730,14 @@ export const en: Dictionary = {
         "Two apps from one Flutter codebase for one of Egypt's largest gold and jewellery houses: a consumer storefront and a B2B wholesale ordering app, both over the same GraphQL API.",
       challenge:
         "The same business sells a 1,200 EGP gift to a walk-in customer and a 50-gram ingot to a merchant, on prices that move with the gold market. Two audiences, two buying flows, one catalogue — and a company that did not want two engineering efforts.",
+      metaDescription:
+        "Case study: two Flutter commerce apps from one codebase for an Egyptian gold and jewellery house — a retail storefront and B2B wholesale, over GraphQL.",
+      requirements: [
+        "A retail storefront and B2B wholesale ordering from one catalogue",
+        "Prices that move with the gold market",
+        "Delivery country and language chosen per visit, so a price doesn't change at checkout",
+        "One engineering effort, not two",
+      ],
       role: "Product engineer on both apps and the shared codebase behind them.",
       process: [
         "Built the customer storefront — collections, categories, a savings calculator, cart and checkout — with per-visit delivery country and language.",
@@ -758,6 +810,13 @@ export const en: Dictionary = {
         "A living-room trivia night turned into a fair, automated product with payments.",
       challenge:
         "Turn an informal two-team quiz game into a product that referees itself, scores fairly, and takes payment — without a human host keeping track.",
+      metaDescription:
+        "Case study: a two-team trivia night turned into a self-refereeing Flutter game with automatic scoring and MyFatoorah payments, built solo from scratch.",
+      requirements: [
+        "Two teams, six categories, and three difficulty levels",
+        "Rules, scoring and refereeing without a human host",
+        "Payments inside the app",
+      ],
       role: "Sole engineer. Designed and built the whole app from scratch.",
       process: [
         "Modeled two teams, six categories, and three difficulty levels with referee logic that enforces the rules.",
@@ -783,8 +842,7 @@ export const en: Dictionary = {
     },
     caseMeta: {
       title: "{title} case study — {type}",
-      description:
-        "{summary} Case study by Abdullah Mohamed: the challenge, his role, how it was built with {stack}, and the results.",
+      description: "{description}",
     },
     eyebrow: "Work",
     title: "Products I built, written up end to end.",
@@ -1068,7 +1126,7 @@ export const en: Dictionary = {
       ],
     },
     {
-      slug: "flutter-app-development",
+      slug: "mobile-app-development",
       name: "Mobile App",
       body: "iOS and Android from one codebase — auth, payments, push, offline, and the store release.",
       price: "from $5,000",
@@ -1129,11 +1187,12 @@ export const en: Dictionary = {
     // the CV. This is the block an assistant lifts when asked who he is — role,
     // employer and base are in the hero's own list and the photo caption.
     facts: [
+      ["Builds", "Web and mobile apps, SaaS, business software, AI features"],
       ["Experience", "Since 2022 in production · 10+ apps shipped · 4 companies"],
       ["Education", "B.Sc. Computer Science & AI, Helwan University (2023)"],
       ["Languages", "English and Arabic · bilingual, RTL-ready products"],
       ["Clients so far", "Egypt, Germany, the US, Qatar, and Kuwait"],
-      ["Open to", "Senior product roles (remote first), freelance projects, and contracts"],
+      ["Open to", "Freelance and contract projects, and senior product roles (remote first)"],
       ["GitHub", "github.com/Abdullah3010"],
     ],
   },
@@ -1153,26 +1212,28 @@ export const en: Dictionary = {
       project: {
         label: "For a project",
         title: "Have a product to build?",
-        body: "Send the product, the deadline, and what is blocking you. You'll get an honest answer, and a written proposal if it fits.",
+        body: "Describe what you want to build — in plain words, no technical brief needed. You'll get an honest answer, and a written proposal if it fits.",
       },
     },
     copyEmail: "Copy email",
     copied: "Copied",
   },
-  // The four /services pages. Each is the long form of one pricing card
-  // (joined by slug) and is written to be read cold — by a searcher or by an
-  // assistant answering "who can build X" — without the rest of the site.
-  // Every claim here is backed by a case study or an experience entry above;
-  // nothing is promised that the timeline doesn't show.
+  // The /services pages, one per visitor situation, in the order a situation
+  // usually progresses: an idea, a platform, a system, then improving what
+  // exists. Each is written to be read cold — by a searcher or by an assistant
+  // answering "who can build X" — without the rest of the site. Every claim is
+  // backed by a case study, an experience entry or the stack map above, and
+  // every price is a `plans` entry: pages without a plan of their own quote
+  // the plans they are built as (`pricing`), never a new number.
   servicePages: {
     meta: {
-      title: "Services — full-stack, real-time AI & Flutter development",
+      title: "Hire a senior freelance software developer — web, mobile, AI",
       description:
-        "Freelance software engineering from a senior engineer in Cairo: multi-tenant SaaS, web apps, real-time AI integration, and Flutter apps — with starting prices.",
+        "Senior freelance software engineer for startups and businesses: MVPs, mobile and web apps, SaaS, custom business software, AI features. Public starting prices.",
     },
     eyebrow: "Services",
-    title: "What I build, what it costs, and how it runs.",
-    body: "Four ways to hire me, each with a starting price and a written scope. Most projects are a mix — start from the closest one and we'll shape it on the call.",
+    title: "Custom software, from a first MVP to production.",
+    body: "Seven ways to work with me. Each page says who it's for, what you get, what it costs, and the work that proves it. Start from the one closest to where you are — most projects are a mix, and we shape it on the first call.",
     navLabel: "Service pages",
     indexLabel: "Services",
     readMore: "See what's included",
@@ -1183,166 +1244,147 @@ export const en: Dictionary = {
       fit: "Is this you?",
       deliverables: "What you get",
       approach: "How I build it",
-      proof: "Proof",
+      examples: "What this looks like in practice",
+      stack: "Technologies",
+      proof: "Case studies",
       pricing: "Pricing",
+      process: "How a project runs",
       faq: "Questions about this service",
       more: "Other services",
     },
+    scopedPrice: "Priced per project",
+    scopedNote: "fixed price after a short review of the codebase",
+    priceFrom: "{plan}: {price}",
     cta: {
       title: "Ready to scope it?",
-      body: "Book a free call or send a short brief: the product, the deadline, and what's blocking you. You'll get an honest answer and, if it fits, a written proposal with the price and timeline.",
+      body: "Tell me what you're building — in plain words, no technical brief needed — or book a free call. You'll get an honest answer and, if it fits, a written proposal with the price and timeline.",
+      start: "Tell me what you're building",
       button: "Book a call",
     },
+    notSure: {
+      title: "Not sure which one fits?",
+      body: "Describe what you want to build the way you'd explain it to a customer. I'll tell you which of these it is, roughly what it takes, and whether I'm the right person for it.",
+    },
+    faqTitle: "Working with me",
+    // Written and approved for the homepage FAQ before the 2026-09-25
+    // redesign removed it; they answer the questions every buyer asks, so
+    // they live here, on the page a buyer reads.
+    faq: [
+      {
+        q: "How does pricing work?",
+        a: "Every service has a starting price, and every price is negotiable based on your scope and requirements. We start with a free call, then I send a written proposal with the final price, the timeline, and the payment phases. You approve it before any work begins.",
+      },
+      {
+        q: "Do you charge hourly or per project?",
+        a: "Per project. You get a fixed price, a timeline, and payment phases in writing, so there is no running meter and no surprise invoice. The only exception is ongoing maintenance after handoff, which we agree separately.",
+      },
+      {
+        q: "Do you work with startups and MVPs?",
+        a: "Yes — it has its own page, MVP development. One engineer owns the frontend, backend, database and deployment, with a written scope and milestone delivery so you see working software early. Jaweb and Xera Lab were built that way, from zero.",
+      },
+      {
+        q: "Do you work remotely with clients outside Egypt?",
+        a: "Yes — remote is how I work. I'm in Cairo (GMT+2/+3): one to two hours from Europe, the same workday as the Gulf, and a solid morning overlap with the US East Coast. My clients so far have been in Germany, the US, Qatar, and Kuwait.",
+      },
+      {
+        q: "How do we communicate during a project?",
+        a: "A shared channel (Slack or WhatsApp), a demo of what shipped every week, and a written summary at every milestone. You never have to ask what the status is.",
+      },
+      {
+        q: "Who owns the code?",
+        a: "You do. Everything is delivered in your repositories with documentation and deployment access. Handoff quality is part of the service — no lock-in.",
+      },
+      {
+        q: "Can you join our team on a contract?",
+        a: "Yes, when there is an outcome to own — a module, a migration, a performance target — rather than an open-ended seat. I've worked inside remote product teams before, at DIB GmbH in Germany and RevealSite in the US. For a permanent senior role, start with the CV.",
+      },
+      {
+        q: "Do you work in English or Arabic?",
+        a: "Both, fluently — including building fully bilingual, RTL-ready products. Faheem, Talia, and ICCD Hub are Arabic-first or bilingual, and so is this site.",
+      },
+      {
+        q: "What are you not a fit for?",
+        a: "Native iOS or Android in Swift/Kotlin, WordPress and other CMS theme work, Laravel/PHP backends, data science and ML model training, and pure design engagements. I'll say so on the call rather than learn it on your budget — and where I know someone who does that work well, I'll point you at them.",
+      },
+      {
+        q: "What is the fastest way to reach you?",
+        a: "Send a short brief from the Start a project page, book a call, or email hi@abdullahmohamed.dev. I reply within 24 hours on working days.",
+      },
+    ],
     pages: [
       {
-        slug: "saas-development",
+        slug: "mvp-development",
         meta: {
-          title: "Multi-tenant SaaS development, end to end",
+          title: "MVP development for startups — idea to launched product",
           description:
-            "Hire a senior full-stack engineer to build your multi-tenant SaaS end to end: auth, roles, billing, admin, PostgreSQL, Docker + CI/CD. From $6,000. Cairo, remote.",
+            "Have an app or software idea? A senior engineer scopes, builds and launches your MVP end to end, on web or mobile. Web from $3,500, iOS + Android from $5,000.",
         },
-        name: "SaaS platform development",
-        eyebrow: "Services · SaaS",
-        title: "Multi-tenant SaaS platforms, built end to end by one engineer.",
-        lead: "A complete SaaS product — frontend, backend, database, and the infrastructure it runs on — delivered by a single accountable engineer. Multi-tenant architecture with role-based access, authentication, billing, an admin console, and a Dockerized deployment with CI/CD. Built the way Xera Lab and Talia were.",
+        name: "MVP development",
+        situation: "I have an idea and need a first version built.",
+        pricing: ["web-app-development", "mobile-app-development"],
+        eyebrow: "Services · MVP",
+        title: "From an idea to a first version real users can try.",
+        lead: "You bring the idea and know who it's for; I turn it into the smallest product that proves it — scoped in writing, built end to end (frontend, backend, database, deployment), and launched on the web, in the App Store and Google Play, or both. You don't need the technical vocabulary: every choice is explained in plain language, and the code is yours.",
         fit: [
-          "You have a validated idea and need the whole platform built, not just a frontend.",
-          "Your product serves several organisations, each with its own users, data, and roles.",
-          "You want one engineer who owns the full stack and the deployment, working to a written scope.",
-          "You need an Arabic/English, RTL-ready product for Egypt or the Gulf.",
+          "You have an idea for an app or platform and don't know where to start technically.",
+          "You need something real in front of users — not a slide deck or a clickable mock-up.",
+          "You're not sure whether it should be a web app, a mobile app, or both, and want an honest recommendation.",
+          "You'd rather work with one accountable engineer than coordinate a designer, two developers and a DevOps contractor.",
         ],
         deliverables: [
-          "Multi-tenant data model with tenant isolation and a deny-by-default RBAC layer",
-          "Authentication, roles, and permission-aware screens for every user type",
-          "Admin console, billing, and the third-party integrations your product depends on",
-          "A typed REST API over PostgreSQL, with background jobs where the product needs them",
-          "Docker Compose deployment on AWS or your cloud, with CI/CD and monitoring",
-          "Documentation, runbooks, and a handoff the next engineer can pick up",
+          "A written scope for version one: what's in, what waits, and why",
+          "A working product — web app, mobile app for iOS and Android, or both — on the architecture it will grow on",
+          "Sign-up and login, the one core workflow, payments if it charges from day one, and an admin view to run it",
+          "Deployed to production, or published to the App Store and Google Play in your own accounts",
+          "Analytics from the first release, so you see what users actually do",
+          "Documentation and a clean handoff — the code is yours, whether you keep building with me or not",
         ],
         approach: [
-          "React/Next.js or SvelteKit on the frontend; Node.js on the backend; PostgreSQL and Redis underneath.",
-          "A layered architecture (datasource → repository → query) so every screen is verified against real data, never mock data.",
-          "Milestones that deliver working software — you use the product while it is being built.",
-          "Everything lives in your repositories from day one. No lock-in.",
+          "Scope before code: version one is cut down to the workflow that proves the idea, and the rest is written down for later.",
+          "Real data and a real deployment from the first milestone — you use the product while it's being built, not at the end.",
+          "Built to grow, not to throw away: the same clean architecture as the production apps on this site, sized for a first version.",
+          "A demo of what shipped every week and a written summary at every milestone.",
         ],
-        proof: ["xera-lab", "talia"],
+        examples: [
+          "Xera Lab — a dental X-ray lab's case workflow built from zero as one platform: customer portal, admin dashboard, Node.js API, PostgreSQL and deployment, by one engineer.",
+          "Jaweb — an informal two-team quiz night turned into a mobile game that referees itself, scores automatically and takes payments, designed and built solo.",
+          "Ezhal — a car-service platform as three role-specific Flutter apps, with live technician tracking and MyFatoorah, Stripe and Apple PassKit.",
+          "FasTap — an NFC business card: a Flutter app that writes profiles to cards, and a web profile page for tap-to-share links.",
+        ],
+        stack: ["Flutter", "React / Next.js", "Node.js", "PostgreSQL", "Firebase", "Docker"],
+        proof: ["xera-lab", "jaweb"],
         faq: [
           {
-            q: "What does \"from $6,000\" cover?",
-            a: "The starting price for a focused multi-tenant platform: one core workflow, authentication and roles, an admin console, and deployment. The final price depends on the number of modules, integrations, and roles, and goes in a written proposal after a free call.",
+            q: "How much does it cost to build an MVP?",
+            a: "An MVP is priced as the product it becomes: a web MVP starts from $3,500 and a mobile MVP for iOS and Android from $5,000. The final price depends on the workflows, user roles and integrations in version one, and it goes in a written proposal — with the timeline and payment phases — before any work starts. The first call is free.",
           },
           {
-            q: "How long does a SaaS build take?",
-            a: "It is scoped per proposal rather than quoted as a fixed number of weeks. You get a timeline with milestones in writing before we start, and working software at every milestone.",
+            q: "How long does it take to build an MVP?",
+            a: "It depends on the scope, so the timeline is set per proposal rather than quoted up front. What doesn't change: you get the timeline and milestones in writing before we start, and working software at every milestone — not a big reveal at the end.",
           },
           {
-            q: "Can you model a hierarchy like ministry → school or company → branch?",
-            a: "Yes. Talia runs a Ministry→School entity tree with deny-by-default RBAC across 25 modules and 534 requirements, including confidential data that not even school admins can override. The same pattern fits company→branch or agency→client products.",
+            q: "Should my MVP be a web app or a mobile app?",
+            a: "It depends on how people will use it. If they'll use it daily on the go, need notifications, the camera or location, or expect to find it in an app store, start with mobile — Flutter covers iOS and Android from one codebase. If it's used at a desk, needs to be found through search, or has to reach people without an install, start with the web. Most products need both eventually; version one usually needs one. Not sure? Say so in the brief and I'll recommend one, with the reasons.",
+          },
+          {
+            q: "I'm not technical. Can I still work with you?",
+            a: "Yes. Describe the product the way you'd explain it to a customer — who uses it and what they do with it. I turn that into a written scope, explain the choices in plain language, and show you working software every week. You approve the proposal before any work starts.",
+          },
+          {
+            q: "What happens after the MVP launches?",
+            a: "You own the code, the accounts and the deployment, with documentation the next engineer can pick up. If you want to keep building with me, the next phase is scoped and priced the same way; ongoing maintenance after handoff is agreed separately.",
           },
         ],
       },
       {
-        slug: "web-app-development",
+        slug: "mobile-app-development",
         meta: {
-          title: "Full-stack web app development — React, Node.js, PostgreSQL",
+          title: "Mobile app development — iOS & Android apps with Flutter",
           description:
-            "Hire a senior full-stack developer for your web app, dashboard, or internal tool: React/Next.js, Node.js, PostgreSQL, auth, roles, deployed with CI/CD. From $3,500.",
+            "Hire a senior mobile app developer: iOS and Android from one Flutter codebase — payments, push, offline, App Store and Google Play release. 10+ apps. From $5,000.",
         },
-        name: "Web app development",
-        eyebrow: "Services · Web",
-        title: "Web apps and internal tools, owned end to end.",
-        lead: "A focused web product, dashboard, or internal tool — frontend, backend, and database built and deployed by one senior engineer. Authentication, roles, third-party integrations, and a production deployment with CI/CD, delivered with documentation the next engineer can maintain.",
-        fit: [
-          "You need a dashboard, customer portal, or internal tool that replaces spreadsheets and manual work.",
-          "You have a backend and need the frontend built against it — or the reverse.",
-          "You want one focused slice of a product in production quickly, to a written scope.",
-          "You need a bilingual, RTL-ready web app for an Arabic-speaking audience.",
-        ],
-        deliverables: [
-          "React/Next.js or SvelteKit frontend with a responsive, accessible UI",
-          "Node.js REST API over PostgreSQL — or integration with the backend you already have",
-          "Authentication, roles, and permission-aware screens",
-          "Third-party integrations: payments, email, maps, analytics",
-          "Production deployment with CI/CD and per-environment configuration",
-          "Documentation and a clean handoff",
-        ],
-        approach: [
-          "TypeScript across the stack, with typed API contracts.",
-          "Real data from the first milestone — no dummy-data screens.",
-          "Performance and accessibility treated as requirements, not polish.",
-          "Delivered in your repositories, with deployment access, from day one.",
-        ],
-        proof: ["xera-lab", "talia"],
-        faq: [
-          {
-            q: "Can you work with my existing backend or design?",
-            a: "Yes. On Talia I built the SvelteKit clients against a Go/REST backend owned by another team, wiring dozens of screens from mock data to live API reads and writes. Bring your API or your Figma and I'll build the rest.",
-          },
-          {
-            q: "Which frontend framework do you use?",
-            a: "React/Next.js by default, SvelteKit where it fits — Talia's admin console and learning app are SvelteKit 5, and this site is Next.js. The choice follows your team and product, not my preference.",
-          },
-          {
-            q: "What does \"from $3,500\" cover?",
-            a: "A focused web app: one primary workflow, authentication, a small admin surface, and deployment. Extra modules, roles, and integrations are scoped and priced in the written proposal.",
-          },
-        ],
-      },
-      {
-        slug: "ai-integration",
-        meta: {
-          title: "Real-time AI integration — streaming chat, voice (STT/TTS)",
-          description:
-            "Add real-time AI to your product: streaming chat, voice (STT/TTS), generated content — by the engineer behind an Arabic AI tutor for 200,000+ students. From $3,000.",
-        },
-        name: "Real-time AI integration",
-        eyebrow: "Services · AI",
-        title: "Real-time AI features, wired into your product.",
-        lead: "Streaming AI chat, voice interaction (speech-to-text and text-to-speech), and generated content, integrated into your existing app over WebSocket — with model fallbacks, guardrails, and the latency work that makes it feel live. The same layer that serves Faheem, an Arabic AI tutor used by 200,000+ K-12 students.",
-        fit: [
-          "You have a product with users and want an AI assistant, tutor, or copilot inside it — not a separate chatbot page.",
-          "You need voice: users speak, the product answers in real time.",
-          "You need Arabic or bilingual AI experiences that handle RTL properly.",
-          "You have a prototype and need it production-grade: streaming, retries, cost control, observability.",
-        ],
-        deliverables: [
-          "Streaming chat over WebSocket with token-by-token rendering",
-          "Voice flows: speech-to-text in, text-to-speech out, with interruption handling",
-          "Generated content: lessons, summaries, visuals, structured output",
-          "Model integration (Azure OpenAI or your provider) with fallbacks and guardrails",
-          "Prompt and context management, rate limits, and usage tracking",
-          "Analytics and monitoring for answer quality and cost",
-        ],
-        approach: [
-          "WebSocket or SSE transport chosen for your stack, with typed events end to end.",
-          "Built inside your existing app — mobile (Flutter) or web (React/SvelteKit) — as modules, not a bolt-on.",
-          "Tested with real users early: a small cohort, measured, then scaled.",
-          "Handed over with documentation on prompts, limits, and how to swap the model.",
-        ],
-        proof: ["faheem"],
-        faq: [
-          {
-            q: "Which AI providers do you work with?",
-            a: "Azure OpenAI in production, on Faheem. Any provider with a streaming API can be wired the same way, and the integration is built so the model can be swapped without rewriting the feature.",
-          },
-          {
-            q: "Can you add AI to an existing mobile app?",
-            a: "Yes — that is exactly what Faheem is: a Flutter app with real-time tutoring, voice, and an AI board added as modules in a clean architecture. Web apps work the same way.",
-          },
-          {
-            q: "Does it work in Arabic?",
-            a: "Yes. Faheem is Arabic-first: Arabic chat, Arabic voice, RTL UI. Bilingual products are the norm in my work, not an add-on.",
-          },
-        ],
-      },
-      {
-        slug: "flutter-app-development",
-        meta: {
-          title: "Flutter app development — iOS & Android from one codebase",
-          description:
-            "Hire a senior Flutter developer: iOS and Android from one codebase — auth, payments, push, offline, App Store and Google Play release. 10+ apps shipped. From $5,000.",
-        },
-        name: "Flutter mobile app development",
+        name: "Mobile app development",
+        situation: "I need a mobile app for iOS and Android.",
         eyebrow: "Services · Mobile",
         title: "iOS and Android apps from one Flutter codebase, shipped to the stores.",
         lead: "A production mobile app, not just screens: authentication, payments, analytics, push notifications, offline support, and the App Store and Google Play release, on a clean-architecture Flutter codebase. 10+ apps shipped across Egypt, Germany, the UAE, and the US — including Faheem, BTC, YOLO, Q-Fight Gym, Al-Muslim, and ICCD Hub.",
@@ -1366,6 +1408,14 @@ export const en: Dictionary = {
           "Real store releases — 10+ apps published, and each one's current status is shown honestly on this site.",
           "Handoff with documentation, and the apps published in your own developer accounts.",
         ],
+        examples: [
+          "Faheem — the Egyptian Ministry of Education's AI tutor: real-time chat and voice on a 16-module clean architecture, used by 200,000+ students.",
+          "BTC — a retail storefront and a B2B wholesale app from one Flutter codebase, over one GraphQL catalogue.",
+          "RevealSite — white-label patient apps for US pharmacies, provisioned from one codebase by client ID, with offline-first caching.",
+          "Ezhal — three role-specific Flutter apps for a car-service platform, with live technician tracking and payments.",
+          "Zeyada — school fees through PayTabs, realtime chat with moderation, and Guardsquare-protected builds.",
+        ],
+        stack: ["Flutter", "Dart", "BLoC / Provider", "Riverpod", "Firebase", "REST / GraphQL", "Codemagic"],
         proof: ["faheem", "btc", "imox-yolo"],
         faq: [
           {
@@ -1377,8 +1427,310 @@ export const en: Dictionary = {
             a: "Yes, including store listings, review issues, and multi-environment builds. The apps are published in your developer accounts, so they stay yours.",
           },
           {
+            q: "Do you build with React Native, or native Swift and Kotlin?",
+            a: "No — I build cross-platform apps with Flutter, which gives you iOS and Android from one codebase; 10+ apps have shipped that way. If your project genuinely needs native Swift or Kotlin, I'll say so on the call rather than learn it on your budget.",
+          },
+          {
+            q: "Can you fix or speed up an app that's already live?",
+            a: "Yes — it has its own page, Existing app improvement. IMOX's cold start went from ~6 s to under 1.5 s and YOLO's install from 86 MB to 51 MB, both on apps that already had users.",
+          },
+          {
             q: "What does \"from $5,000\" cover?",
             a: "A focused app: the core flows, authentication, one payment or booking integration, push notifications, and both store releases. Larger scopes are priced in the written proposal.",
+          },
+        ],
+      },
+      {
+        slug: "web-app-development",
+        meta: {
+          title: "Full-stack web app development — React, Next.js, Node.js",
+          description:
+            "Hire a senior full-stack developer for a custom web application: customer portals, admin consoles, React/Next.js, Node.js, PostgreSQL, CI/CD. From $3,500.",
+        },
+        name: "Web app development",
+        situation: "I need a web platform or customer portal.",
+        eyebrow: "Services · Web",
+        title: "Custom web applications, built full-stack and owned end to end.",
+        lead: "A web product people log into — a customer portal, a booking or ordering flow, an admin console, or a focused slice of a bigger platform — with the frontend, backend and database built and deployed by one senior engineer. Authentication, roles, third-party integrations, and a production deployment with CI/CD, delivered with documentation the next engineer can maintain.",
+        fit: [
+          "You need a web app your customers or users log into — a portal, an account area, a booking or ordering flow — not a brochure site.",
+          "You have a backend and need the frontend built against it — or the reverse.",
+          "You want one focused slice of a product in production quickly, to a written scope.",
+          "You need a bilingual, RTL-ready web app for an Arabic-speaking audience.",
+        ],
+        deliverables: [
+          "React/Next.js or SvelteKit frontend with a responsive, accessible UI",
+          "Node.js REST API over PostgreSQL — or integration with the backend you already have",
+          "Authentication, roles, and permission-aware screens",
+          "Third-party integrations: payments, email, maps, analytics",
+          "Production deployment with CI/CD and per-environment configuration",
+          "Documentation and a clean handoff",
+        ],
+        approach: [
+          "TypeScript across the stack, with typed API contracts.",
+          "Real data from the first milestone — no dummy-data screens.",
+          "Performance and accessibility treated as requirements, not polish.",
+          "Delivered in your repositories, with deployment access, from day one.",
+        ],
+        examples: [
+          "Xera Lab — a customer portal and admin dashboard over a Node.js/Express API and PostgreSQL, with X-rays on AWS S3, deployed with Docker behind Nginx.",
+          "Talia — SvelteKit 5 consoles for a multi-tenant school platform, wired screen by screen from mock data to a live Go/REST backend owned by another team.",
+          "This site — Next.js, fully bilingual English/Arabic with right-to-left layout, statically exported, with structured data and a Markdown version of every page.",
+        ],
+        stack: ["TypeScript", "React / Next.js", "SvelteKit", "Node.js / Express", "PostgreSQL", "TanStack Query", "Docker"],
+        proof: ["xera-lab", "talia"],
+        faq: [
+          {
+            q: "Can you work with my existing backend or design?",
+            a: "Yes. On Talia I built the SvelteKit clients against a Go/REST backend owned by another team, wiring dozens of screens from mock data to live API reads and writes. Bring your API or your Figma and I'll build the rest.",
+          },
+          {
+            q: "Which frontend framework do you use?",
+            a: "React/Next.js by default, SvelteKit where it fits — Talia's admin console and learning app are SvelteKit 5, and this site is Next.js. The choice follows your team and product, not my preference.",
+          },
+          {
+            q: "Is an internal tool or admin panel a web app too?",
+            a: "It's built the same way, but it's its own page — Custom business software — because the job is different: replacing spreadsheets, email threads and manual steps with a system built around your process.",
+          },
+          {
+            q: "What does \"from $3,500\" cover?",
+            a: "A focused web app: one primary workflow, authentication, a small admin surface, and deployment. Extra modules, roles, and integrations are scoped and priced in the written proposal.",
+          },
+        ],
+      },
+      {
+        slug: "saas-development",
+        meta: {
+          title: "SaaS development — multi-tenant platforms, built end to end",
+          description:
+            "Hire a senior full-stack engineer to build your multi-tenant SaaS end to end: auth, roles, billing, admin, PostgreSQL, Docker + CI/CD. From $6,000. Remote.",
+        },
+        name: "SaaS platform development",
+        situation: "I'm building a SaaS product for many customers.",
+        eyebrow: "Services · SaaS",
+        title: "Multi-tenant SaaS platforms, built end to end by one engineer.",
+        lead: "A complete SaaS product — frontend, backend, database, and the infrastructure it runs on — delivered by a single accountable engineer. Multi-tenant architecture with role-based access, authentication, billing, an admin console, and a Dockerized deployment with CI/CD. Built the way Xera Lab and Talia were.",
+        fit: [
+          "You have a validated idea and need the whole platform built, not just a frontend.",
+          "Your product serves several organisations, each with its own users, data, and roles.",
+          "You want one engineer who owns the full stack and the deployment, working to a written scope.",
+          "You need an Arabic/English, RTL-ready product for Egypt or the Gulf.",
+        ],
+        deliverables: [
+          "Multi-tenant data model with tenant isolation and a deny-by-default RBAC layer",
+          "Authentication, roles, and permission-aware screens for every user type",
+          "Admin console, billing, and the third-party integrations your product depends on",
+          "A typed REST API over PostgreSQL, with background jobs where the product needs them",
+          "Docker Compose deployment on AWS or your cloud, with CI/CD and monitoring",
+          "Documentation, runbooks, and a handoff the next engineer can pick up",
+        ],
+        approach: [
+          "React/Next.js or SvelteKit on the frontend; Node.js on the backend; PostgreSQL and Redis underneath.",
+          "A layered architecture (datasource → repository → query) so every screen is verified against real data, never mock data.",
+          "Milestones that deliver working software — you use the product while it is being built.",
+          "Everything lives in your repositories from day one. No lock-in.",
+        ],
+        examples: [
+          "Talia — one education platform for many schools under an authority, with deny-by-default RBAC across 25 modules and 534 requirements.",
+          "Xera Lab — three roles (Admin, Doctor, Technician) over one case model, from intake to delivery, built and deployed by one engineer.",
+          "RevealSite — one pharmacy platform powering separately branded apps per client, provisioned by client ID with runtime branding.",
+        ],
+        stack: ["React / Next.js", "SvelteKit", "Node.js", "PostgreSQL", "Redis", "Docker", "AWS"],
+        proof: ["xera-lab", "talia"],
+        faq: [
+          {
+            q: "What does \"from $6,000\" cover?",
+            a: "The starting price for a focused multi-tenant platform: one core workflow, authentication and roles, an admin console, and deployment. The final price depends on the number of modules, integrations, and roles, and goes in a written proposal after a free call.",
+          },
+          {
+            q: "How long does a SaaS build take?",
+            a: "It is scoped per proposal rather than quoted as a fixed number of weeks. You get a timeline with milestones in writing before we start, and working software at every milestone.",
+          },
+          {
+            q: "Can you model a hierarchy like ministry → school or company → branch?",
+            a: "Yes. Talia runs a Ministry→School entity tree with deny-by-default RBAC across 25 modules and 534 requirements, including confidential data that not even school admins can override. The same pattern fits company→branch or agency→client products.",
+          },
+          {
+            q: "Should the first version of my SaaS be the whole platform?",
+            a: "Rarely. Start with the one workflow your first customers pay for — see MVP development — but with the multi-tenant data model and roles in place from day one, so the second customer doesn't force a rewrite.",
+          },
+        ],
+      },
+      {
+        slug: "custom-business-software",
+        meta: {
+          title: "Custom business software, internal tools & dashboards",
+          description:
+            "Replace spreadsheets, email threads and manual steps with software built around your business: internal tools, admin panels, dashboards, portals. From $3,500.",
+        },
+        name: "Custom business software",
+        situation: "My business runs on spreadsheets, email and WhatsApp.",
+        pricing: ["web-app-development"],
+        eyebrow: "Services · Business software",
+        title: "Software built around how your business already works.",
+        lead: "When work lives in spreadsheets, email threads and phone calls, nobody can answer \"where is this?\" without asking someone. I build the system that replaces them — an internal tool, admin panel or customer portal where every order, case or request has one state and one history, each person sees what their role allows, and routine steps don't depend on someone remembering them. Built end to end by one senior engineer: frontend, backend, database and deployment.",
+        fit: [
+          "Your team tracks work in spreadsheets, shared inboxes or chat groups, and things fall through the gaps.",
+          "Customers or partners send requests by email or phone, and you'd rather they submitted and tracked them themselves.",
+          "Different people need different access — staff, managers, clients, partners.",
+          "You need dashboards and reports from data that is scattered across files today.",
+        ],
+        deliverables: [
+          "A workflow modelled on your real process: each order, case or request with one state and a clear history",
+          "Role-based access, so staff, managers, clients and partners each see and do only what they should",
+          "An admin panel and dashboards for the numbers you run the business on",
+          "A customer or partner portal for submitting and tracking requests, where you need one",
+          "Notifications, reminders and integrations — payments, email, maps — so routine steps happen on their own",
+          "Deployment, documentation, and a handoff your team can maintain",
+        ],
+        approach: [
+          "Start from the process, not the screens: we map how work actually moves today, and its stages and handoffs become the data model.",
+          "Roles live in the authorisation layer over one data model — not separate apps that drift apart.",
+          "Web first, so it runs on any device without an install; a mobile app only where field staff need one.",
+          "Delivered in milestones your team uses on real work as early as possible.",
+        ],
+        examples: [
+          "Xera Lab — a dental lab's email-and-phone workflow replaced by one platform: clinics submit cases, technicians and doctors work them, and each case has one state from intake to delivery.",
+          "YOLO — one clinic app for HR, appointments, patient records, inventory and billing, running in clinics in Egypt, Germany and the UAE.",
+          "RevealSite — pharmacy refills, transfers, appointments and reminders, requested and tracked by patients in their pharmacy's own branded app.",
+          "Zeyada — school fee payments through PayTabs and parent–school messaging in one app.",
+        ],
+        stack: ["React / Next.js", "Node.js / Express", "PostgreSQL", "Flutter Web", "Docker", "AWS S3"],
+        proof: ["xera-lab", "talia", "imox-yolo"],
+        faq: [
+          {
+            q: "How much does custom business software cost?",
+            a: "A focused internal tool or portal starts from $3,500: one core workflow, login and roles, a small admin surface, and deployment. More workflows, roles, reports and integrations add to it, and the final price goes in a written proposal after a free call — fixed per project, not hourly.",
+          },
+          {
+            q: "Is custom software better than an off-the-shelf tool?",
+            a: "Not always. If an existing product fits your process, use it — it will be cheaper. Custom software pays off when the process is what makes your business different, when your team is stitching several tools together by hand, or when per-seat pricing grows faster than you do. If an off-the-shelf tool fits, I'll say so on the call.",
+          },
+          {
+            q: "Can it work with the tools we already use?",
+            a: "Usually, through their APIs. Payments, email, maps and analytics are routine integrations; anything else is checked during scoping, before it goes in the proposal.",
+          },
+          {
+            q: "Can our team keep running it after handoff?",
+            a: "Yes. It is documented, deployed in your accounts, and the code is in your repositories. Maintenance after handoff is optional and agreed separately.",
+          },
+        ],
+      },
+      {
+        slug: "ai-integration",
+        meta: {
+          title: "AI integration — add real-time chat and voice AI to your app",
+          description:
+            "Add AI to your product: streaming chat, voice (STT/TTS), generated content — by the engineer behind an Arabic AI tutor used by 200,000+ students. From $3,000.",
+        },
+        name: "AI integration",
+        situation: "I want AI features inside my product.",
+        eyebrow: "Services · AI",
+        title: "Real-time AI features, wired into your product.",
+        lead: "Streaming AI chat, voice interaction (speech-to-text and text-to-speech), and generated content, integrated into your existing app over WebSocket — with model fallbacks, guardrails, and the latency work that makes it feel live. The same layer that serves Faheem, an Arabic AI tutor used by 200,000+ K-12 students.",
+        fit: [
+          "You have a product with users and want an AI assistant, tutor, or copilot inside it — not a separate chatbot page.",
+          "You need voice: users speak, the product answers in real time.",
+          "You need Arabic or bilingual AI experiences that handle RTL properly.",
+          "You have a prototype and need it production-grade: streaming, retries, cost control, observability.",
+        ],
+        deliverables: [
+          "Streaming chat over WebSocket with token-by-token rendering",
+          "Voice flows: speech-to-text in, text-to-speech out, with interruption handling",
+          "Generated content: lessons, summaries, visuals, structured output",
+          "Model integration (Azure OpenAI or your provider) with fallbacks and guardrails",
+          "Prompt and context management, rate limits, and usage tracking",
+          "Analytics and monitoring for answer quality and cost",
+        ],
+        approach: [
+          "WebSocket or SSE transport chosen for your stack, with typed events end to end.",
+          "Built inside your existing app — mobile (Flutter) or web (React/SvelteKit) — as modules, not a bolt-on.",
+          "Tested with real users early: a small cohort, measured, then scaled.",
+          "Handed over with documentation on prompts, limits, and how to swap the model.",
+        ],
+        examples: [
+          "Faheem's tutor — Arabic answers streamed token by token from Azure OpenAI over WebSocket, and voice-to-voice at a ~300–500 ms round-trip.",
+          "Faheem's AI Board — AI-generated lessons played as one timeline of narration, live subtitles and animated diagrams.",
+          "Smart Quiz and Solve — AI-generated quiz questions, and step-by-step solutions from a photo of a maths or science problem.",
+        ],
+        stack: ["Azure OpenAI", "WebSocket / SSE", "Speech-to-text", "Text-to-speech", "Flutter", "React / Next.js"],
+        proof: ["faheem"],
+        faq: [
+          {
+            q: "Which AI providers do you work with?",
+            a: "Azure OpenAI in production, on Faheem. Any provider with a streaming API can be wired the same way, and the integration is built so the model can be swapped without rewriting the feature.",
+          },
+          {
+            q: "Can you add AI to an existing mobile app?",
+            a: "Yes — that is exactly what Faheem is: a Flutter app with real-time tutoring, voice, and an AI board added as modules in a clean architecture. Web apps work the same way.",
+          },
+          {
+            q: "Does it work in Arabic?",
+            a: "Yes. Faheem is Arabic-first: Arabic chat, Arabic voice, RTL UI. Bilingual products are the norm in my work, not an add-on.",
+          },
+          {
+            q: "Can you build a whole AI-powered product, not just a feature?",
+            a: "Yes — pair this with MVP development or SaaS platform development. The AI layer is built the same way either way: as modules inside the product, with the model swappable.",
+          },
+        ],
+      },
+      {
+        slug: "improve-existing-app",
+        meta: {
+          title: "Improve an existing app — performance, fixes, new features",
+          description:
+            "App live but slow, outdated or stuck? A senior engineer reviews the codebase, then fixes performance, migrates deprecated services and ships features safely.",
+        },
+        name: "Existing app improvement",
+        situation: "My app exists, but it's slow, outdated or stuck.",
+        pricing: [],
+        eyebrow: "Services · Existing products",
+        title: "Improve, fix, or take over an app that already has users.",
+        lead: "Not every project starts from zero. If your app is live but slow, crashing, tied to a service that is being shut down, or waiting on features nobody has time to build, I start with a short review of the codebase, then agree a scoped plan before anything touches production. That is the work behind IMOX and YOLO: a cold start cut from ~6 s to under 1.5 s, a deep-link migration finished ahead of a shutdown, and an install 41% smaller.",
+        fit: [
+          "Your app works, but it's slow to open, heavy to download, or crashes more than it should.",
+          "A service it depends on is deprecated or shutting down, and the migration can't break what users already have.",
+          "The original developer has moved on, and you need someone to take over the codebase.",
+          "You have a backlog of features and no one senior enough to ship them safely.",
+        ],
+        deliverables: [
+          "A short written review: what's slowing you down, what's risky, and what to fix first",
+          "Performance work measured before and after — start-up time, app size, loading",
+          "Migrations off deprecated SDKs and services, with no gap for existing users",
+          "New features built into the existing architecture, not bolted on",
+          "Analytics and crash reporting, so problems show up in data rather than in reviews",
+          "A record of what changed and why",
+        ],
+        approach: [
+          "Measure first: every performance change starts from a number and ends with one.",
+          "Targeted changes over rewrites, so the app keeps its users and its release cadence while it improves.",
+          "Every change ships through a normal store or production release, with separate environments, so nothing is tested on live users.",
+          "Where the backend belongs to another team, gaps are filed as contract issues rather than patched around in the client.",
+        ],
+        examples: [
+          "IMOX — a reels app's cold start cut from ~6 s to under 1.5 s by redesigning what loads at launch, not the video pipeline.",
+          "IMOX — deep links moved off Firebase Dynamic Links to Airbridge before the shutdown, with deferred links and attribution intact.",
+          "YOLO — install size cut 41%, from 86 MB to 51 MB, and 10+ client-requested features shipped on a live clinic app.",
+          "Talia — dozens of screens moved from mock data to a live Go/REST backend, each one verified against the deployed environment.",
+        ],
+        stack: ["Flutter", "React / Next.js", "SvelteKit", "Firebase", "Mixpanel", "Airbridge", "Crashlytics"],
+        proof: ["imox-yolo", "talia"],
+        faq: [
+          {
+            q: "Can you take over an app someone else built?",
+            a: "Yes. Much of my employed work has been on products that already had users — cutting YOLO's app size from 86 MB to 51 MB, migrating IMOX's deep linking and analytics — so inheriting a codebase is normal. We start with a short review, then agree a scoped plan before anything touches production.",
+          },
+          {
+            q: "My app is slow. Where do you start?",
+            a: "With measurements: start-up time, download size, and the screens users actually wait on. On IMOX the problem wasn't the video pipeline — the app loaded too much before showing anything; priming two reels instead of a feed took cold start from ~6 s to under 1.5 s. The fix follows the number, not a guess.",
+          },
+          {
+            q: "Do I need to rebuild my app from scratch?",
+            a: "Usually not. A rewrite resets your bugs, your users' trust and your timeline at once. The review says whether targeted fixes will get you there — and if a rewrite really is cheaper, it says that too, with the reasons.",
+          },
+          {
+            q: "How is this priced?",
+            a: "Per project, after the review: a fixed price for an agreed scope, in writing, before any work starts. Ongoing maintenance after that is optional and agreed separately.",
           },
         ],
       },
@@ -1391,7 +1743,7 @@ export const en: Dictionary = {
     meta: {
       title: "CV — Senior Software Engineer (full-stack, AI, Flutter)",
       description:
-        "CV of Abdullah Mohamed, senior software engineer in Cairo (remote): Appenza Studio, DIB GmbH, RevealSite, Zeyada. Flutter, React/SvelteKit, Node.js, PostgreSQL, real-time AI. B.Sc. CS & AI, Helwan 2023.",
+        "CV of Abdullah Mohamed, senior software engineer (Cairo, remote): Appenza Studio, DIB GmbH, RevealSite, Zeyada. Flutter, React, Node.js, AI. B.Sc. Helwan 2023.",
     },
     eyebrow: "Curriculum vitae",
     title: "Abdullah Mohamed — Senior Software Engineer",
@@ -1475,6 +1827,108 @@ export const en: Dictionary = {
         used: [],
       },
     ],
+  },
+  // /start-a-project/: a brief a non-technical visitor can fill in without
+  // the vocabulary. Option keys (the first item of each pair) are shared with
+  // the Arabic dictionary and sent to analytics; only the labels are copy.
+  // `{min}`, `{max}` and `{email}` are filled in from `plans` and
+  // `contactEmail` at render time, so they can't drift from the prices.
+  inquiry: {
+    meta: {
+      title: "Start a project — tell me what you want to build",
+      description:
+        "Describe your app or software idea in plain words — what it does, web or mobile, timeline, budget — and get an honest reply within 24 hours on working days.",
+    },
+    eyebrow: "Start a project",
+    title: "Tell me what you want to build.",
+    lead: "Answer what you can — plain words are fine, and none of it needs technical knowledge. When you send it, the brief opens in your email app or WhatsApp, ready to go.",
+    indexLabel: "Start a project",
+    navLabel: "Start a project page",
+    regarding: "About:",
+    optional: "optional",
+    fields: {
+      idea: {
+        label: "What do you want to build?",
+        hint: "Who is it for, and what should they be able to do with it? A few sentences is plenty.",
+      },
+      stage: {
+        legend: "Where are you now?",
+        options: [
+          ["idea", "Just an idea"],
+          ["design", "Designs or a prototype"],
+          ["existing", "A product that needs work"],
+          ["other", "Something else"],
+        ],
+      },
+      platform: {
+        legend: "Web, mobile, or both?",
+        options: [
+          ["web", "Web, in the browser"],
+          ["mobile", "Mobile app (iOS and Android)"],
+          ["both", "Both"],
+          ["unsure", "Not sure — help me decide"],
+        ],
+      },
+      timeline: {
+        label: "When do you need it?",
+        options: [
+          ["asap", "As soon as possible"],
+          ["3m", "Within 3 months"],
+          ["6m", "In 3–6 months"],
+          ["flexible", "No fixed date"],
+        ],
+      },
+      budget: {
+        label: "Budget range",
+        hint: "Starting prices run from {min} to {max}, depending on the service. A range only shapes the proposal — it doesn't decide whether I reply.",
+        options: [
+          ["lt3500", "Under $3,500"],
+          ["3500-6000", "$3,500 – $6,000"],
+          ["6000-15000", "$6,000 – $15,000"],
+          ["gt15000", "Over $15,000"],
+          ["unsure", "Not sure yet"],
+        ],
+      },
+      name: { label: "Your name" },
+      email: { label: "Your email" },
+      company: { label: "Company or website" },
+    },
+    choose: "Choose one",
+    send: {
+      email: "Email this brief",
+      whatsapp: "Send on WhatsApp",
+      copy: "Copy the brief",
+      copied: "Copied",
+    },
+    status: {
+      email: "Your email app should now be open with the brief filled in. If nothing opened, copy the brief and send it to {email}.",
+      whatsapp: "WhatsApp should now be open with the brief filled in — press send there.",
+      copy: "The brief is copied. Paste it into an email to {email}, or into WhatsApp.",
+    },
+    privacy: "Nothing is sent from this page or stored on this site: the brief opens in your own email app or WhatsApp, and you press send.",
+    brief: {
+      subject: "Project brief — {name}",
+      heading: "Project brief",
+      footer: "Sent from abdullahmohamed.dev/start-a-project/",
+    },
+    next: {
+      title: "What happens next",
+      steps: [
+        "I reply within 24 hours on working days — with an honest answer, or a question or two if something is unclear.",
+        "If it fits, a free call about the product and what's blocking you.",
+        "A written proposal — scope, price, timeline and payment phases — before any work starts.",
+      ],
+    },
+    alternatives: {
+      title: "Prefer to talk?",
+      body: "Book a free call, or write to me directly.",
+      book: "Book a free call",
+      email: "Email me",
+    },
+    hiring: {
+      title: "Hiring for a role?",
+      body: "This page is for projects. For a senior role, the CV and LinkedIn are the faster route.",
+    },
   },
   markdown: {
     note: "Markdown version of this page, served to clients that ask for `Accept: text/markdown`. Generated from the same content as the HTML.",

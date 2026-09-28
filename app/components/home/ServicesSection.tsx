@@ -1,13 +1,23 @@
 import type { Dictionary, Lang } from "../../data/types";
 import { asset } from "../../lib/asset";
-import { servicePath } from "../../lib/services";
+import { inquiryPath } from "../../lib/inquiry";
+import { servicePages, servicePath, servicePrice } from "../../lib/services";
 import { SectionLabel, pad } from "./parts";
 
-/** "Ways I can help": one row per plan, each into its /services page, then
- *  how an engagement runs. Prices come from `Plan.price` — the same figure
- *  the Offer structured data carries as `minPrice`. */
+/**
+ * "What do you need built?": one row per service page — its name, the
+ * visitor's situation in their own words, and the starting price — each into
+ * its /services page. Then a way in for anyone who can't place themselves,
+ * and how an engagement runs.
+ *
+ * The rows carry situations ("I have an idea and need a first version
+ * built") because the visitor this section is for often doesn't know what
+ * the thing they need is called. Prices come from `servicePrice` — the same
+ * figure the Offer structured data carries as `minPrice`.
+ */
 export function ServicesSection({ t, lang, n }: { t: Dictionary; lang: Lang; n: string }) {
   const heading = t.servicesHeading;
+  const notSure = t.servicePages.notSure;
 
   return (
     <section id="services" className="home-section home-wrap" aria-labelledby="svc-title">
@@ -18,12 +28,12 @@ export function ServicesSection({ t, lang, n }: { t: Dictionary; lang: Lang; n: 
       </div>
 
       <ul className="home-rows plan-rows" data-stagger="">
-        {t.plans.map((plan) => (
-          <li key={plan.slug}>
-            <a className="home-row plan-row" href={asset(servicePath(plan.slug, lang))}>
-              <span className="plan-row-name">{plan.name}</span>{" "}
-              <span className="plan-row-body">{plan.body}</span>{" "}
-              <span className="plan-row-price">{plan.price}</span>
+        {servicePages(lang).map((page) => (
+          <li key={page.slug}>
+            <a className="home-row plan-row" href={asset(servicePath(page.slug, lang))}>
+              <span className="plan-row-name">{page.name}</span>{" "}
+              <span className="plan-row-body">{page.situation}</span>{" "}
+              <span className="plan-row-price">{servicePrice(page, lang).price}</span>
               <span className="home-row-arrow glyph-dir" aria-hidden="true">
                 →
               </span>
@@ -32,6 +42,24 @@ export function ServicesSection({ t, lang, n }: { t: Dictionary; lang: Lang; n: 
         ))}
       </ul>
       {t.plansHeading.body ? <p className="plan-note">{t.plansHeading.body}</p> : null}
+
+      <div className="plan-unsure" data-reveal="">
+        <p>
+          <strong>{notSure.title}</strong> {notSure.body}
+        </p>
+        <a
+          className="button secondary"
+          href={asset(inquiryPath(lang))}
+          data-magnetic
+          data-track="start_project_click"
+          data-track-source="services"
+        >
+          {t.hero.start}
+          <span className="button-icon button-icon--go" aria-hidden="true">
+            →
+          </span>
+        </a>
+      </div>
 
       <div className="process" data-reveal="">
         <h3>{t.processHeading.title}</h3>

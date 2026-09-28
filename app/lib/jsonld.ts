@@ -3,7 +3,8 @@ import { bookingUrl, contactEmail, profilePhoto, shared, storeLinks } from "../d
 import type { CaseStudy, Lang, ServicePage } from "../data/types";
 import { SITE_URL, localePath } from "./site";
 import { cvPath } from "./cv";
-import { servicePath, servicePages, servicesIndexPath } from "./services";
+import { inquiryPath } from "./inquiry";
+import { servicePath, servicePages, servicePrice, servicesIndexPath } from "./services";
 import { workIndexPath, workPath, workProjects } from "./work";
 
 /**
@@ -13,7 +14,7 @@ import { workIndexPath, workPath, workProjects } from "./work";
  * that sells his time — are emitted once per page by `RootHtml` and referenced
  * everywhere else by `@id`, so a crawler sees one Abdullah Mohamed rather than
  * a fresh copy on every page. Each page then adds only what is *on that page*:
- * the homepage is a ProfilePage with the FAQ, a case study is an Article with
+ * the homepage is a ProfilePage, a case study is an Article with
  * breadcrumbs, a service page is a Service with its own FAQ. FAQPage markup in
  * particular must describe questions the visitor can actually read on that
  * URL, which is why it is no longer in the root layout.
@@ -101,33 +102,40 @@ const SAME_AS = Array.from(
   ]),
 );
 
-/** Every `Plan` as an Offer for a `Service`, keyed on the plan slug so the
- *  Offer's `url` is the service landing page that describes it. */
+/** Every service page as an Offer, keyed on the page slug so the Offer's
+ *  `url` is the landing page that describes it. A service with a published
+ *  starting price carries it as `minPrice` (the cheapest of the plans it is
+ *  priced as); one scoped per project carries no price at all rather than an
+ *  invented one. */
 function offerCatalog(lang: Lang) {
   const t = copy[lang];
-  const pages = new Map(t.servicePages.pages.map((page) => [page.slug, page]));
   return {
     "@type": "OfferCatalog",
-    name: t.plansHeading.title,
-    itemListElement: t.plans.map((plan) => {
-      const page = pages.get(plan.slug);
+    name: t.servicePages.meta.title,
+    itemListElement: servicePages(lang).map((page) => {
+      const url = abs(servicePath(page.slug, lang));
+      const price = servicePrice(page, lang);
       return {
         "@type": "Offer",
-        name: page?.name ?? plan.name,
-        description: plan.body,
-        url: abs(servicePath(plan.slug, lang)),
-        priceCurrency: "USD",
-        priceSpecification: {
-          "@type": "PriceSpecification",
-          minPrice: plan.minPrice,
-          priceCurrency: "USD",
-        },
+        name: page.name,
+        description: page.situation,
+        url,
+        ...(price.minPrice !== undefined
+          ? {
+              priceCurrency: "USD",
+              priceSpecification: {
+                "@type": "PriceSpecification",
+                minPrice: price.minPrice,
+                priceCurrency: "USD",
+              },
+            }
+          : {}),
         itemOffered: {
           "@type": "Service",
-          "@id": `${abs(servicePath(plan.slug, lang))}#service`,
-          name: page?.name ?? plan.name,
-          serviceType: page?.name ?? plan.name,
-          url: abs(servicePath(plan.slug, lang)),
+          "@id": `${url}#service`,
+          name: page.name,
+          serviceType: page.name,
+          url,
           provider: { "@id": PERSON_ID },
         },
       };
@@ -172,6 +180,13 @@ export function siteGraph() {
           { "@type": "Language", name: "Arabic", alternateName: "ar" },
         ],
         knowsAbout: [
+          "Custom software development",
+          "MVP development",
+          "Mobile app development (iOS and Android)",
+          "Web application development",
+          "SaaS development",
+          "Internal tools and business process software",
+          "App performance optimization",
           "Full-stack web development",
           "React",
           "Next.js",
@@ -433,6 +448,9 @@ export function servicesIndexJsonLd(lang: Lang) {
           })),
         },
       },
+      // The engagement FAQ is rendered on this page (ServicesIndex), so its
+      // markup belongs here — and only here.
+      faqPage(t.servicePages.faq, lang),
       breadcrumbs([
         { name: t.work.home, path: localePath[lang] },
         { name: t.servicePages.indexLabel, path: servicesIndexPath(lang) },
@@ -511,7 +529,7 @@ export function cvJsonLd(lang: Lang) {
  *  catalogue so the two nodes merge. */
 export function servicePageJsonLd(page: ServicePage, lang: Lang) {
   const t = copy[lang];
-  const plan = t.plans.find((item) => item.slug === page.slug);
+  const price = servicePrice(page, lang);
   const url = abs(servicePath(page.slug, lang));
   return {
     "@context": "https://schema.org",
@@ -538,8 +556,11 @@ export function servicePageJsonLd(page: ServicePage, lang: Lang) {
         brand: { "@id": BUSINESS_ID },
         areaServed: AREA_SERVED,
         availableLanguage: ["English", "Arabic"],
-        offers: plan
-          ? {
+        // One Offer per plan the service is priced as (an MVP quotes both the
+        // web and the mobile starting price); none when it is scoped per
+        // project, rather than a made-up number.
+        offers: price.plans.length
+          ? price.plans.map((plan) => ({
               "@type": "Offer",
               name: plan.name,
               description: `${plan.price} · ${plan.priceNote}`,
@@ -550,8 +571,9 @@ export function servicePageJsonLd(page: ServicePage, lang: Lang) {
                 minPrice: plan.minPrice,
                 priceCurrency: "USD",
               },
-            }
+            }))
           : undefined,
+        audience: { "@type": "Audience", audienceType: page.situation },
         // The case studies that prove the service, by URL.
         subjectOf: page.proof
           .filter((slug) => t.caseStudies.some((study) => study.slug === slug))
@@ -562,6 +584,37 @@ export function servicePageJsonLd(page: ServicePage, lang: Lang) {
         { name: t.work.home, path: localePath[lang] },
         { name: t.servicePages.indexLabel, path: servicesIndexPath(lang) },
         { name: page.name, path: servicePath(page.slug, lang) },
+      ]),
+    ],
+  };
+}
+
+/**
+ * `/start-a-project/`: the brief page, as a ContactPage about the Person, with
+ * breadcrumbs. No FAQ, no Offer — it sells nothing on its own; the services
+ * it leads from carry those.
+ */
+export function inquiryJsonLd(lang: Lang) {
+  const t = copy[lang];
+  const url = abs(inquiryPath(lang));
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ContactPage",
+        "@id": `${url}#webpage`,
+        url,
+        name: t.inquiry.meta.title,
+        description: t.inquiry.meta.description,
+        inLanguage: lang,
+        dateModified: BUILD_DATE,
+        isPartOf: { "@id": WEBSITE_ID },
+        about: { "@id": PERSON_ID },
+        mainEntity: { "@id": BUSINESS_ID },
+      },
+      breadcrumbs([
+        { name: t.work.home, path: localePath[lang] },
+        { name: t.inquiry.indexLabel, path: inquiryPath(lang) },
       ]),
     ],
   };

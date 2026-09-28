@@ -8,6 +8,50 @@
   },
   "redirects": [
     {
+      "source": "/services/flutter-app-development",
+      "destination": "/services/mobile-app-development/",
+      "permanent": true
+    },
+    {
+      "source": "/services/flutter-app-development/:path*",
+      "destination": "/services/mobile-app-development/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/ar/services/flutter-app-development",
+      "destination": "/ar/services/mobile-app-development/",
+      "permanent": true
+    },
+    {
+      "source": "/ar/services/flutter-app-development/:path*",
+      "destination": "/ar/services/mobile-app-development/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/start-a-project",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/start-a-project/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/start-a-project/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/start-a-project/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/ar/start-a-project",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/start-a-project/index.md",
+      "permanent": false
+    },
+    {
+      "source": "/ar/start-a-project/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/ar/start-a-project/index.md",
+      "permanent": false
+    },
+    {
       "source": "/",
       "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
       "destination": "/index.md",
@@ -160,7 +204,7 @@
         },
         {
           "key": "content-security-policy-report-only",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' mailto:"
         }
       ]
     },
@@ -280,6 +324,26 @@
         {
           "key": "link",
           "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </work/index.md>; rel=\"alternate\"; type=\"text/markdown\""
+        }
+      ]
+    },
+    {
+      "source": "/start-a-project/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </start-a-project/index.md>; rel=\"describedby\"; type=\"text/markdown\", </start-a-project/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.abdullahmohamed.dev/start-a-project/>; rel=\"alternate\"; hreflang=\"en\", <https://www.abdullahmohamed.dev/ar/start-a-project/>; rel=\"alternate\"; hreflang=\"ar\", <https://www.abdullahmohamed.dev/start-a-project/>; rel=\"alternate\"; hreflang=\"x-default\", <https://www.abdullahmohamed.dev/start-a-project/>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/ar/start-a-project/",
+      "headers": [
+        { "key": "vary", "value": "accept" },
+        {
+          "key": "link",
+          "value": "</.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"service-doc\"; type=\"text/plain\", </.well-known/agent-skills/index.json>; rel=\"service-desc\"; type=\"application/json\", </ar/start-a-project/index.md>; rel=\"describedby\"; type=\"text/markdown\", </ar/start-a-project/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.abdullahmohamed.dev/start-a-project/>; rel=\"alternate\"; hreflang=\"en\", <https://www.abdullahmohamed.dev/ar/start-a-project/>; rel=\"alternate\"; hreflang=\"ar\", <https://www.abdullahmohamed.dev/start-a-project/>; rel=\"alternate\"; hreflang=\"x-default\", <https://www.abdullahmohamed.dev/ar/start-a-project/>; rel=\"canonical\""
         }
       ]
     },

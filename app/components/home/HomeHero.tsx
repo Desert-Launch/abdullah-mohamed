@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import { cvPdf } from "../../data/shared";
 import type { Dictionary, Lang } from "../../data/types";
 import { asset } from "../../lib/asset";
+import { inquiryPath } from "../../lib/inquiry";
 import { findProject, workPath } from "../../lib/work";
 import { SplitWords, wordCount } from "./parts";
 
@@ -53,14 +54,22 @@ export function HomeHero({ t, lang }: { t: Dictionary; lang: Lang }) {
         <div className="home-hero-lead home-intro" style={delay(700)}>
           <p>{hero.lead}</p>
           <div className="home-hero-actions">
-            <a className="button primary" href="#work" data-magnetic>
-              {hero.explore}
+            {/* The brief first — the step a visitor with an idea but no spec
+                can take — then the work, then the CV as a quiet link. */}
+            <a
+              className="button primary"
+              href={asset(inquiryPath(lang))}
+              data-magnetic
+              data-track="start_project_click"
+              data-track-source="hero"
+            >
+              {hero.start}
               <span className="button-icon button-icon--go" aria-hidden="true">
                 →
               </span>
             </a>
-            <a className="button ghost" href="#contact" data-magnetic>
-              {hero.talk}
+            <a className="button ghost" href="#work" data-magnetic>
+              {hero.explore}
             </a>
             <a
               className="home-link"

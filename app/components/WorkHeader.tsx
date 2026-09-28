@@ -4,6 +4,7 @@ import type { Dictionary, Lang } from "../data/types";
 import { asset } from "../lib/asset";
 import { useSiteTheme } from "../lib/useSiteTheme";
 import { cvPath } from "../lib/cv";
+import { inquiryPath } from "../lib/inquiry";
 import { servicesIndexPath } from "../lib/services";
 import { localePath } from "../lib/site";
 import { workIndexPath } from "../lib/work";
@@ -23,6 +24,10 @@ import { LanguageMenu } from "./LanguageMenu";
  *
  * `section` names the index this page belongs to (marked active); `current`
  * says whether this *is* that index, which is what `aria-current` reflects.
+ *
+ * The last item is the one conversion action every sub-page shares: the
+ * project brief. Search traffic lands on these pages, not on the homepage,
+ * so the "tell me what you're building" door has to be in their header.
  */
 export function WorkHeader({
   t,
@@ -32,7 +37,7 @@ export function WorkHeader({
 }: {
   t: Dictionary;
   lang: Lang;
-  section: "work" | "services" | "cv";
+  section: "work" | "services" | "cv" | "start";
   current: "index" | "detail";
 }) {
   const { theme, setTheme } = useSiteTheme();
@@ -41,12 +46,12 @@ export function WorkHeader({
   const name = lang === "ar" ? "عبدالله محمد" : "Abdullah Mohamed";
   // Reuse the dictionary's own contact label so the two navs can't drift.
   const contact = t.nav.find(([, href]) => href === "#contact");
-  const navLabel =
-    section === "work"
-      ? t.work.navLabel
-      : section === "cv"
-        ? t.cv.navLabel
-        : t.servicePages.navLabel;
+  const navLabel = {
+    work: t.work.navLabel,
+    cv: t.cv.navLabel,
+    services: t.servicePages.navLabel,
+    start: t.inquiry.navLabel,
+  }[section];
 
   const indexes: { key: "services" | "work" | "cv"; href: string; label: string }[] = [
     { key: "services", href: asset(servicesIndexPath(lang)), label: t.servicePages.indexLabel },
@@ -92,6 +97,15 @@ export function WorkHeader({
           );
         })}
         {contact ? <a href={`${home}${contact[1]}`}>{contact[0]}</a> : null}
+        <a
+          className="work-nav-cta"
+          href={asset(inquiryPath(lang))}
+          aria-current={section === "start" ? "page" : undefined}
+          data-track="start_project_click"
+          data-track-source="header"
+        >
+          {t.inquiry.indexLabel}
+        </a>
       </nav>
     </header>
   );

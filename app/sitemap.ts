@@ -49,5 +49,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // The résumé: the target for "Abdullah Mohamed CV / resume" and the page
     // a recruiter looks for first.
     ...pair("cv/", 0.8),
+    // The brief: every service page's CTA leads here, and its Markdown twin
+    // tells an agent what a first message should contain.
+    ...pair("start-a-project/", 0.7),
   ];
 }

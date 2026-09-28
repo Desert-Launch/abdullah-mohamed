@@ -1,5 +1,5 @@
 import { OG_CONTENT_TYPE, OG_SIZE, renderOgImage } from "../../../lib/og";
-import { findService, planFor, servicePages } from "../../../lib/services";
+import { findService, servicePages, servicePrice } from "../../../lib/services";
 
 const lang = "en" as const;
 
@@ -19,10 +19,9 @@ export default async function OpengraphImage({
 }) {
   const { slug } = await params;
   const page = findService(slug, lang);
-  const plan = page ? planFor(page.slug, lang) : undefined;
   // Unreachable via generateStaticParams; a blank-safe fallback keeps it total.
   return renderOgImage({
-    eyebrow: plan ? `${page?.eyebrow} · ${plan.price}` : (page?.eyebrow ?? "Services"),
+    eyebrow: page ? `${page.eyebrow} · ${servicePrice(page, lang).price}` : "Services",
     title: page?.title ?? "Services",
     subtitle: page?.meta.description ?? "",
   });

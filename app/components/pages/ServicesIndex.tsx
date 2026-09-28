@@ -5,18 +5,20 @@ import { copy } from "../../data/copy";
 import { shared, bookingHref } from "../../data/shared";
 import type { Lang } from "../../data/types";
 import { asset } from "../../lib/asset";
+import { inquiryPath } from "../../lib/inquiry";
 import { servicesIndexJsonLd } from "../../lib/jsonld";
-import { planFor, servicePages, servicePath } from "../../lib/services";
+import { servicePages, servicePath, servicePrice } from "../../lib/services";
 import { localePath } from "../../lib/site";
 
 /**
- * `/services/` and `/ar/services/` — one card per service, in pricing-card
- * order.
+ * `/services/` and `/ar/services/` — the hub for every service page.
  *
- * The homepage already shows the same four plans as price cards; this page is
- * the crawlable hub for the landing pages behind them, so a search or an
- * assistant can land on "what does he build and for how much" without the
- * rest of the homepage. Cards carry the price from the plan, never a copy.
+ * Each card leads with the visitor's situation in their own words ("I have an
+ * idea and need a first version built"), then the service's name and price,
+ * so someone who doesn't know what the thing they need is called can still
+ * find it. Below the cards: a way in for anyone who can't place themselves,
+ * how a project runs, and the engagement FAQ (pricing, ownership, timezone,
+ * fit) — which is also this page's FAQPage markup.
  */
 export function ServicesIndex({ lang }: { lang: Lang }) {
   const t = copy[lang];
@@ -44,22 +46,20 @@ export function ServicesIndex({ lang }: { lang: Lang }) {
 
         <div className="work-index-grid service-index-grid">
           {pages.map((page) => {
-            const plan = planFor(page.slug, lang);
+            const price = servicePrice(page, lang);
             return (
               <article className="work-project-card service-card-link" key={page.slug}>
                 <div>
-                  <p className="eyebrow">{page.eyebrow}</p>
+                  <p className="service-situation">{page.situation}</p>
                   <h2>{page.name}</h2>
                 </div>
 
                 <p>{page.lead}</p>
 
-                {plan ? (
-                  <p className="service-price">
-                    <strong>{plan.price}</strong>
-                    <span>{plan.priceNote}</span>
-                  </p>
-                ) : null}
+                <p className="service-price">
+                  <strong>{price.price}</strong>
+                  <span>{price.note}</span>
+                </p>
 
                 {/* Stretched link — one tab stop, whole card clickable. */}
                 <a className="work-project-cta" href={asset(servicePath(page.slug, lang))}>
@@ -70,19 +70,70 @@ export function ServicesIndex({ lang }: { lang: Lang }) {
               </article>
             );
           })}
+
+          {/* The eighth card: for a visitor who can't place themselves in the
+              seven. It also keeps the two-column grid from ending on an
+              orphan. */}
+          <section
+            className="work-project-card service-card-unsure"
+            aria-labelledby="services-not-sure"
+          >
+            <h2 id="services-not-sure">{labels.notSure.title}</h2>
+            <p>{labels.notSure.body}</p>
+            <div className="service-actions">
+              <a
+                className="button primary"
+                href={asset(inquiryPath(lang))}
+                data-track="start_project_click"
+                data-track-source="services-index"
+              >
+                {labels.cta.start}
+                <span className="glyph-dir" aria-hidden="true">→</span>
+              </a>
+              <a
+                className="button ghost"
+                href={bookingHref}
+                data-track="book_call_click"
+                data-track-source="services-index"
+              >
+                {labels.cta.button}
+              </a>
+            </div>
+          </section>
         </div>
 
-        <section className="work-cta service-index-cta" aria-labelledby="services-cta">
-          <h2 id="services-cta">{labels.cta.title}</h2>
-          <p>{labels.cta.body}</p>
-          <a
-            className="button primary"
-            href={bookingHref}
-            data-track="book_call_click"
-            data-track-source="services-index"
-          >
-            {labels.cta.button}
-          </a>
+        <section className="service-index-block" aria-labelledby="services-process">
+          <h2 className="case-label" id="services-process">
+            {labels.labels.process}
+          </h2>
+          <ol className="service-steps">
+            {t.process.map((step) => (
+              <li key={step.title}>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </li>
+            ))}
+          </ol>
+          {t.plansHeading.body ? <p className="service-index-note">{t.plansHeading.body}</p> : null}
+        </section>
+
+        <section className="service-index-block" aria-labelledby="services-faq">
+          <h2 className="case-label" id="services-faq">
+            {labels.faqTitle}
+          </h2>
+          <div className="faq-list service-faq">
+            {labels.faq.map((item) => (
+              <details className="faq-item" key={item.q}>
+                <summary>
+                  {item.q}
+                  <span className="faq-chevron" aria-hidden="true">
+                    +
+                  </span>
+                </summary>
+                <p>{item.a}</p>
+              </details>
+            ))}
+          </div>
         </section>
       </main>
 

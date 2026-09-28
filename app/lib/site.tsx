@@ -74,13 +74,13 @@ export const SHARE_IMAGES = [
     url: "/images/og-card.png",
     width: 1200,
     height: 630,
-    alt: "Abdullah Mohamed — Full-stack, real-time AI, and Flutter: products that ship and hold up in production. Senior Software Engineer, Cairo, Egypt.",
+    alt: "Abdullah Mohamed — Senior Software Engineer: web, mobile and AI products that ship and hold up in production. Cairo, Egypt · Remote.",
   },
   {
     url: "/images/og-home.jpg",
     width: 1200,
     height: 630,
-    alt: "The abdullahmohamed.dev hero: full-stack, real-time AI, and Flutter — products that ship and hold up in production.",
+    alt: "The abdullahmohamed.dev hero: web, mobile and AI products that ship and hold up in production.",
   },
 ];
 
@@ -100,21 +100,20 @@ export function buildMetadata(lang: Lang): Metadata {
     keywords: [
       "Abdullah Mohamed",
       "Abdullah Mohamed software engineer",
+      "senior freelance software engineer",
+      "hire a software developer",
+      "MVP development for startups",
+      "freelance mobile app developer",
+      "custom web application development",
+      "SaaS developer",
+      "custom business software",
+      "AI integration developer",
+      "improve existing app performance",
+      "remote software engineer",
+      "full-stack developer",
+      "Flutter developer",
       "senior software engineer Cairo",
-      "senior software engineer Egypt remote",
-      "full-stack developer Egypt",
-      "freelance full-stack developer",
-      "hire React Node.js developer",
-      "Flutter developer Egypt",
-      "freelance Flutter developer",
-      "hire Flutter developer",
-      "real-time AI integration developer",
-      "AI chatbot voice integration",
-      "SaaS MVP developer",
-      "multi-tenant SaaS development",
       "Arabic RTL app developer",
-      "PostgreSQL",
-      "Next.js",
     ],
     // Self-referential canonical per locale, plus the full hreflang cluster.
     // x-default points at English, the locale served from the bare root.
@@ -151,8 +150,22 @@ export function buildMetadata(lang: Lang): Metadata {
       follow: true,
       googleBot: { index: true, follow: true, "max-image-preview": "large" },
     },
+    // Search Console / Bing Webmaster verification by meta tag, for when DNS
+    // verification (the documented route, docs/seo.md) isn't available. Set
+    // the token as a build-time env var in Vercel; unset emits nothing.
+    ...(googleVerification || bingVerification
+      ? {
+          verification: {
+            ...(googleVerification ? { google: googleVerification } : {}),
+            ...(bingVerification ? { other: { "msvalidate.01": bingVerification } } : {}),
+          },
+        }
+      : {}),
   };
 }
+
+const googleVerification = process.env.GOOGLE_SITE_VERIFICATION;
+const bingVerification = process.env.BING_SITE_VERIFICATION;
 
 /**
  * Metadata for a standalone sub-page (`/work/…`, `/services/…`), which exists

@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { copy } from "../data/copy";
 import { bookingHref, contactEmail, shared, storeLinks } from "../data/shared";
 import type { Dictionary, Lang } from "../data/types";
-import { servicePath } from "../lib/services";
+import { inquiryPath } from "../lib/inquiry";
+import { servicePages, servicePath, servicePrice } from "../lib/services";
 import { SITE_URL, localePath } from "../lib/site";
 import { workPath } from "../lib/work";
 
@@ -79,20 +80,26 @@ function buildTools(t: Dictionary, lang: Lang): WebMcpTool[] {
     {
       name: "list_services_and_pricing",
       description:
-        "What Abdullah builds and what each engagement starts at, in USD. Prices are starting points, negotiable by scope, and are not quotes.",
+        "What Abdullah builds — MVPs, mobile apps, web apps, SaaS, custom business software, AI features, and improving existing apps — with who each one is for and what it starts at, in USD. Prices are starting points, negotiable by scope, and are not quotes.",
       inputSchema: NO_ARGS,
       execute: () =>
         json({
-          summary: t.servicesHeading.body,
-          plans: t.plans.map((plan) => ({
-            name: plan.name,
-            summary: plan.body,
-            startingPrice: plan.price,
-            priceNote: plan.priceNote,
-            includes: plan.items,
-            url: serviceUrl(plan.slug),
-          })),
+          summary: t.servicePages.body,
+          services: servicePages(lang).map((page) => {
+            const price = servicePrice(page, lang);
+            return {
+              name: page.name,
+              forWhom: page.situation,
+              summary: page.lead,
+              startingPrice: price.price,
+              priceNote: price.note,
+              includes: page.deliverables,
+              examples: page.examples,
+              url: serviceUrl(page.slug),
+            };
+          }),
           note: t.plansHeading.body ?? t.plansHeading.title,
+          startAProject: `${SITE_URL}${inquiryPath(lang)}`,
         }),
     },
     {
@@ -108,8 +115,10 @@ function buildTools(t: Dictionary, lang: Lang): WebMcpTool[] {
             context: study.context,
             summary: study.summary,
             challenge: study.challenge,
+            requirements: study.requirements,
             role: study.role,
             process: study.process,
+            decisions: study.decisions,
             results: study.results,
             stack: study.stack,
             url: caseUrl(study.slug),
@@ -145,12 +154,19 @@ function buildTools(t: Dictionary, lang: Lang): WebMcpTool[] {
         json({
           email: contactEmail,
           booking: bookingHref,
+          startAProject: `${SITE_URL}${inquiryPath(lang)}`,
           contactSection: `${home}#contact`,
           profiles: shared.socials.map((social) => ({
             label: social.label,
             href: social.href,
           })),
-          whatToInclude: t.contact.lanes.project.body,
+          whatToInclude: [
+            t.inquiry.fields.idea.label,
+            t.inquiry.fields.stage.legend,
+            t.inquiry.fields.platform.legend,
+            t.inquiry.fields.timeline.label,
+            t.inquiry.fields.budget.label,
+          ],
           expectedReply: t.contact.body,
         }),
     },
@@ -166,7 +182,25 @@ function buildTools(t: Dictionary, lang: Lang): WebMcpTool[] {
           message: {
             type: "string",
             description:
-              "The brief: the product, the deadline, and what is currently blocking you.",
+              "What the user wants to build, in their own words: who it is for and what they should be able to do with it.",
+          },
+          stage: {
+            type: "string",
+            enum: t.inquiry.fields.stage.options.map(([key]) => key),
+            description: "Where they are now: just an idea, designs, an existing product, or other.",
+          },
+          platform: {
+            type: "string",
+            enum: t.inquiry.fields.platform.options.map(([key]) => key),
+            description: "Web, mobile (iOS and Android), both, or unsure.",
+          },
+          timeline: {
+            type: "string",
+            enum: t.inquiry.fields.timeline.options.map(([key]) => key),
+          },
+          budget: {
+            type: "string",
+            enum: t.inquiry.fields.budget.options.map(([key]) => key),
           },
         },
         required: ["message"],
@@ -176,13 +210,39 @@ function buildTools(t: Dictionary, lang: Lang): WebMcpTool[] {
         const from = typeof args?.name === "string" ? args.name : "";
         const reply = typeof args?.email === "string" ? args.email : "";
         const message = typeof args?.message === "string" ? args.message : "";
-        const subject = `Project inquiry${from ? ` from ${from}` : ""}`;
-        const body = `${message}\n\n— ${from}\n${reply}`;
+        const f = t.inquiry.fields;
+        // Option keys become the visitor-language labels the form would use.
+        const pick = (key: string, options: [string, string][], label: string) => {
+          const value = typeof args?.[key] === "string" ? args[key] : "";
+          const text = options.find(([option]) => option === value)?.[1];
+          return text ? `${label} ${text}` : "";
+        };
+        const subject = t.inquiry.brief.subject.replace("{name}", from);
+        const body = [
+          t.inquiry.brief.heading,
+          "",
+          f.idea.label,
+          message,
+          "",
+          pick("stage", f.stage.options, f.stage.legend),
+          pick("platform", f.platform.options, f.platform.legend),
+          pick("timeline", f.timeline.options, f.timeline.label),
+          pick("budget", f.budget.options, f.budget.label),
+          "",
+          `— ${from}`,
+          reply,
+        ]
+          .filter((line, index, lines) => line !== "" || lines[index - 1] !== "")
+          .join("\n");
         return json({
           sent: false,
           action: "Open this URL to review and send the message yourself.",
           mailto: `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
-          alternatives: { booking: bookingHref, contactSection: `${home}#contact` },
+          alternatives: {
+            startAProject: `${SITE_URL}${inquiryPath(lang)}`,
+            booking: bookingHref,
+            contactSection: `${home}#contact`,
+          },
         });
       },
     },

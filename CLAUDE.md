@@ -1,8 +1,8 @@
 # CLAUDE.md
 
 Personal-branding / portfolio site for Abdullah Mohamed (senior software
-engineer). Single-page marketing site: hero, proof, selected work, stack map,
-experience, recommendations, about + principles, services + process, contact.
+engineer). Single-page marketing site: hero, proof, services + process, selected work,
+stack map, experience, recommendations, about + principles, contact.
 Goal is conversion — freelance leads and senior product roles. See `PLAN.md`
 for the product intent. The homepage is the "Production strata" redesign
 (2026-09-25, from the Claude Design project `475e320d…`).
@@ -45,7 +45,7 @@ considering a change done.
 
   There is deliberately **no `app/layout.tsx` / `app/page.tsx`** — adding one
   back would collide with the route groups.
-- **Standalone `/work`, `/services` and `/cv` routes, in both locales.** Each
+- **Standalone `/work`, `/services`, `/cv` and `/start-a-project` routes, in both locales.** Each
   locale group mounts the same routes under its root:
   - `(en)/work/` → **`/work/`**, `(en)/work/[slug]/` → **`/work/<slug>/`**;
     `(ar)/ar/work/…` → **`/ar/work/…`**
@@ -53,19 +53,31 @@ considering a change done.
     **`/services/<slug>/`**; `(ar)/ar/services/…` → **`/ar/services/…`**
 
   - `(en)/cv/` → **`/cv/`**; `(ar)/ar/cv/` → **`/ar/cv/`**
+  - `(en)/start-a-project/` → **`/start-a-project/`**; `(ar)/ar/start-a-project/`
+    → **`/ar/start-a-project/`** — the project brief (see "Notable specifics")
 
   The route files are thin: they pick the locale and render the shared page
   bodies in `app/components/pages/` (`WorkIndex`, `WorkDetail`,
-  `ServicesIndex`, `ServiceDetail`, `CvPage`). They live **inside the locale groups on
+  `ServicesIndex`, `ServiceDetail`, `CvPage`, `InquiryPage`). They live **inside the locale groups on
   purpose**: a top-level `app/work/` would have no root layout at all.
   `app/lib/work.ts` and `app/lib/services.ts` own the locale-aware path
   helpers (`workPath(slug, lang)`, `servicePath(slug, lang)` — every call
   site passes `lang`; there is no English default), the sort/join, `caseMeta`
   (fills the `work.caseMeta` title/description templates), and the
   `build*Metadata` wrappers. A service page's copy is
-  `Dictionary.servicePages.pages[]`, its price the `Plan` with the same
-  `slug`, its proof `caseStudies` by slug; `servicesCiting` is the reverse
-  join a case-study page uses for its "hire me for the same thing" links.
+  `Dictionary.servicePages.pages[]` (seven pages, one per **visitor
+  situation** — MVP, mobile, web, SaaS, business software, AI, improving an
+  existing app — listed in that array's order everywhere). **Prices are never
+  typed into a page:** `ServicePage.pricing` names the `plans` it is priced
+  as (omitted = the plan with its own slug; several = priced as the build it
+  becomes, e.g. MVP quotes web + mobile; `[]` = "priced per project", no
+  published number). Read prices only through `servicePrice(page, lang)` —
+  the homepage rows, cards, OG card, Markdown and `Offer` JSON-LD all do.
+  Proof is `caseStudies` by slug; `servicesCiting` is the reverse join a
+  case-study page uses for its "hire me for the same thing" links. The old
+  `/services/flutter-app-development/` 308s to `mobile-app-development`
+  (`vercel.json`, both locales) — don't reuse that slug.
+  `app/lib/inquiry.ts` owns `inquiryPath(lang, service?)`.
   `app/lib/cv.ts` owns `cvPath(lang)` and `buildCvMetadata`. **`/cv/` does not
   store the employment history**: `CvPage` renders `Dictionary.experiences`,
   the same array the homepage timeline uses, so the résumé and the timeline
@@ -73,7 +85,8 @@ considering a change done.
   are its own (`Dictionary.cv`).
   Chrome comes from `WorkHeader` (reduced nav — the homepage header,
   `home/HomeChrome`, is built on anchors + a scrollspy that don't exist here; takes `lang` and
-  `section="work" | "services" | "cv"`, and renders `LanguageMenu` so the
+  `section="work" | "services" | "cv" | "start"`, ends its nav with the
+  "Start a project" pill, and renders `LanguageMenu` so the
   Arabic version of a sub-page is reachable from the page, not only from
   `<head>`) and the shared `Footer` with `linkBase={localePath[lang]}`. The services pages exist for search intent
   ("hire a Flutter developer", "مطور فلاتر"); see `docs/seo.md`.
@@ -89,7 +102,7 @@ considering a change done.
   the sections in `app/components/home/`. The interactive parts are client
   islands: `HomeChrome` (header, floating nav, phone menu dialog, scrollspy),
   `ThemeSwitch`, `StackMap`, `ExperienceTabs`, `CopyEmailButton`, and
-  `HomeMotion`. Pass client islands slices, not the whole dictionary (a
+  `HomeMotion` (and, on `/start-a-project/`, `InquiryForm`). Pass client islands slices, not the whole dictionary (a
   dictionary prop is serialized into the page); `AgentTools` takes `lang` and
   reads `copy` itself for the same reason.
 - **The hero `<h1>`** holds the meta row's first two items (`hero.eyebrow` —
@@ -102,8 +115,14 @@ considering a change done.
   element. Never put opacity on anything inside the `h1`. Spaces between the
   heading's spans are real text nodes — without them its text runs together
   for crawlers and screen readers (the same holds for multi-part links).
-- **One hero CTA row, by design** (Explore selected work · Let's talk ·
-  Download CV). The two audiences are served by the contact section's lanes.
+- **One hero CTA row, by design** (Tell me what you're building →
+  `/start-a-project/` · Explore selected work · Download CV). The brief is
+  first because the site's job is inbound projects; the two audiences are
+  served by the contact section's lanes. "Let's talk" survives as the
+  floating nav's and phone menu's CTA, into `#contact`.
+- **Services sit right after "In production"** (section 03): a visitor who
+  came to hire finds their situation on the second screen. The rows are
+  service *pages* (name · situation · price), not `plans`.
   The first viewport carries the "200,000+ students" figure on the strata card;
   the full proof set is section 02 ("In production").
 - **Homepage motion** is declared with data attributes (`data-reveal`,
@@ -118,8 +137,11 @@ considering a change done.
   layouts emit the site-wide `Person` / `WebSite` / `ProfessionalService`;
   the home page adds `ProfilePage` (the homepage has no FAQ, so no
   `FAQPage`), `/work` adds
-  `CollectionPage`/`Article` + breadcrumbs, `/services` adds `Service` +
-  `Offer` + its own `FAQPage`. **FAQPage only where the FAQ is on that URL.**
+  `CollectionPage`/`Article` + breadcrumbs, `/services/` adds its engagement
+  FAQ as `FAQPage`, each `/services/<slug>/` adds `Service` + one `Offer`
+  per plan it is priced as (none when scoped) + its own `FAQPage`, and
+  `/start-a-project/` is a `ContactPage`. **FAQPage only where the FAQ is on
+  that URL.**
   Prices come from `Plan.minPrice` (number) and `Plan.price` (string) — change
   both together.
 - **Social cards.** The locale home pages (`/`, `/ar/`) declare two candidates
@@ -247,14 +269,17 @@ data, not in components.**
   if a dictionary is missing a required field.
 - To add a new section: add it in `Portfolio.tsx` with a stable `id`, and add
   the matching `nav` entry (label + `#anchor`) to **both** dictionaries.
-- `nav` is the homepage's four section anchors (Work, Experience, About,
-  Contact). It must keep a `#contact` entry — `WorkHeader` borrows its label —
+- `nav` is the homepage's five section anchors (Services, Work, Experience,
+  About, Contact), in page order. It must keep a `#contact` entry — `WorkHeader` borrows its label —
   and the sub-page `Footer` renders it against `linkBase`. A non-anchor entry
   would need `asset()`, since Next only applies `basePath` to `<Link>`.
 - `CaseStudy.shots` is `Shot[]` (`{src, alt, caption}`), not bare paths — the
   caption is what makes an Arabic-only screenshot legible to an English
   reader on the `/work` page.
-- **A case study needs `published` (ISO date) and should have `decisions`.**
+- **A case study needs `published` (ISO date), `metaDescription` (~150
+  chars, the SERP snippet — the summary runs 200+ and was cut mid-sentence)
+  and `requirements` ("What it had to do", restated only from its own
+  challenge/decisions), and should have `decisions`.**
   `published` feeds `Article.datePublished`; without it a study had only the
   build date and appeared to change on every deploy. `decisions` is the
   "what I chose over what, and why" block — the part a hiring manager reads a
@@ -371,11 +396,18 @@ The codebase already follows good a11y practice; keep it that way:
 
 ## Notable specifics
 
-- **There is no contact form** (the Web3Forms form was removed with the
-  redesign, 2026-09-25, and `api.web3forms.com` left the CSP). The contact
-  section is two **lanes** (`contact.lanes`), one per audience — their
+- **There is no contact form backend** (the Web3Forms form was removed with
+  the redesign, 2026-09-25, and `api.web3forms.com` left the CSP). The
+  contact section is two **lanes** (`contact.lanes`), one per audience — their
   buttons are built from `cvPdf`, `bookingHref` and `shared.socials`, so no
-  label is duplicated — then the address with a copy button.
+  label is duplicated — then the address with a copy button. Projects go to
+  **`/start-a-project/`**: a plain-language brief (`Dictionary.inquiry`) that
+  `InquiryForm` composes into an email, a WhatsApp message or the clipboard
+  — the visitor sends it; nothing is POSTed anywhere. Without JS it is a
+  real `mailto:` form (hence `mailto:` in the CSP `form-action`). Don't
+  add a submission endpoint; that is exactly the spam surface the old form
+  needed a captcha for. Option keys are shared by both locales and are what
+  analytics receives — never the free text or contact details.
 - The `--gold` token currently resolves to a purple (`#8b7cf0`); the comments
   still describe an "Obsidian & Gold" palette. Treat the token as the source
   of truth, not the comment, and change the token if adjusting the accent.

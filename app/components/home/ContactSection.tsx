@@ -1,6 +1,7 @@
 import { bookingHref, contactEmail, cvPdf, shared } from "../../data/shared";
-import type { Dictionary } from "../../data/types";
+import type { Dictionary, Lang } from "../../data/types";
 import { asset } from "../../lib/asset";
+import { inquiryPath } from "../../lib/inquiry";
 import { CopyEmailButton } from "./CopyEmailButton";
 import { SectionLabel, SplitWords, wordCount } from "./parts";
 
@@ -8,9 +9,11 @@ import { SectionLabel, SplitWords, wordCount } from "./parts";
  * "Hiring, or building?": one lane per audience, then the address itself. The
  * lane buttons are built from data the site already holds (the CV, the
  * booking link, `shared.socials`), so no label is duplicated. Every CTA
- * declares its conversion event (docs/analytics.md).
+ * declares its conversion event (docs/analytics.md). The project lane leads
+ * with the written brief — the step a client without a technical spec can
+ * take — and keeps the call and WhatsApp beside it.
  */
-export function ContactSection({ t, n }: { t: Dictionary; n: string }) {
+export function ContactSection({ t, lang, n }: { t: Dictionary; lang: Lang; n: string }) {
   const contact = t.contact;
   const social = (label: string) => shared.socials.find((item) => item.label === label);
   const linkedin = social("LinkedIn");
@@ -73,15 +76,24 @@ export function ContactSection({ t, n }: { t: Dictionary; n: string }) {
           <div className="lane-actions">
             <a
               className="button secondary"
+              href={asset(inquiryPath(lang))}
+              data-magnetic
+              data-track="start_project_click"
+              data-track-source="contact"
+            >
+              {t.hero.start}
+              <span className="button-icon button-icon--go" aria-hidden="true">
+                →
+              </span>
+            </a>
+            <a
+              className="button ghost"
               href={bookingHref}
               data-magnetic
               data-track="book_call_click"
               data-track-source="contact"
             >
               {t.hero.primary}
-              <span className="button-icon button-icon--go" aria-hidden="true">
-                →
-              </span>
             </a>
             {whatsapp ? (
               <a

@@ -135,6 +135,24 @@
       ]
     },
     {
+      "anchor": "https://www.abdullahmohamed.dev/start-a-project/",
+      "service-doc": [
+        {
+          "href": "https://www.abdullahmohamed.dev/start-a-project/index.md",
+          "type": "text/markdown",
+          "title": "How to start a project: the brief questions, where to send them, and what happens next, as Markdown"
+        }
+      ],
+      "links": [
+        {
+          "rel": "service-doc",
+          "href": "https://www.abdullahmohamed.dev/start-a-project/index.md",
+          "type": "text/markdown",
+          "title": "How to start a project: the brief questions, where to send them, and what happens next, as Markdown"
+        }
+      ]
+    },
+    {
       "anchor": "https://www.abdullahmohamed.dev/ar/",
       "service-doc": [
         {
@@ -203,6 +221,24 @@
           "href": "https://www.abdullahmohamed.dev/ar/work/index.md",
           "type": "text/markdown",
           "title": "Every written case study as Arabic Markdown"
+        }
+      ]
+    },
+    {
+      "anchor": "https://www.abdullahmohamed.dev/ar/start-a-project/",
+      "service-doc": [
+        {
+          "href": "https://www.abdullahmohamed.dev/ar/start-a-project/index.md",
+          "type": "text/markdown",
+          "title": "How to start a project, as Arabic Markdown"
+        }
+      ],
+      "links": [
+        {
+          "rel": "service-doc",
+          "href": "https://www.abdullahmohamed.dev/ar/start-a-project/index.md",
+          "type": "text/markdown",
+          "title": "How to start a project, as Arabic Markdown"
         }
       ]
     }

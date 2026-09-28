@@ -57,13 +57,17 @@ export function Portfolio({ lang }: { lang: Lang }) {
       <main id="home">
         <HomeHero t={t} lang={lang} />
         <ProofSection t={t} n={next()} />
+        {/* Services right after the proof: a visitor who came to hire should
+            find their path ("I have an idea", "my app is slow") on the second
+            screen, not the eighth. Recruiters have the hero's "Explore
+            selected work" and the nav for #work. */}
+        <ServicesSection t={t} lang={lang} n={next()} />
         <WorkSection t={t} lang={lang} n={next()} />
         <StackSection t={t} lang={lang} n={next()} />
         <ExperienceSection t={t} lang={lang} n={next()} />
         {t.testimonials.length > 0 ? <Recommendations t={t} n={next()} /> : null}
         <AboutSection t={t} lang={lang} n={next()} />
-        <ServicesSection t={t} lang={lang} n={next()} />
-        <ContactSection t={t} n={next()} />
+        <ContactSection t={t} lang={lang} n={next()} />
       </main>
 
       <HomeFooter t={t} lang={lang} />

@@ -6,12 +6,13 @@ import { copy } from "../../data/copy";
 import { shared, bookingHref } from "../../data/shared";
 import type { Lang, ServicePage } from "../../data/types";
 import { asset } from "../../lib/asset";
+import { inquiryPath } from "../../lib/inquiry";
 import { servicePageJsonLd } from "../../lib/jsonld";
 import {
-  planFor,
   proofFor,
   servicePages,
   servicePath,
+  servicePrice,
   servicesIndexPath,
 } from "../../lib/services";
 import { localePath } from "../../lib/site";
@@ -19,20 +20,23 @@ import { workPath } from "../../lib/work";
 
 /**
  * `/services/<slug>/` and `/ar/services/<slug>/` — one landing page per
- * pricing card.
+ * visitor situation.
  *
- * Reads top to bottom the way a buyer evaluates: what it is, whether it fits
- * them, what they get, how it's built, what proves it, what it costs, and the
- * questions they'd ask on the call. The price and its small print come from
- * the matching `Plan`, never retyped here.
+ * Reads top to bottom the way a buyer evaluates: what it is, what it costs,
+ * whether it fits them, what they get, how it's built, what it looked like on
+ * real products, what proves it, how a project runs, and the questions they'd
+ * ask on the call. Two ways in at the price and at the end: the written brief
+ * (lower commitment, and the one a non-technical visitor can manage) and the
+ * booking link. Prices come from `servicePrice`, never retyped here.
  */
 export function ServiceDetail({ page, lang }: { page: ServicePage; lang: Lang }) {
   const t = copy[lang];
-  const plan = planFor(page.slug, lang);
+  const price = servicePrice(page, lang);
   const proof = proofFor(page, lang);
   const others = servicePages(lang).filter((item) => item.slug !== page.slug);
   const labels = t.servicePages.labels;
   const id = (part: string) => `heading-${page.slug}-${part}`;
+  const brief = asset(inquiryPath(lang, page.slug));
 
   return (
     <div className="site-shell work-shell" dir={t.dir}>
@@ -61,26 +65,38 @@ export function ServiceDetail({ page, lang }: { page: ServicePage; lang: Lang })
 
           <p className="work-lead">{page.lead}</p>
 
-          {plan ? (
-            <div className="service-pricing" aria-labelledby={id("pricing")}>
-              <div>
-                <h2 className="case-label" id={id("pricing")}>
-                  {labels.pricing}
-                </h2>
-                <p className="service-pricing-price">{plan.price}</p>
-                <p className="service-pricing-note">{plan.priceNote}</p>
-              </div>
+          <div className="service-pricing" aria-labelledby={id("pricing")}>
+            <div>
+              <h2 className="case-label" id={id("pricing")}>
+                {labels.pricing}
+              </h2>
+              <p className="service-pricing-price">{price.price}</p>
+              <p className="service-pricing-note">
+                {price.plans.length > 1 ? `${price.note} · ${price.plans[0].priceNote}` : price.note}
+              </p>
+            </div>
+            <div className="service-actions">
               <a
                 className="button primary"
+                href={brief}
+                data-track="start_project_click"
+                data-track-source="service-pricing"
+                data-track-slug={page.slug}
+              >
+                {t.servicePages.cta.start}
+                <span className="glyph-dir" aria-hidden="true">→</span>
+              </a>
+              <a
+                className="button ghost"
                 href={bookingHref}
                 data-track="book_call_click"
                 data-track-source="service-pricing"
                 data-track-slug={page.slug}
               >
-                {plan.cta}
+                {t.servicePages.cta.button}
               </a>
             </div>
-          ) : null}
+          </div>
 
           <div className="work-narrative">
             <section className="work-block" aria-labelledby={id("fit")}>
@@ -117,6 +133,49 @@ export function ServiceDetail({ page, lang }: { page: ServicePage; lang: Lang })
             </ul>
           </section>
 
+          {page.examples.length > 0 ? (
+            <section className="work-block" aria-labelledby={id("examples")}>
+              <h2 className="case-label" id={id("examples")}>
+                {labels.examples}
+              </h2>
+              <ul className="service-examples">
+                {page.examples.map((item) => {
+                  // "Xera Lab — …": the product name reads as the item's
+                  // label. Split on the first dash; a line without one
+                  // renders whole.
+                  const cut = item.indexOf(" — ");
+                  return (
+                    <li key={item}>
+                      {cut > 0 ? (
+                        <>
+                          <strong>{item.slice(0, cut)}</strong>
+                          <span>{item.slice(cut + 3)}</span>
+                        </>
+                      ) : (
+                        <span>{item}</span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          ) : null}
+
+          {page.stack.length > 0 ? (
+            <section className="work-block" aria-labelledby={id("stack")}>
+              <h2 className="case-label" id={id("stack")}>
+                {labels.stack}
+              </h2>
+              <ul className="tag-row compact work-tags" role="list">
+                {page.stack.map((item) => (
+                  <li key={item}>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+
           {proof.length > 0 ? (
             <section className="work-block" aria-labelledby={id("proof")}>
               <h2 className="case-label" id={id("proof")}>
@@ -136,6 +195,20 @@ export function ServiceDetail({ page, lang }: { page: ServicePage; lang: Lang })
               </div>
             </section>
           ) : null}
+
+          <section className="work-block" aria-labelledby={id("process")}>
+            <h2 className="case-label" id={id("process")}>
+              {labels.process}
+            </h2>
+            <ol className="service-steps">
+              {t.process.map((step) => (
+                <li key={step.title}>
+                  <h3>{step.title}</h3>
+                  <p>{step.body}</p>
+                </li>
+              ))}
+            </ol>
+          </section>
 
           {page.faq.length > 0 ? (
             <section className="work-block" aria-labelledby={id("faq")}>
@@ -161,15 +234,27 @@ export function ServiceDetail({ page, lang }: { page: ServicePage; lang: Lang })
           <section className="work-cta" aria-labelledby={id("cta")}>
             <h2 id={id("cta")}>{t.servicePages.cta.title}</h2>
             <p>{t.servicePages.cta.body}</p>
-            <a
-              className="button primary"
-              href={bookingHref}
-              data-track="book_call_click"
-              data-track-source="service-cta"
-              data-track-slug={page.slug}
-            >
-              {t.servicePages.cta.button}
-            </a>
+            <div className="service-actions">
+              <a
+                className="button primary"
+                href={brief}
+                data-track="start_project_click"
+                data-track-source="service-cta"
+                data-track-slug={page.slug}
+              >
+                {t.servicePages.cta.start}
+                <span className="glyph-dir" aria-hidden="true">→</span>
+              </a>
+              <a
+                className="button ghost"
+                href={bookingHref}
+                data-track="book_call_click"
+                data-track-source="service-cta"
+                data-track-slug={page.slug}
+              >
+                {t.servicePages.cta.button}
+              </a>
+            </div>
           </section>
         </article>
 
@@ -179,19 +264,16 @@ export function ServiceDetail({ page, lang }: { page: ServicePage; lang: Lang })
               {labels.more}
             </h2>
             <div className="work-more-links">
-              {others.map((item) => {
-                const itemPlan = planFor(item.slug, lang);
-                return (
-                  <a
-                    className="work-more-link"
-                    key={item.slug}
-                    href={asset(servicePath(item.slug, lang))}
-                  >
-                    <strong>{item.name}</strong>
-                    {itemPlan ? <span>{itemPlan.price}</span> : null}
-                  </a>
-                );
-              })}
+              {others.map((item) => (
+                <a
+                  className="work-more-link"
+                  key={item.slug}
+                  href={asset(servicePath(item.slug, lang))}
+                >
+                  <strong>{item.name}</strong>
+                  <span>{servicePrice(item, lang).price}</span>
+                </a>
+              ))}
             </div>
           </nav>
         ) : null}
