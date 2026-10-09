@@ -12,15 +12,8 @@
     "fonts/fonts.css"
   ],
   "overrides": {
-    "Hero": {
-      "cardMode": "column",
-      "viewport": "1280x820"
-    },
     "LanguageMenu": {
       "viewport": "900x240"
-    },
-    "SocialLinks": {
-      "viewport": "480x140"
     },
     "Portfolio": {
       "cardMode": "single",
@@ -52,10 +45,6 @@
       "primaryStory": "English",
       "viewport": "1280x1800"
     },
-    "TopBar": {
-      "cardMode": "column",
-      "viewport": "1280x180"
-    },
     "WorkHeader": {
       "cardMode": "column",
       "viewport": "1280x180"
@@ -64,32 +53,9 @@
       "cardMode": "column",
       "viewport": "1280x560"
     },
-    "CaseStudies": {
-      "cardMode": "column",
-      "viewport": "1280x1400"
-    },
-    "ExperienceTimeline": {
-      "cardMode": "column",
-      "viewport": "1280x1400"
-    },
-    "SelectedWork": {
-      "cardMode": "column",
-      "viewport": "1280x1200"
-    },
-    "ContactForm": {
-      "cardMode": "column",
-      "viewport": "1280x1000"
-    },
-    "ShotGallery": {
-      "cardMode": "column",
-      "viewport": "900x760"
-    },
     "WorkShots": {
       "cardMode": "column",
       "viewport": "1100x1000"
-    },
-    "CountUp": {
-      "viewport": "900x320"
     }
   },
   "docsDir": "component-docs",

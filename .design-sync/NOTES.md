@@ -99,17 +99,17 @@ pieces a DS package would ship:
 ## Re-sync risks
 
 - **2026-09-25: the homepage was redesigned** ("Production strata", from the
-  Claude Design project 475e320d…). Hero, TopBar, CaseStudies,
-  ExperienceTimeline, SelectedWork, ContactForm, ShotGallery, SocialLinks and
-  CountUp were deleted and dropped from `ds-entry.ts`; their CSS is gone. The
-  uploaded project (453659fe…) still holds them until the next sync, and that
-  sync's upload deletes them. **`conventions.md` is stale**: its class table
-  (`service-card`, `case-card`, `plan-card`, `process-step`, `hero-proof-item`,
-  `service-grid`, `process-grid`, `case-grid`, `plans-grid`, `contact-section`)
-  and its `Hero` example name things that no longer exist. Re-validate and
-  rewrite it on the next sync — the new vocabulary is the `home-*`, `feat-*`,
-  `strata-*`, `stack-map-*` families in globals.css, and the new sections in
-  `app/components/home/` are candidates for their own exports and previews.
+  Claude Design project 475e320d…) and re-synced the same day: the nine
+  deleted components (Hero, TopBar, CaseStudies, ExperienceTimeline,
+  SelectedWork, ContactForm, ShotGallery, SocialLinks, CountUp) were removed
+  from the project and `conventions.md` was rewritten for the new `home-*`
+  vocabulary (every name validated against the build). **Grades follow the
+  preview source only**: `Portfolio`'s preview never changed, so the driver
+  called it "unchanged" although it now renders a different homepage. After
+  any change to what a page component renders, spot-check it
+  (`package-capture.mjs --components X --spot-check-components X`). The new
+  sections in `app/components/home/` are not exported one by one yet —
+  candidates for their own previews.
 - The bundle throws `Cannot set properties of undefined (setting 'jsx')` when
   `_ds_bundle.js` evaluates before `window.React` exists (seen when a Claude
   Design page loads React from a CDN after the bundle). The react shim in
